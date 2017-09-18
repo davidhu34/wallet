@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
-import { data } from './data'
+import { ui } from './ui'
 import { record } from './record'
 
 const App = combineReducers({
-    data,
+    ui,
     record
 })
 
