@@ -8,6 +8,11 @@ export const ui = ( state = uiInit, action ) => {
                 ...state,
                 modal: true
             }
+        case 'CLOSE_MODAL':
+            return {
+                ...state,
+                modal: false
+            }
         default:
             return state
     }
