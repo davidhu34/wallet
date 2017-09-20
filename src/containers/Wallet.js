@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 //import Filters from './Filters'
 import RecordList from '../components/RecordList'
 import Modal from '../components/Modal'
+import SelectModal from '../components/SelectModal'
 import { launchModal } from '../actions'
 
 const Wallet = ({
@@ -11,9 +12,10 @@ const Wallet = ({
     launchModal
 }) => {
     const recordListProps = { records }
-    console.log(records)
+    const selections = ['January', 'February', 'March'];
+
     const toLaunch = modal? <Modal color="rgba(0,0,0,0.8)">
-        hi
+        <SelectModal selections={selections} />
     </Modal>:null
     return <div className="Wallet">
         {toLaunch}
