@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 //import Filters from './Filters'
 import RecordList from '../components/RecordList'
 import ModalProvider from '../containers/ModalProvider'
- import { launchModal } from '../actions'
+ import { launchSelection } from '../actions'
 
 const Wallet = ({
     records, modal, newRecord,
@@ -33,6 +33,6 @@ export default connect(
             .map( r => record.records[r])
     }),
     dispatch => ({
-        launchSelection: (k) => dispatch( launchModal(k) )
+        launchSelection: (k) => dispatch( launchSelection(k) )
     })
 )(Wallet)

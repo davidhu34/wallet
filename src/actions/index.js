@@ -2,7 +2,8 @@ export const Add = () => ({
 	type: 'ADD'
 })
 
-export const launchModal = (entry) => (dispatch) => {
+
+const launchModal = (util, entry) => (dispatch) => {
 	dispatch({
 		type: 'LAUNCH_MODAL'
 	})
@@ -16,14 +17,16 @@ export const launchModal = (entry) => (dispatch) => {
 	})
 	modalReturn.then( value => {
 		dispatch({
-			type: 'CLOSE_MODAL'
-		})
-		dispatch({
 			type: 'MODAL_SELECTION',
 			entry, value
 		})
+		dispatch({
+			type: 'CLOSE_MODAL'
+		})
 	})
 }
+export const launchSelection = entry => launchModal('selection', entry)
+
 export const closeModal = () => ({
 	type: 'CLOSE_MODAL'
 })

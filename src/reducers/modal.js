@@ -2,9 +2,18 @@ const initModal = {
     util: '',
     data: null,
     selection: {
-        year: 2017,
-        month: ['November', 'December'],
-        date: 7
+        year: {
+            list: [2017, 2018, 2019],
+            size: 1
+        },
+        month: {
+            list: ['November', 'December'],
+            size: 3
+        },
+        date: {
+            list: [1, 2, 3, 4, 5, 6, 7 ,8, 9, 10, 11, 12, 13, 14],
+            size: 7
+        }
     }
 }
 export const modal = ( state = initModal, action ) => {
@@ -17,7 +26,11 @@ export const modal = ( state = initModal, action ) => {
                 data: state[action.util][action.entry],
                 resolve: action.resolve
             }
-
+        case 'CLOSE_MODAL':
+            return {
+                ...state,
+                util: '', data: null
+            }
         default:
             return state
     }

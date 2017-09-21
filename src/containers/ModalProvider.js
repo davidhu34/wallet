@@ -16,7 +16,9 @@ const ModalProvider = ({
         switch (util) {
             case 'selection':
                 return <Modal>
-                    <SelectionModal selections={data} resolve={resolve} />
+                    <SelectionModal resolve={resolve}
+                        selections={data.list}
+                        size={data.size} />
                 </Modal>
             default:
                 return <span />
