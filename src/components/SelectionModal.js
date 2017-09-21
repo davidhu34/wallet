@@ -12,32 +12,30 @@ const SelectionModal = ({ selections, size, resolve }) => {
     let lines = []
     for (let i = 0; i < selections.length; i+=size) {
         lines.push( sels.slice(i, i+size) )
-    } if (sels.length) lines.push( sels )
-    console.log(lines)
+    }
+    console.log(lines, String(100/7)+'%')
 
     const options = lines.map( line => 
-        <div className="row">
+        <div className="container">
         { line.map( s =>
-            <div className={ sizeMap[size-1]+" column" }>{s}</div>)}
-        }
+            <div style={{
+                    textAlign: 'center',
+                    padding: 'auto',
+                    display:'inline-block',
+                    width: String(100/size)+'%'
+                }}
+                onClick={ (e) => {
+                    console.log(s)
+                    resolve(s)
+                }}>
+                {s}
+            </div>
+        )}
         </div>
     )
-
-    const entries = selections.map( s => {
-        return <tr onClick={(e) => {
-            console.log(s)
-            resolve(s)
-        }}>
-            <td>{s}</td>
-        </tr>
-    })
     return <div>
-    {options}
-    <table><tbody>
-        
-        { entries }
-    </tbody></table>
-</div>
+        {options}
+    </div>
 }
 
 export default SelectionModal
