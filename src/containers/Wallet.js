@@ -7,28 +7,32 @@ import ModalProvider from '../containers/ModalProvider'
  import { launchModal } from '../actions'
 
 const Wallet = ({
-    records, modal,
-    launchModal
+    records, modal, newRecord,
+    launchSelection
 }) => {
     const recordListProps = { records }
+    const form = Object.keys(newRecord).map(k => {
+        return <div onClick={ (e) => launchSelection(k) }>
+            {newRecord[k]}
+        </div>
+    })
 
     return <div className="Wallet">
         <ModalProvider open={modal} />
         <RecordList {...recordListProps} />
-        <div onClick={ (e) => launchModal() } >
-            launch modal
-        </div>
+        {form}
     </div>
 
 }
 
 export default connect(
-    ({ record, ui }) => ({
+    ({ record, ui, newRecord }) => ({
+        newRecord: newRecord,
         modal: ui.modal,
         records: Object.keys(record.records)
             .map( r => record.records[r])
     }),
     dispatch => ({
-        launchModal: () => dispatch( launchModal() )
+        launchSelection: (k) => dispatch( launchModal(k) )
     })
 )(Wallet)

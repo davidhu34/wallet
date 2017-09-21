@@ -9,15 +9,14 @@ import { launchModal } from '../actions'
 
 const ModalProvider = ({
     open,
-    util, data, resolve,
-    launchModal
+    util, data, resolve
 }) => {
-    console.log(util);
+    console.log(open);
     if (open) {
         switch (util) {
             case 'selection':
                 return <Modal>
-                    <SelectionModal {...data} resolve={resolve} />
+                    <SelectionModal selections={data} resolve={resolve} />
                 </Modal>
             default:
                 return <span />
@@ -27,10 +26,8 @@ const ModalProvider = ({
 }
 
 export default connect(
-    ({ ui, modal }) => ({
-        ...modal
-    }),
-    dispatch => ({
-        launchModal: () => dispatch( launchModal() )
-    })
+    ({ ui, modal }) => {
+        console.log(modal);
+        return {...modal, open: ui.modal}
+    }
 )(ModalProvider)

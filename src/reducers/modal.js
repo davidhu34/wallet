@@ -1,15 +1,23 @@
-export const modal = ( state = {}, action ) => {
+const initModal = {
+    util: '',
+    data: null,
+    selection: {
+        year: 2017,
+        month: ['November', 'December'],
+        date: 7
+    }
+}
+export const modal = ( state = initModal, action ) => {
     switch ( action.type ) {
         case 'LAUNCH_MODAL_SELECTION':
+        console.log(action)
             return {
-                util: 'selection',
-                data: {
-                    selections: ['January', 'February', 'March']
-                },
+                ...state,
+                util: action.util,
+                data: state[action.util][action.entry],
                 resolve: action.resolve
             }
-        case 'CLOSE_MODAL':
-            return {}
+
         default:
             return state
     }
