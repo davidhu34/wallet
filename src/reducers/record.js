@@ -43,6 +43,27 @@ const initRecord = {
             category: 'travel',
             exchange: 1200,
             note: 'HSR to Taipei'
+        },
+        '7': {
+            id: '7',
+            time: 1318874398806,
+            category: 'food',
+            exchange: 100,
+            note: 'lunch'
+        },
+        '8': {
+            id: '8',
+            time: 1318871398801,
+            category: 'travel',
+            exchange: 1200,
+            note: 'HSR to Kaohsiung'
+        },
+        '9': {
+            id: '9',
+            time: 1308874398701,
+            category: 'travel',
+            exchange: 1200,
+            note: 'HSR to Taipei'
         }
     }
 }

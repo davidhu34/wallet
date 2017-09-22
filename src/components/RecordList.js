@@ -23,11 +23,12 @@ class RecordList extends Component {
 		render () {
 				const { records } = this.props
 				console.log(this.props)
-				return <Scrollbars ref="scroll"
+				return <Scrollbars
 					style={{
 						width: '100%',
-						height: 300
+						height: 600
 					}}>
+					<span ref="scroll">
 						<table style={{ width: '100%' }}><tbody>
 						{
 								this.displayList(records).map( r => {
@@ -36,6 +37,7 @@ class RecordList extends Component {
 								})
 						}
 						</tbody></table>
+					</span>
 				</Scrollbars>
 		}
 }

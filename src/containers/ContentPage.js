@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-//import Filters from './Filters'
-import ModalProvider from '../containers/ModalProvider'
-import Banner from '../components/Banner'
 import RecordList from '../components/RecordList'
 import { launchSelection } from '../actions'
 
-const Wallet = ({
+const ContentPage = ({
     records, modal, newRecord,
     launchSelection
 }) => {
@@ -18,17 +15,17 @@ const Wallet = ({
         </div>
     })
 
-    return <div className="Wallet">
-        <Banner />
-        <ModalProvider open={modal} />
-        <RecordList {...recordListProps} />
+    return <div style={{
+    	filter: modal?'brightness(300%) blur(10px)': ''
+    }}>
+		<RecordList {...recordListProps} />
         {form}
     </div>
 
 }
 
 export default connect(
-    ({ record, ui, newRecord }) => ({
+	({ record, ui, newRecord }) => ({
         newRecord: newRecord,
         modal: ui.modal,
         records: Object.keys(record.records)
@@ -37,4 +34,4 @@ export default connect(
     dispatch => ({
         launchSelection: (k) => dispatch( launchSelection(k) )
     })
-)(Wallet)
+)(ContentPage)
