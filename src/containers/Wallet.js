@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 //import Filters from './Filters'
-import RecordList from '../components/RecordList'
 import ModalProvider from '../containers/ModalProvider'
- import { launchSelection } from '../actions'
+import Banner from '../components/Banner'
+import RecordList from '../components/RecordList'
+import { launchSelection } from '../actions'
 
 const Wallet = ({
     records, modal, newRecord,
@@ -18,6 +19,7 @@ const Wallet = ({
     })
 
     return <div className="Wallet">
+        <Banner />
         <ModalProvider open={modal} />
         <RecordList {...recordListProps} />
         {form}

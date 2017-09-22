@@ -1,5 +1,9 @@
 const uiInit = {
-    modal: false
+    modal: false,
+    banner: {
+        expand: true,
+        title: 'Wallet'
+    }
 };
 export const ui = ( state = uiInit, action ) => {
     switch ( action.type ) {
