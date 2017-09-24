@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import { launchFilter } from '../actions'
+
 const bannerStyle = {
 	width: '100%',
 	height: 300,
@@ -13,18 +15,27 @@ const bannerStyle = {
 	//WebkitTextFillColor: 'transparent',
 	//WebkitBackgroundClip: 'text'
 }
-const Banner = ({ expand, title }) => {
 
+const Banner = ({
+	expand, title, filter,
+	launchFilter
+}) => {
+	const filters = Object.keys(filter).map( k => {
+		return <div onClick={ (e) => { launchFilter(k, filter[k]) }}>
+			{k}
+		</div>
+	})
 	return <div style={bannerStyle}>
 		{title}
+		{filters}
 	</div>
 }
 
 export default connect(
-	({ ui }) => ({
-		...ui.banner
+	({ ui, filter }) => ({
+		...ui.banner, filter
 	}),
-	dispatch => {
-
-	}
+	dispatch => ({
+		launchFilter: (filter, opt) => dispatch(launchFilter(filter, opt))
+	})
 )(Banner)

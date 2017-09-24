@@ -22,7 +22,7 @@ const initRecord = {
             id: '3',
             time: 1308874398701,
             class: 'travel',
-            category: 'hsr'
+            category: 'hsr',
             exchange: 1200,
             note: 'HSR to Taipei'
         },

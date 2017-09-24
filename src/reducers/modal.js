@@ -15,18 +15,31 @@ const initModal = {
             size: 7
         }
     },
-    filter: {}
+    filter: {
+        time: {
+            type: 'time'
+        },
+        amount: {
+            type: 'amount'
+        },
+        category: {
+            type: 'category',
+            list: ['food', 'travel']
+        }
+    }
 }
 export const modal = ( state = initModal, action ) => {
+    const { util, option, resolve, entry } = action
+
     switch ( action.type ) {
-        case 'LAUNCH_MODAL_SELECTION':
+        case 'LAUNCH_MODAL':
         console.log(action)
             return {
                 ...state,
-                util: action.util,
-                data: state[action.util][action.entry],
-                resolve: action.resolve
+                util, option, resolve,
+                data: state[util][entry]
             }
+        case 'LAUNCH_':
         case 'CLOSE_MODAL':
             return {
                 ...state,

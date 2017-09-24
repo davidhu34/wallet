@@ -27,20 +27,22 @@ const filterInit = {
 };
 
 const category = ( state, action ) => {
-    let { filter } = action
     switch ( action.type ) {
         case 'TOGGLE_CATEGORY_FILTER':
+             const { filter } = action
             return {
                 ...state,
-                selecting: indexOf(filter) > -1?
-                    state.selecting.filter( f != filter)
+                selecting: state.selecting.indexOf(filter) > -1?
+                    state.selecting.filter( f => f != filter)
                     : [...state.selecting, filter]
             }
         case 'APPLY_FILTER':
-            return {
+            return action.apply? {
                 ...state,
-                selecting: [],
                 selected: state.selecting
+            } : {
+                ...state,
+                selecting: state.selected
             }
         default:
             return state
