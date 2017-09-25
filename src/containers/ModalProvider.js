@@ -4,13 +4,12 @@ import { connect } from 'react-redux'
 //import Filters from './Filters'
 import RecordList from '../components/RecordList'
 import SelectionModal from '../components/SelectionModal'
-import FilterModal from '../components/FilterModal'
+import CategoryFilterModal from '../components/CategoryFilterModal'
 import Modal from '../components/Modal'
 import { launchModal } from '../actions'
 
 const ModalProvider = ({
-    open,
-    util, data, resolve
+    open, util, data, resolve
 }) => {
     console.log(open);
     if (open) {
@@ -21,11 +20,10 @@ const ModalProvider = ({
                         selections={data.list}
                         size={data.size} />
                 </Modal>
-            case 'filter':
+            case 'category_filter':
                 return <Modal>
-                    <FilterModal resolve={resolve}
-                        filterType={data.type}
-                        options={data.list} />
+                    <CategoryFilterModal resolve={resolve}
+                        filterClass={data} />
                 </Modal>
             default:
                 return <span />
@@ -35,8 +33,5 @@ const ModalProvider = ({
 }
 
 export default connect(
-    ({ ui, modal }) => {
-        console.log(modal);
-        return {...modal, open: ui.modal}
-    }
+    ({ ui, modal }) => ({...modal, open: ui.modal})
 )(ModalProvider)

@@ -1,30 +1,64 @@
 const filterInit = {
-    time: {
-        selected: {
-            from: null,
-            to: null
+    class: {
+        '1': {
+            id: '1',
+            name: 'food',
+            category: ['1' ,'2', '3', '4']
         },
-        selecting: {
-            from: null,
-            to: null
+        '2': {
+            id: '2',
+            name: 'travel',
+            category: ['5' ,'6', '7']
         }
     },
     category: {
-        category: ['food', 'travel'],
-        selected: [],
-        selecting: []
-    },
-    amount: {
-        selected: {
-            min: 0,
-            max: -1
+        '1': {
+            id: '1',
+            name: 'breakfast',
+            class: '1'
         },
-        selecting: {
-            min: null,
-            max: null
+        '2': {
+            id: '2',
+            name: 'lunch',
+            class: '1'
+        },
+        '3': {
+            id: '3',
+            name: 'dinner',
+            class: '1'
+        },
+        '4': {
+            id: '4',
+            name: 'drink',
+            class: '1'
+        },
+        '5': {
+            id: '1',
+            name: 'mrt',
+            class: '2'
+        },
+        '6': {
+            id: '6',
+            name: 'bus',
+            class: '2'
+        },
+        '7': {
+            id: '7',
+            name: 'hsr',
+            class: '2'
         }
+    },
+    selected: {
+        time: { from: null, to: null },
+        amount: { min: null, max: null},
+        category: []
+    },
+    selecting: {
+        time: { from: null, to: null },
+        amount: { min: null, max: null},
+        category: []
     }
-};
+}
 
 const category = ( state, action ) => {
     switch ( action.type ) {
@@ -52,13 +86,12 @@ export const filter = ( state = filterInit, action ) => {
     switch ( action.type ) {
         case 'TOGGLE_CATEGORY_FILTER':
             return {
-                ...state,
-                category: category(state.category, action)
+                ...state
             }
         case 'APPLY_FILTER':
             return {
                 ...state,
-                category: category(state.category, action)
+                selected: state.selecting
             }
         default:
             return state

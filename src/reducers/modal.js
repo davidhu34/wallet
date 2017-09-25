@@ -29,7 +29,7 @@ const initModal = {
     }
 }
 export const modal = ( state = initModal, action ) => {
-    const { util, option, resolve, entry } = action
+    const { util, option, resolve, entry, data } = action
 
     switch ( action.type ) {
         case 'LAUNCH_MODAL':
@@ -37,13 +37,14 @@ export const modal = ( state = initModal, action ) => {
             return {
                 ...state,
                 util, option, resolve,
-                data: state[util][entry]
+                data: data//state[util][entry]
             }
         case 'LAUNCH_':
         case 'CLOSE_MODAL':
             return {
                 ...state,
-                util: '', data: null
+                util: '',
+                data: null
             }
         default:
             return state

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { launchFilter } from '../actions'
+import { launchCategoryFilter } from '../actions'
 
 const bannerStyle = {
 	width: '100%',
@@ -20,14 +20,23 @@ const Banner = ({
 	expand, title, filter,
 	launchFilter
 }) => {
-	const filters = Object.keys(filter).map( k => {
-		return <div onClick={ (e) => { launchFilter(k, filter[k]) }}>
-			{k}
-		</div>
-	})
 	return <div style={bannerStyle}>
 		{title}
-		{filters}
+		<table><tobdy><tr>
+			<td>TIME</td>
+			<td>AMOUNT</td>
+			<td><div><b>CATEGORY</b>
+				{Object.keys(filter.class).map( k => {
+					let filterClass = filter.class[k]
+					return <div key={k}
+						onClick={ (e) => {
+							launchFilter(filterClass.id)
+						}}>
+						{filterClass.name}
+					</div>
+				})}
+			</div></td>
+		</tr></tobdy></table>
 	</div>
 }
 
@@ -36,6 +45,6 @@ export default connect(
 		...ui.banner, filter
 	}),
 	dispatch => ({
-		launchFilter: (filter, opt) => dispatch(launchFilter(filter, opt))
+		launchFilter: (c) => dispatch(launchCategoryFilter(c))
 	})
 )(Banner)

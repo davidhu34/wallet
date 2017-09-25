@@ -2,14 +2,14 @@ export const Add = () => ({
 	type: 'ADD'
 })
 
-const launchModal = (util, entry, option) => (dispatch) => {
+const launchModal = (util, data) => (dispatch) => {
 	console.log('launch modal')
 	//dispatch({ type: 'LAUNCH_MODAL'})
 
 	const modalPromise = new Promise(
 		(resolve, reject) => dispatch({
 			 type: 'LAUNCH_MODAL',
-			 resolve, reject, util, entry, option
+			 resolve, reject, util, data
  		})
 	)
 	switch (util) {
@@ -22,7 +22,7 @@ const launchModal = (util, entry, option) => (dispatch) => {
 				dispatch({ type: 'CLOSE_MODAL' })
 			})
 			break
-		case 'filter':
+		case 'category_filter':
 		default:
 			modalPromise.then( apply => {
 				dispatch({ type: 'APPLY_FILTER', apply })
@@ -31,11 +31,12 @@ const launchModal = (util, entry, option) => (dispatch) => {
 
 	}
 }
-export const launchSelection = entry => launchModal('selection', entry)
-export const launchFilter = (entry, opt) => launchModal('filter', entry, opt)
+export const launchSelection = data => launchModal('selection', data)
+export const launchFilter = data => launchModal('filter', data)
+export const launchCategoryFilter = data => launchModal('category_filter', data)
 
-export const toggleFilter = filter => ({
-	type: 'TOGGLE_CATEGORY_FILTER', filter
+export const toggleCategoryFilter = category => ({
+	type: 'TOGGLE_CATEGORY_FILTER', category
 })
 
 export const closeModal = () => ({
