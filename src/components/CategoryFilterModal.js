@@ -10,17 +10,17 @@ const CategoryFilterModal = ({
     toggleFilter
 }) => {
 
-    const size = 1
-
     const filters = filter.class[filterClass]
         .category.map( (c, idx) => {
+            const categoryName = filter.category[c].name
             return <div style={{
                     display: 'inline-block'
                 }}
                 onClick={(e) => toggleFilter(c)} >
                 { filter.selecting['category']
                     .indexOf(c) > -1?
-                        <b>{c.name}</b>: <span>{c.name}</span>
+                        <b>{categoryName}</b>
+                        : <span>{categoryName}</span>
                 }
             </div>
         })

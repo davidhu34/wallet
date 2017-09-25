@@ -60,23 +60,16 @@ const filterInit = {
     }
 }
 
-const category = ( state, action ) => {
+const selecting = ( state, action ) => {
     switch ( action.type ) {
         case 'TOGGLE_CATEGORY_FILTER':
-             const { filter } = action
+            const { category } = action
+            const prevCats = state.category
             return {
                 ...state,
-                selecting: state.selecting.indexOf(filter) > -1?
-                    state.selecting.filter( f => f != filter)
-                    : [...state.selecting, filter]
-            }
-        case 'APPLY_FILTER':
-            return action.apply? {
-                ...state,
-                selected: state.selecting
-            } : {
-                ...state,
-                selecting: state.selected
+                category: prevCats.indexOf(category) > -1?
+                    prevCats.filter( c => c != category)
+                    : [...prevCats, category]
             }
         default:
             return state
@@ -86,7 +79,8 @@ export const filter = ( state = filterInit, action ) => {
     switch ( action.type ) {
         case 'TOGGLE_CATEGORY_FILTER':
             return {
-                ...state
+                ...state,
+                selecting: selecting(state.selecting, action)
             }
         case 'APPLY_FILTER':
             return {
