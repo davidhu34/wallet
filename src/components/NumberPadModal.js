@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-import { clickNumberPad, popNumberPad } from '../actions'
+import { clickNumberPad, popNumberPad, clearNumberPad } from '../actions'
 
 const numberStyle = {
     textAlign: 'center',
@@ -12,7 +12,7 @@ const numberStyle = {
 }
 const NumberPadModal = ({
     resolve, number,
-    clickNumber, popNumber
+    clickNumber, popNumber, clearNumber
 }) => {
 
     return <div>
@@ -24,7 +24,10 @@ const NumberPadModal = ({
                     {n}
                 </div>
             )}
-            <div style={{...numberStyle, width: String(200/3)+'%'}}
+            <div style={numberStyle} onClick={(e) => clearNumber()}>
+                C
+            </div>
+            <div style={numberStyle}
                 onClick={(e) => clickNumber(0)}>
                 0
             </div>
@@ -42,6 +45,7 @@ export default connect(
     ({ numberPad }) => ({ ...numberPad }),
     dispatch => ({
         clickNumber: (number) => dispatch(clickNumberPad(number)),
-        popNumber: () => dispatch(popNumberPad())
+        popNumber: () => dispatch(popNumberPad()),
+        clearNumber: () => dispatch(clearNumberPad())
     })
 )(NumberPadModal)

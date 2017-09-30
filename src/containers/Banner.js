@@ -28,7 +28,12 @@ const Banner = ({
 		<h4>{title}</h4>
 		<div onClick={(e) => toggleExpandFilters()}>filters</div>
 		{expand?<table><tbody><tr>
-			<td>TIME</td>
+			<td><div><b>TIME</b>
+				<div onClick={(e) => {}}>from</div>
+				<div>{filter.selected.time.from || '--'}</div>
+				<div onClick={(e) => {}}>to</div>
+				<div>{filter.selected.time.to || '--'}</div>
+			</div></td>
 			<td><div><b>AMOUNT</b>
 				<div onClick={(e) => amountFilter(0)}>min</div>
 				<div>{filter.selected.amount.min || '--'}</div>

@@ -19,6 +19,10 @@ const modalMap = {
 	'CATEGORY_FILTER': (data) => ({
 		util: 'category_filter',
 		action: (value) => ({ type: 'APPLY_CATEGORY_FILTER' })
+	}),
+	'TIME_FILTER': (data) => ({
+		util: 'time_filter',
+		action: (value) => ({ type: 'APPLY_TIME_FILTER' })
 	})
 }
 const launchModal = (mission, data) => (dispatch) => {
@@ -43,7 +47,7 @@ export const launchSelection = data => launchModal('SELECTION', data)
 export const launchFilter = data => launchModal('filter', data)
 export const launchAmountFilter = data => launchModal('AMOUNT_FILTER', data)
 export const launchCategoryFilter = data => launchModal('CATEGORY_FILTER', data)
-
+export const launchTimeFilter = data => launchModal('TIME_FILTER', data)
 export const toggleCategoryFilter = category => ({
 	type: 'TOGGLE_CATEGORY_FILTER', category
 })
@@ -61,4 +65,7 @@ export const clickNumberPad = number => ({
 })
 export const popNumberPad = () => ({
 	type: 'POP_NUMBER_PAD'
+})
+export const clearNumberPad = () => ({
+	type: 'CLEAR_NUMBER_PAD'
 })
