@@ -60,6 +60,19 @@ const filterInit = {
     }
 }
 
+const selected = ( state, action ) => {
+    let newState = state;
+    switch ( action.type ) {
+        case 'APPLY_MIN_FILTER':
+            newState.amount.min = action.amount
+            return newState
+        case 'APPLY_MAX_FILTER':
+            newState.amount.max = action.amount
+            return newState
+        default:
+            return state
+    }
+}
 const selecting = ( state, action ) => {
     switch ( action.type ) {
         case 'TOGGLE_CATEGORY_FILTER':
@@ -82,11 +95,17 @@ export const filter = ( state = filterInit, action ) => {
                 ...state,
                 selecting: selecting(state.selecting, action)
             }
-        case 'APPLY_FILTER':
+        case 'APPLY_CATEGORY_FILTER':
             return {
                 ...state,
                 selected: state.selecting
             }
+        case 'APPLY_MIN_FILTER':
+            return {
+                ...state,
+                selected: selected(state.selected, action)
+            }
+        case 'APPLY_MAX_FILTER':
         default:
             return state
     }

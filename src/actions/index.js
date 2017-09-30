@@ -2,38 +2,47 @@ export const Add = () => ({
 	type: 'ADD'
 })
 
-const launchModal = (util, data) => (dispatch) => {
-	console.log('launch modal', util, data)
+
+
+const modalMap = {
+	'AMOUNT_FILTER': (data) => ({
+		util: 'numberPad',
+		action: (value) => ({
+			type: 'APPLY'+(data == 0? '_MIN': '_MAX')+'_FILTER',
+			amount: value
+		})
+	}),
+	'SELECTION': (data) => ({
+		util: 'selection',
+		action: (value) => ({ type: 'MODAL_SELECTION', value })
+	}),
+	'CATEGORY_FILTER': (data) => ({
+		util: 'category_filter',
+		action: (value) => ({ type: 'APPLY_CATEGORY_FILTER' })
+	})
+}
+const launchModal = (mission, data) => (dispatch) => {
+	console.log('launch modal', mission, data)
 	//dispatch({ type: 'LAUNCH_MODAL'})
+
+	const modalMission = modalMap[mission](data)
 
 	const modalPromise = new Promise(
 		(resolve, reject) => dispatch({
 			 type: 'LAUNCH_MODAL',
-			 resolve, reject, util, data
+			 util: modalMission.util,
+			 resolve, reject, data
  		})
 	)
-	switch (util) {
-		case 'selection':
-			modalPromise.then( value => {
-				dispatch({
-					type: 'MODAL_SELECTION',
-					entry, value
-				})
-				dispatch({ type: 'CLOSE_MODAL' })
-			})
-			break
-		case 'category_filter':
-		default:
-			modalPromise.then( apply => {
-				dispatch({ type: 'APPLY_FILTER', apply })
-				dispatch({ type: 'CLOSE_MODAL' })
-			})
-
-	}
+	modalPromise.then( value => {
+		dispatch(modalMission.action(value))
+		dispatch({ type: 'CLOSE_MODAL' })
+	})
 }
-export const launchSelection = data => launchModal('selection', data)
+export const launchSelection = data => launchModal('SELECTION', data)
 export const launchFilter = data => launchModal('filter', data)
-export const launchCategoryFilter = data => launchModal('category_filter', data)
+export const launchAmountFilter = data => launchModal('AMOUNT_FILTER', data)
+export const launchCategoryFilter = data => launchModal('CATEGORY_FILTER', data)
 
 export const toggleCategoryFilter = category => ({
 	type: 'TOGGLE_CATEGORY_FILTER', category
@@ -45,4 +54,11 @@ export const closeModal = () => ({
 
 export const toggleExpandFilters = () => ({
 	type: 'TOGGLE_EXPAND_FILTERS'
+})
+
+export const clickNumberPad = number => ({
+	type: 'CLICK_NUMBER_PAD', number
+})
+export const popNumberPad = () => ({
+	type: 'POP_NUMBER_PAD'
 })

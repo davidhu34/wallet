@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import RecordList from '../components/RecordList'
 import SelectionModal from '../components/SelectionModal'
 import CategoryFilterModal from '../components/CategoryFilterModal'
+import NumberPadModal from '../components/NumberPadModal'
 import Modal from '../components/Modal'
 import { launchModal } from '../actions'
 
@@ -14,6 +15,10 @@ const ModalProvider = ({
     console.log(open);
     if (open) {
         switch (util) {
+            case 'numberPad':
+                return <Modal>
+                    <NumberPadModal resolve={resolve} />
+                </Modal>
             case 'selection':
                 return <Modal>
                     <SelectionModal resolve={resolve}

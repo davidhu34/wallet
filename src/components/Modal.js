@@ -10,7 +10,8 @@ const Modal = ({ children, color }) => {
 		left:0,
 		zIndex: 4,
 		paddingTop: 100,
-		backgroundColor: color
+		backgroundColor: color,
+		textAlign: 'center'
 		//WebkitTextFillColor: 'transparent',
 		//WebkitBackgroundClip: 'text'
 	}}>

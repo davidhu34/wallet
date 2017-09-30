@@ -1,7 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { toggleExpandFilters, launchCategoryFilter } from '../actions'
+import {
+	toggleExpandFilters,
+	launchCategoryFilter,
+	launchAmountFilter
+} from '../actions'
 
 const bannerStyle = {
 	width: '100%',
@@ -18,20 +22,25 @@ const bannerStyle = {
 
 const Banner = ({
 	expand, title, filter,
-	launchFilter, toggleExpandFilters
+	categoryFilter, amountFilter, toggleExpandFilters
 }) => {
 	return <div style={bannerStyle}>
 		<h4>{title}</h4>
 		<div onClick={(e) => toggleExpandFilters()}>filters</div>
 		{expand?<table><tbody><tr>
 			<td>TIME</td>
-			<td>AMOUNT</td>
+			<td><div><b>AMOUNT</b>
+				<div onClick={(e) => amountFilter(0)}>min</div>
+				<div>{filter.selected.amount.min || '--'}</div>
+				<div onClick={(e) => amountFilter(1)}>max</div>
+				<div>{filter.selected.amount.max || '--'}</div>
+			</div></td>
 			<td><div><b>CATEGORY</b>
 				{Object.keys(filter.class).map( k => {
 					let filterClass = filter.class[k]
 					return <div key={k}
 						onClick={ (e) => {
-							launchFilter(filterClass.id)
+							categoryFilter(filterClass.id)
 						}}>
 						{filterClass.name}
 					</div>
@@ -46,7 +55,8 @@ export default connect(
 		...ui.banner, filter
 	}),
 	dispatch => ({
-		launchFilter: (c) => dispatch(launchCategoryFilter(c)),
+		categoryFilter: (c) => dispatch(launchCategoryFilter(c)),
+		amountFilter: (type) => dispatch(launchAmountFilter(type)),
 		toggleExpandFilters: () => dispatch(toggleExpandFilters())
 	})
 )(Banner)
