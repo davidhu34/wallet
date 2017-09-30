@@ -1,10 +1,21 @@
 const uiInit = {
     modal: false,
     banner: {
-        expand: true,
+        expand: false,
         title: 'Wallet'
     }
 };
+const banner = ( state, action ) => {
+    switch ( action.type ) {
+        case 'TOGGLE_EXPAND_FILTERS':
+            return {
+                ...state,
+                expand: !state.expand
+            }
+        default:
+            return state
+    }
+}
 export const ui = ( state = uiInit, action ) => {
     switch ( action.type ) {
         case 'LAUNCH_MODAL':
@@ -16,6 +27,11 @@ export const ui = ( state = uiInit, action ) => {
             return {
                 ...state,
                 modal: false
+            }
+        case 'TOGGLE_EXPAND_FILTERS':
+            return {
+                ...state,
+                banner: banner(state.banner, action)
             }
         default:
             return state

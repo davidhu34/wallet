@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { launchCategoryFilter } from '../actions'
+import { toggleExpandFilters, launchCategoryFilter } from '../actions'
 
 const bannerStyle = {
 	width: '100%',
@@ -18,11 +18,12 @@ const bannerStyle = {
 
 const Banner = ({
 	expand, title, filter,
-	launchFilter
+	launchFilter, toggleExpandFilters
 }) => {
 	return <div style={bannerStyle}>
-		{title}
-		<table><tobdy><tr>
+		<h4>{title}</h4>
+		<div onClick={(e) => toggleExpandFilters()}>filters</div>
+		{expand?<table><tbody><tr>
 			<td>TIME</td>
 			<td>AMOUNT</td>
 			<td><div><b>CATEGORY</b>
@@ -36,7 +37,7 @@ const Banner = ({
 					</div>
 				})}
 			</div></td>
-		</tr></tobdy></table>
+		</tr></tbody></table>:<span />}
 	</div>
 }
 
@@ -45,6 +46,7 @@ export default connect(
 		...ui.banner, filter
 	}),
 	dispatch => ({
-		launchFilter: (c) => dispatch(launchCategoryFilter(c))
+		launchFilter: (c) => dispatch(launchCategoryFilter(c)),
+		toggleExpandFilters: () => dispatch(toggleExpandFilters())
 	})
 )(Banner)

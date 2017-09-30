@@ -3,7 +3,7 @@ export const Add = () => ({
 })
 
 const launchModal = (util, data) => (dispatch) => {
-	console.log('launch modal')
+	console.log('launch modal', util, data)
 	//dispatch({ type: 'LAUNCH_MODAL'})
 
 	const modalPromise = new Promise(
@@ -41,4 +41,8 @@ export const toggleCategoryFilter = category => ({
 
 export const closeModal = () => ({
 	type: 'CLOSE_MODAL'
+})
+
+export const toggleExpandFilters = () => ({
+	type: 'TOGGLE_EXPAND_FILTERS'
 })
