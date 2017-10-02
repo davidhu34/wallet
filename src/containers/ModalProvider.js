@@ -17,18 +17,20 @@ const ModalProvider = ({
         switch (util) {
             case 'numberPad':
                 return <Modal>
-                    <NumberPadModal resolve={resolve} />
+                    <NumberPadModal resolve={resolve} title={data.title} />
                 </Modal>
             case 'selection':
                 return <Modal>
                     <SelectionModal resolve={resolve}
+                        title={data.title}
                         selections={data.list}
                         size={data.size} />
                 </Modal>
             case 'category_filter':
                 return <Modal>
                     <CategoryFilterModal resolve={resolve}
-                        filterClass={data} />
+                        title={data.title}
+                        filterClass={data.class} />
                 </Modal>
             default:
                 return <span />

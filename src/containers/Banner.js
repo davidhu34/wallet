@@ -45,7 +45,7 @@ const Banner = ({
 					let filterClass = filter.class[k]
 					return <div key={k}
 						onClick={ (e) => {
-							categoryFilter(filterClass.id)
+							categoryFilter(filterClass)
 						}}>
 						{filterClass.name}
 					</div>
@@ -60,8 +60,13 @@ export default connect(
 		...ui.banner, filter
 	}),
 	dispatch => ({
-		categoryFilter: (c) => dispatch(launchCategoryFilter(c)),
-		amountFilter: (type) => dispatch(launchAmountFilter(type)),
+		categoryFilter: (c) => dispatch(launchCategoryFilter({
+			class: c.id, title: 'filter '+c.name+' category' 
+		})),
+		amountFilter: (type) => dispatch(launchAmountFilter({
+			title: type == 0? 'MIN AMOUNT': 'MAX AMOUNT',
+			type: type
+		})),
 		toggleExpandFilters: () => dispatch(toggleExpandFilters())
 	})
 )(Banner)

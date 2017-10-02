@@ -5,7 +5,7 @@ import moment from 'moment'
 import { toggleCategoryFilter } from '../actions'
 
 const CategoryFilterModal = ({
-    resolve, filterClass,
+    resolve, filterClass, title,
     filter,
     toggleFilter
 }) => {
@@ -26,6 +26,8 @@ const CategoryFilterModal = ({
         })
 
     return <div>
+        <strong>{title}</strong>
+        <br />
         {filters}
         <br />
         <div onClick={ (e) => resolve(true) }>APPLY</div>

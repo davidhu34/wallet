@@ -8,7 +8,7 @@ const modalMap = {
 	'AMOUNT_FILTER': (data) => ({
 		util: 'numberPad',
 		action: (value) => ({
-			type: 'APPLY'+(data == 0? '_MIN': '_MAX')+'_FILTER',
+			type: 'APPLY'+(data.type == 0? '_MIN': '_MAX')+'_FILTER',
 			amount: value
 		})
 	}),
