@@ -3,7 +3,8 @@ const uiInit = {
     banner: {
         expand: false,
         title: 'Wallet'
-    }
+    },
+    content: 'HOME'
 };
 const banner = ( state, action ) => {
     switch ( action.type ) {
@@ -27,6 +28,11 @@ export const ui = ( state = uiInit, action ) => {
             return {
                 ...state,
                 modal: false
+            }
+        case 'CHANGE_CONTENT':
+            return {
+                ...state,
+                content: action.content
             }
         case 'TOGGLE_EXPAND_FILTERS':
             return {

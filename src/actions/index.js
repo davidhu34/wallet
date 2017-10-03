@@ -69,3 +69,7 @@ export const popNumberPad = () => ({
 export const clearNumberPad = () => ({
 	type: 'CLEAR_NUMBER_PAD'
 })
+
+export const changeContent = content => ({
+	type: 'CHANGE_CONTENT', content
+})

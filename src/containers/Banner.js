@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import {
 	toggleExpandFilters,
 	launchCategoryFilter,
-	launchAmountFilter
+	launchAmountFilter,
+	changeContent
 } from '../actions'
 
 const bannerStyle = {
@@ -22,10 +23,10 @@ const bannerStyle = {
 
 const Banner = ({
 	expand, title, filter,
-	categoryFilter, amountFilter, toggleExpandFilters
+	categoryFilter, amountFilter, toggleExpandFilters, toHome
 }) => {
 	return <div style={bannerStyle}>
-		<h4>{title}</h4>
+		<h4 onClick={(e) => toHome()}>{title}</h4>
 		<div onClick={(e) => toggleExpandFilters()}>filters</div>
 		{expand?<table><tbody><tr>
 			<td><div><b>TIME</b>
@@ -67,6 +68,7 @@ export default connect(
 			title: type == 0? 'MIN AMOUNT': 'MAX AMOUNT',
 			type: type
 		})),
-		toggleExpandFilters: () => dispatch(toggleExpandFilters())
+		toggleExpandFilters: () => dispatch(toggleExpandFilters()),
+		toHome: () => dispatch( changeContent('HOME'))
 	})
 )(Banner)

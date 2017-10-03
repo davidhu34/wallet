@@ -85,3 +85,13 @@ export const record = (state = initRecord, action) => {
             return state
     }
 }
+
+export const filterRecords = (filters, records) => {
+    const { min, max, categories } = filters
+    return records.filter( r => {
+        return !(
+            //categories.indexOf(r.category) == -1 ||
+            r.exchange > max || r.exchange < min
+        )
+    })
+}

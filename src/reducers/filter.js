@@ -101,11 +101,11 @@ export const filter = ( state = filterInit, action ) => {
                 selected: state.selecting
             }
         case 'APPLY_MIN_FILTER':
+        case 'APPLY_MAX_FILTER':
             return {
                 ...state,
                 selected: selected(state.selected, action)
             }
-        case 'APPLY_MAX_FILTER':
         default:
             return state
     }
