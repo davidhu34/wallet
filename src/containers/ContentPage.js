@@ -54,8 +54,8 @@ export default connect(
         records: filterRecords(
             {
                 categories: filter.selected.category,
-                max: filter.selected.amount.max,
-                min: filter.selected.amount.min
+                max: filter.amount.max,
+                min: filter.amount.min
             },
             Object.keys(record.records).map( r => record.records[r])
         )

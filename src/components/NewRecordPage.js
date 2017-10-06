@@ -2,27 +2,29 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-import { launchTimeSelection } from '../actions'
+import { launchTimeSelection, launchInputAmount } from '../actions'
 
 const NewRecordPage = ({
 	newRecord,
-	selectYear, selectMonth, selectDate
+	selectYear, selectMonth, selectDate, inputAmount
 }) => {
-	const { year, month, date } = newRecord
+	const { year, month, date, amount } = newRecord
     return <div>
         <div >
-        	TIME
+        	<b>TIME</b>
             <div onClick={ (e) => selectYear() }>{year}</div>
             <div onClick={ (e) => selectMonth() }>{month}</div>
             <div onClick={ (e) => selectDate() }>{date}</div>
         </div>
         <br />
         <div>
-        	DESCRIPTION
+        	<b>DESCRIPTION</b>
+        	
         </div>
         <br />
         <div>
-        	AMOUNT
+        	<b>AMOUNT</b>
+        	<div onClick={ (e) => inputAmount()}>{amount}</div>
         </div>
 
     </div>
@@ -36,6 +38,7 @@ export default connect(
 	dispatch => ({
 		selectYear: () => dispatch(launchTimeSelection('year')),
 		selectMonth: () => dispatch(launchTimeSelection('month')),
-		selectDate: () => dispatch(launchTimeSelection('date'))
+		selectDate: () => dispatch(launchTimeSelection('date')),
+		inputAmount: () => dispatch(launchInputAmount({ title: 'INPUT AMOUNT'}))
 	})
 )(NewRecordPage)

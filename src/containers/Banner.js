@@ -14,6 +14,39 @@ const Banner = ({
 	expand, title, filter, content,
 	categoryFilter, amountFilter, toggleExpandFilters, toHome
 }) => {
+	const expansion = expand && content == 'RECORD_LIST'?
+		<table style={{width: '100%'}}><tbody><tr>
+			<td style={categoryStyle}>
+				<div><b>TIME</b>
+					<div onClick={(e) => {}}>from</div>
+					<div>{filter.time.from || '--'}</div>
+					<div onClick={(e) => {}}>to</div>
+					<div>{filter.time.to || '--'}</div>
+				</div>
+			</td>
+			<td style={categoryStyle}>
+				<div><b>AMOUNT</b>
+					<div onClick={(e) => amountFilter(0)}>min</div>
+					<div>{filter.amount.min || '--'}</div>
+					<div onClick={(e) => amountFilter(1)}>max</div>
+					<div>{filter.amount.max || '--'}</div>
+				</div>
+			</td>
+			<td style={categoryStyle}><div><b>CATEGORY</b>
+					{Object.keys(filter.class).map( k => {
+						let filterClass = filter.class[k]
+						return <div key={k}
+							onClick={ (e) => {
+								categoryFilter(filterClass)
+							}}>
+							{filterClass.name}
+						</div>
+					})}
+				</div>
+			</td>
+		</tr></tbody></table>
+		: <span />
+	
 	return <div style={{
 			...bannerStyle,
 			height: expand? 600:300
@@ -23,39 +56,7 @@ const Banner = ({
 			<h5 onClick={(e) => toggleExpandFilters()}>filters</h5>
 			: <span></span>
 		}
-		{expand && content == 'RECORD_LIST'?
-			<table style={{width: '100%'}}><tbody><tr>
-				<td style={categoryStyle}>
-					<div><b>TIME</b>
-						<div onClick={(e) => {}}>from</div>
-						<div>{filter.selected.time.from || '--'}</div>
-						<div onClick={(e) => {}}>to</div>
-						<div>{filter.selected.time.to || '--'}</div>
-					</div>
-				</td>
-				<td style={categoryStyle}>
-					<div><b>AMOUNT</b>
-						<div onClick={(e) => amountFilter(0)}>min</div>
-						<div>{filter.selected.amount.min || '--'}</div>
-						<div onClick={(e) => amountFilter(1)}>max</div>
-						<div>{filter.selected.amount.max || '--'}</div>
-					</div>
-				</td>
-				<td style={categoryStyle}><div><b>CATEGORY</b>
-						{Object.keys(filter.class).map( k => {
-							let filterClass = filter.class[k]
-							return <div key={k}
-								onClick={ (e) => {
-									categoryFilter(filterClass)
-								}}>
-								{filterClass.name}
-							</div>
-						})}
-					</div>
-				</td>
-			</tr></tbody></table>
-			:<span />
-		}
+		{expansion}
 	</div>
 }
 

@@ -6,14 +6,21 @@ const modalMap = {
 		action: (value) => ({
 			type: 'NEW_RECORD_TIME',
 			slot: data.slot,
-			value: value
+			selection: value
+		})
+	}),
+	'NEW_RECORD_AMOUNT': (data) => ({
+		util: 'numberPad',
+		action: (value) => ({
+			type: 'NEW_RECORD_AMOUNT',
+			number: value
 		})
 	}),
 	'AMOUNT_FILTER': (data) => ({
 		util: 'numberPad',
 		action: (value) => ({
 			type: 'APPLY'+(data.type == 0? '_MIN': '_MAX')+'_FILTER',
-			amount: value
+			number: value
 		})
 	}),
 	'SELECTION': (data) => ({
@@ -48,6 +55,7 @@ const launchModal = (mission, data) => (dispatch) => {
 	})
 }
 export const launchSelection = data => launchModal('SELECTION', data)
+export const launchInputAmount = data => launchModal('NEW_RECORD_AMOUNT', data)
 export const launchTimeSelection = slot => launchModal('NEW_RECORD_TIME', {
 	slot: slot,
 	title: 'SELECT '+slot.toUpperCase(),

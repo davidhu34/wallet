@@ -1,3 +1,10 @@
+export const newRecordInit = {
+    year: 2017,
+    month: 'November',
+    date: 7,
+    amount: '0'
+}
+
 export const TIME_CONSTS = {
     slot: {
         year: ['2016', '2017', '2018'],
@@ -61,14 +68,12 @@ export const filterInit = {
             class: '2'
         }
     },
+    amount: { min: null, max: null},
+    time: { from: null, to: null },
     selected: {
-        time: { from: null, to: null },
-        amount: { min: null, max: null},
         category: []
     },
     selecting: {
-        time: { from: null, to: null },
-        amount: { min: null, max: null},
         category: []
     }
 }

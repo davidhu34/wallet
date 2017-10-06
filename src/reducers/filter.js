@@ -15,7 +15,7 @@ const selecting = ( state, action ) => {
             return state
     }
 }
-const selected = ( state, action ) => {
+const amount = ( state, action ) => {
     switch ( action.type ) {
         case 'APPLY_MIN_FILTER':
             return {
@@ -47,7 +47,7 @@ export const filter = ( state = filterInit, action ) => {
         case 'APPLY_MAX_FILTER':
             return {
                 ...state,
-                selected: selected(state.selected, action)
+                amount: amount(state.selected, action)
             }
         default:
             return state
