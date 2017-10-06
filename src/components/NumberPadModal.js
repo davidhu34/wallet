@@ -3,13 +3,8 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 
 import { clickNumberPad, popNumberPad, clearNumberPad } from '../actions'
+import { numberStyle } from '../styles'
 
-const numberStyle = {
-    textAlign: 'center',
-    padding: 'auto',
-    display:'inline-block',
-    width: String(100/3)+'%'
-}
 const NumberPadModal = ({
     resolve, number, title,
     clickNumber, popNumber, clearNumber
@@ -39,7 +34,7 @@ const NumberPadModal = ({
         </div>
         <br />
         <div onClick={ (e) => resolve(number) }>APPLY</div>
-        <div onClick={ (e) => resolve(number) }>CANCEL</div>
+        <div onClick={ (e) => resolve(-1) }>CANCEL</div>
     </div>
 }
 

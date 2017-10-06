@@ -25,7 +25,7 @@ const ContentPage = ({
             break;
         case 'HOME':
         default:
-            main = <div className="container" style={{ paddingTop: '500px'}}>
+            main = <div className="container">
                 <h4 onClick={(e) => { changeContent('RECORD_LIST') }}>
                     Record List
                 </h4>
@@ -37,7 +37,8 @@ const ContentPage = ({
     }
     return <div style={{
     	filter: modal?'brightness(300%) blur(10px)': '',
-        textAlign: 'center'
+        textAlign: 'center',
+        paddingTop: '500px'
     }}>
 		{main}
     </div>

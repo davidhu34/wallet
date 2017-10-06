@@ -1,11 +1,5 @@
-const uiInit = {
-    modal: false,
-    banner: {
-        expand: false,
-        title: 'Wallet'
-    },
-    content: 'HOME'
-};
+import { uiInit } from '../consts'
+
 const banner = ( state, action ) => {
     switch ( action.type ) {
         case 'TOGGLE_EXPAND_FILTERS':
@@ -13,16 +7,27 @@ const banner = ( state, action ) => {
                 ...state,
                 expand: !state.expand
             }
+        case 'LAUNCH_MODAL':
+            return {
+                ...state,
+                expand: false
+            }
         default:
             return state
     }
 }
 export const ui = ( state = uiInit, action ) => {
     switch ( action.type ) {
+        case 'TOGGLE_EXPAND_FILTERS':
+            return {
+                ...state,
+                banner: banner(state.banner, action)
+            }
         case 'LAUNCH_MODAL':
             return {
                 ...state,
-                modal: true
+                modal: true,
+                banner: banner(state.banner, action)
             }
         case 'CLOSE_MODAL':
             return {
@@ -33,11 +38,6 @@ export const ui = ( state = uiInit, action ) => {
             return {
                 ...state,
                 content: action.content
-            }
-        case 'TOGGLE_EXPAND_FILTERS':
-            return {
-                ...state,
-                banner: banner(state.banner, action)
             }
         default:
             return state

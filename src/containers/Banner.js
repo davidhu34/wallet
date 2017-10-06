@@ -8,57 +8,60 @@ import {
 	changeContent
 } from '../actions'
 
-const bannerStyle = {
-	width: '100%',
-	height: 300,
-	position: 'absolute',
-	top: 0,
-	left:0,
-	zIndex: 3,
-	textAlign: 'center',
-	backgroundImage: 'linear-gradient(0deg, transparent, white 80%)'
-	//WebkitTextFillColor: 'transparent',
-	//WebkitBackgroundClip: 'text'
-}
+import { bannerStyle, categoryStyle } from '../styles'
 
 const Banner = ({
-	expand, title, filter,
+	expand, title, filter, content,
 	categoryFilter, amountFilter, toggleExpandFilters, toHome
 }) => {
-	return <div style={bannerStyle}>
-		<h4 onClick={(e) => toHome()}>{title}</h4>
-		<div onClick={(e) => toggleExpandFilters()}>filters</div>
-		{expand?<table><tbody><tr>
-			<td><div><b>TIME</b>
-				<div onClick={(e) => {}}>from</div>
-				<div>{filter.selected.time.from || '--'}</div>
-				<div onClick={(e) => {}}>to</div>
-				<div>{filter.selected.time.to || '--'}</div>
-			</div></td>
-			<td><div><b>AMOUNT</b>
-				<div onClick={(e) => amountFilter(0)}>min</div>
-				<div>{filter.selected.amount.min || '--'}</div>
-				<div onClick={(e) => amountFilter(1)}>max</div>
-				<div>{filter.selected.amount.max || '--'}</div>
-			</div></td>
-			<td><div><b>CATEGORY</b>
-				{Object.keys(filter.class).map( k => {
-					let filterClass = filter.class[k]
-					return <div key={k}
-						onClick={ (e) => {
-							categoryFilter(filterClass)
-						}}>
-						{filterClass.name}
+	return <div style={{
+			...bannerStyle,
+			height: expand? 600:300
+		}}>
+		<h3 onClick={(e) => toHome()}>{title}</h3>
+		{content == 'RECORD_LIST'?
+			<h5 onClick={(e) => toggleExpandFilters()}>filters</h5>
+			: <span></span>
+		}
+		{expand && content == 'RECORD_LIST'?
+			<table style={{width: '100%'}}><tbody><tr>
+				<td style={categoryStyle}>
+					<div><b>TIME</b>
+						<div onClick={(e) => {}}>from</div>
+						<div>{filter.selected.time.from || '--'}</div>
+						<div onClick={(e) => {}}>to</div>
+						<div>{filter.selected.time.to || '--'}</div>
 					</div>
-				})}
-			</div></td>
-		</tr></tbody></table>:<span />}
+				</td>
+				<td style={categoryStyle}>
+					<div><b>AMOUNT</b>
+						<div onClick={(e) => amountFilter(0)}>min</div>
+						<div>{filter.selected.amount.min || '--'}</div>
+						<div onClick={(e) => amountFilter(1)}>max</div>
+						<div>{filter.selected.amount.max || '--'}</div>
+					</div>
+				</td>
+				<td style={categoryStyle}><div><b>CATEGORY</b>
+						{Object.keys(filter.class).map( k => {
+							let filterClass = filter.class[k]
+							return <div key={k}
+								onClick={ (e) => {
+									categoryFilter(filterClass)
+								}}>
+								{filterClass.name}
+							</div>
+						})}
+					</div>
+				</td>
+			</tr></tbody></table>
+			:<span />
+		}
 	</div>
 }
 
 export default connect(
 	({ ui, filter }) => ({
-		...ui.banner, filter
+		...ui.banner, filter, content: ui.content
 	}),
 	dispatch => ({
 		categoryFilter: (c) => dispatch(launchCategoryFilter({
