@@ -1,10 +1,14 @@
-export const Add = () => ({
-	type: 'ADD'
-})
-
-
+import { TIME_CONSTS } from '../consts' 
 
 const modalMap = {
+	'NEW_RECORD_TIME': (data) => ({
+		util: 'selection',
+		action: (value) => ({
+			type: 'NEW_RECORD_TIME',
+			slot: data.slot,
+			value: value
+		})
+	}),
 	'AMOUNT_FILTER': (data) => ({
 		util: 'numberPad',
 		action: (value) => ({
@@ -44,10 +48,18 @@ const launchModal = (mission, data) => (dispatch) => {
 	})
 }
 export const launchSelection = data => launchModal('SELECTION', data)
-export const launchFilter = data => launchModal('filter', data)
+export const launchTimeSelection = slot => launchModal('NEW_RECORD_TIME', {
+	slot: slot,
+	title: 'SELECT '+slot.toUpperCase(),
+	list: TIME_CONSTS.slot[slot],
+	size:TIME_CONSTS.size[slot]
+});
 export const launchAmountFilter = data => launchModal('AMOUNT_FILTER', data)
 export const launchCategoryFilter = data => launchModal('CATEGORY_FILTER', data)
 export const launchTimeFilter = data => launchModal('TIME_FILTER', data)
+
+
+
 export const toggleCategoryFilter = category => ({
 	type: 'TOGGLE_CATEGORY_FILTER', category
 })

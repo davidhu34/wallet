@@ -11,10 +11,8 @@ const SelectionModal = ({ selections, size, resolve, title }) => {
     }
 
     const options = lines.map( line =>
-        <div className="container">
-        <strong>{title}</strong>
-        <br />
-        { line.map( s =>
+        
+        line.map( s =>
             <div style={{
                     textAlign: 'center',
                     padding: 'auto',
@@ -26,12 +24,15 @@ const SelectionModal = ({ selections, size, resolve, title }) => {
                     resolve(s)
                 }}>
                 {s}
+                <br />
             </div>
-        )}
-        </div>
+        )
     )
-    return <div>
+    return <div className="container">
+        <strong>{title}</strong>
+        <br />
         {options}
+        <div onClick={ (e) => resolve(null)}>CANCEL</div>
     </div>
 }
 

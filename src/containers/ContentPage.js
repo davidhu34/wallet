@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import NewRecordPage from '../components/NewRecordPage'
 import RecordList from '../components/RecordList'
 import { filterRecords } from '../reducers/record'
 import { launchSelection, changeContent } from '../actions'
@@ -18,7 +19,7 @@ const ContentPage = ({
     let main
     switch(content) {
         case 'NEW_RECORD':
-            main = <div>{form}</div>
+            main = <NewRecordPage />
             break;
         case 'RECORD_LIST':
             main = <RecordList {...recordListProps} />

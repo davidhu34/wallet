@@ -10,6 +10,11 @@ export const newRecord = ( state = newRecordInit, action ) => {
 				...state,
 				[action.entry]: action.value
 			}
+		case 'NEW_RECORD_TIME':
+			return action.value? {
+				...state,
+				[action.slot]: action.value
+			} : state
 		default:
 			return state
 	}
