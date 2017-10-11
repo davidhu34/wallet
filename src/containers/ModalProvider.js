@@ -15,6 +15,7 @@ const ModalProvider = ({
     console.log(open);
     if (open) {
         switch (util) {
+            case 'text':
             case 'numberPad':
                 return <Modal>
                     <NumberPadModal resolve={resolve} title={data.title} />

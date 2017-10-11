@@ -1,10 +1,10 @@
 import moment from 'moment'
 
-import { initRecord } from '../consts'
+import { recordInit } from '../consts'
 
 let tempCount = 3
 
-export const record = (state = initRecord, action) => {
+export const record = (state = recordInit, action) => {
     switch (action.type) {
         default:
             return state

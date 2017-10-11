@@ -1,4 +1,4 @@
-    import { filterInit } from '../consts'
+import { filterInit } from '../consts'
 
 const selecting = ( state, action ) => {
     switch ( action.type ) {

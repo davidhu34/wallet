@@ -1,6 +1,29 @@
-import { TIME_CONSTS } from '../consts' 
+import { TIME_CONSTS, recordInit } from '../consts' 
 
-const modalMap = {
+const classData = recordInit.class
+
+const missionMap = {
+	'NEW_RECORD_DESC': (data) => ({
+		util: 'text',
+		action: (value) => ({
+			type: 'NEW_RECORD_DESC',
+			text: value
+		})
+	}),
+	'NEW_RECORD_CLASS': (data) => ({
+		util: 'selection',
+		action: (value) => ({
+			type: 'NEW_RECORD_CLASS',
+			selection: value.id
+		})
+	}),
+	'NEW_RECORD_CATEGORY': (data) => ({
+		util: 'selection',
+		action: (value) => ({
+			type: 'NEW_RECORD_CATEGORY',
+			selection: value.id
+		})
+	}),
 	'NEW_RECORD_TIME': (data) => ({
 		util: 'selection',
 		action: (value) => ({
@@ -16,16 +39,13 @@ const modalMap = {
 			number: value
 		})
 	}),
+
 	'AMOUNT_FILTER': (data) => ({
 		util: 'numberPad',
 		action: (value) => ({
 			type: 'APPLY'+(data.type == 0? '_MIN': '_MAX')+'_FILTER',
 			number: value
 		})
-	}),
-	'SELECTION': (data) => ({
-		util: 'selection',
-		action: (value) => ({ type: 'MODAL_SELECTION', value })
 	}),
 	'CATEGORY_FILTER': (data) => ({
 		util: 'category_filter',
@@ -40,7 +60,7 @@ const launchModal = (mission, data) => (dispatch) => {
 	console.log('launch modal', mission, data)
 	//dispatch({ type: 'LAUNCH_MODAL'})
 
-	const modalMission = modalMap[mission](data)
+	const modalMission = missionMap[mission](data)
 
 	const modalPromise = new Promise(
 		(resolve, reject) => dispatch({
@@ -54,14 +74,25 @@ const launchModal = (mission, data) => (dispatch) => {
 		dispatch({ type: 'CLOSE_MODAL' })
 	})
 }
-export const launchSelection = data => launchModal('SELECTION', data)
-export const launchInputAmount = data => launchModal('NEW_RECORD_AMOUNT', data)
+
 export const launchTimeSelection = slot => launchModal('NEW_RECORD_TIME', {
 	slot: slot,
 	title: 'SELECT '+slot.toUpperCase(),
 	list: TIME_CONSTS.slot[slot],
 	size:TIME_CONSTS.size[slot]
-});
+})
+export const launchClassSelection = data => launchModal('NEW_RECORD_CLASS', {
+	title: 'SELECT RECORD CLASS',
+	list: data.classList,
+	size: 1
+})
+export const launchCategorySelection = data => launchModal('NEW_RECORD_CATEGORY', {
+	title: 'SELECT RECORD CATEGORY',
+	list: data.categoryList,
+	size: 1
+})
+export const launchInputAmount = data => launchModal('NEW_RECORD_AMOUNT', data)
+export const launchInputDesc = data => launchInputDesc('NEW_RECORD_DESC', data)
 export const launchAmountFilter = data => launchModal('AMOUNT_FILTER', data)
 export const launchCategoryFilter = data => launchModal('CATEGORY_FILTER', data)
 export const launchTimeFilter = data => launchModal('TIME_FILTER', data)

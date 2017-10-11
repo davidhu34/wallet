@@ -1,10 +1,3 @@
-export const newRecordInit = {
-    year: 2017,
-    month: 'November',
-    date: 7,
-    amount: '0'
-}
-
 export const TIME_CONSTS = {
     slot: {
         year: ['2016', '2017', '2018'],
@@ -18,8 +11,38 @@ export const TIME_CONSTS = {
     }
 }
 
+export const newRecordInit = {
+    year: 2017,
+    month: 'November',
+    date: 7,
+    amount: '0',
+    desc: '',
+    classId: '',
+    categoryId: '',
+}
+
 export const filterInit = {
-    class: {
+    amount: { min: null, max: null},
+    time: { from: null, to: null },
+    selected: {
+        category: []
+    },
+    selecting: {
+        category: []
+    }
+}
+
+export const uiInit = {
+    modal: false,
+    banner: {
+        expand: false,
+        title: 'Wallet'
+    },
+    content: 'HOME'
+}
+
+export const recordInit = {
+    classes: {
         '1': {
             id: '1',
             name: 'food',
@@ -31,7 +54,7 @@ export const filterInit = {
             category: ['5' ,'6', '7']
         }
     },
-    category: {
+    categories: {
         '1': {
             id: '1',
             name: 'breakfast',
@@ -68,26 +91,6 @@ export const filterInit = {
             class: '2'
         }
     },
-    amount: { min: null, max: null},
-    time: { from: null, to: null },
-    selected: {
-        category: []
-    },
-    selecting: {
-        category: []
-    }
-}
-
-export const uiInit = {
-    modal: false,
-    banner: {
-        expand: false,
-        title: 'Wallet'
-    },
-    content: 'HOME'
-}
-
-export const initRecord = {
     records: {
         '1': {
             id: '1',

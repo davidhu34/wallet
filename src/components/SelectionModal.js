@@ -23,7 +23,7 @@ const SelectionModal = ({ selections, size, resolve, title }) => {
                     console.log(s)
                     resolve(s)
                 }}>
-                {s}
+                {s.data || s}
                 <br />
             </div>
         )

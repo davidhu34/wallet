@@ -12,6 +12,16 @@ export const newRecord = ( state = newRecordInit, action ) => {
 				...state,
 				[action.slot]: action.selection
 			} : state
+		case 'NEW_RECORD_CLASS':
+			return action.selection? {
+				...state,
+				classId: action.selection
+			} : state
+		case 'NEW_RECORD_CATEGORY':
+			return action.selection? {
+				...state,
+				categoryId: action.selection
+			} : state
 		case 'NEW_RECORD_AMOUNT':
 			return action.number > -1? {
 				...state,
