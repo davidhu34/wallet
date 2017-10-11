@@ -31,7 +31,7 @@ const ModalProvider = ({
                 return <Modal>
                     <CategoryFilterModal resolve={resolve}
                         title={data.title}
-                        filterClass={data.class} />
+                        categoryList={data.categoryList} />
                 </Modal>
             default:
                 return <span />

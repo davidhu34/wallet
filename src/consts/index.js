@@ -24,11 +24,9 @@ export const newRecordInit = {
 export const filterInit = {
     amount: { min: null, max: null},
     time: { from: null, to: null },
-    selected: {
-        category: []
-    },
+    categories: [],
     selecting: {
-        category: []
+        categories: []
     }
 }
 
@@ -164,5 +162,6 @@ export const recordInit = {
             exchange: 1200,
             note: 'bus home'
         }
-    }
+    },
+    visibleRecords: ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 }

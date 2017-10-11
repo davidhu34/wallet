@@ -98,6 +98,9 @@ export const launchCategoryFilter = data => launchModal('CATEGORY_FILTER', data)
 export const launchTimeFilter = data => launchModal('TIME_FILTER', data)
 
 
+export const createRecord = record => ({
+	type: 'CREATE_RECORD', record
+})
 
 export const toggleCategoryFilter = category => ({
 	type: 'TOGGLE_CATEGORY_FILTER', category

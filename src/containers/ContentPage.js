@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import NewRecordPage from '../components/NewRecordPage'
 import RecordList from '../components/RecordList'
 import { filterRecords } from '../reducers/record'
+import { recordFilters } from '../reducers/filter'
 import { launchSelection, changeContent } from '../actions'
 
 const ContentPage = ({
@@ -17,7 +18,7 @@ const ContentPage = ({
         </div>
     })
     let main
-    switch(content) {
+    switch (content) {
         case 'NEW_RECORD':
             main = <NewRecordPage />
             break;
@@ -51,14 +52,7 @@ export default connect(
         newRecord: newRecord,
         modal: ui.modal,
         content: ui.content,
-        records: filterRecords(
-            {
-                categories: filter.selected.category,
-                max: filter.amount.max,
-                min: filter.amount.min
-            },
-            Object.keys(record.records).map( r => record.records[r])
-        )
+        records: filterRecords(recordFilters(filter), record.records)
     }),
     dispatch => ({
         launchSelection: (k) => dispatch( launchSelection(k) ),

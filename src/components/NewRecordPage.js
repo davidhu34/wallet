@@ -7,12 +7,17 @@ import {
     launchInputAmount,
     launchClassSelection,
     launchCategorySelection,
-    launchInputDesc
+    launchInputDesc,
+    createRecord,
+    changeContent
 } from '../actions'
+import { classSelections, categorySelections } from '../reducers/record'
+
 
 const NewRecordPage = ({
 	newRecord, classes, categories,
-	selectYear, selectMonth, selectDate, selectClass, selectCategory, inputAmount, inputDesc
+	selectYear, selectMonth, selectDate, selectClass, selectCategory,
+    inputAmount, inputDesc, createRecord, back
 }) => {
 	const { year, month, date, amount, desc, classId, categoryId } = newRecord
     const nrClass = classId? classes[classId].name: '--'
@@ -46,6 +51,8 @@ const NewRecordPage = ({
             <div>{ nrCateory }</div>
         </div>
         <br />
+        <div onClick={ (e) => createRecord(newRecord) }>CREATE</div>
+        <div onClick={ (e) => back() }>CANCEL</div>
 
     </div>
 
@@ -62,22 +69,14 @@ export default connect(
 		selectMonth: () => dispatch(launchTimeSelection('month')),
 		selectDate: () => dispatch(launchTimeSelection('date')),
         selectClass: (classes) => dispatch(launchClassSelection({
-            classList: Object.keys(classes)
-                .map( c => ({
-                    id: c,
-                    data: classes[c].name
-                }))
+            classList: classSelections(classes)
         })),
         selectCategory: (categories, classId) => dispatch(launchCategorySelection({
-            categoryList: Object.keys(categories)
-                .filter( c => categories[c].class == classId )
-                .map( c => ({
-                    id: c,
-                    data: categories[c].name
-                }))
-                
+            categoryList: categorySelections(categories, classId)
         })),
         inputDesc: () => dispatch(launchInputDesc({ title: 'INPUT DESCRIPTION' })),
-		inputAmount: () => dispatch(launchInputAmount({ title: 'INPUT AMOUNT'}))
+		inputAmount: () => dispatch(launchInputAmount({ title: 'INPUT AMOUNT'})),
+        createRecord: (record) => dispatch(createRecord(record)),
+        back: () => dispatch(changeContent('HOME'))
 	})
 )(NewRecordPage)

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import { classList, classCategories } from '../reducers/record'
 import {
 	toggleExpandFilters,
 	launchCategoryFilter,
@@ -11,7 +12,7 @@ import {
 import { bannerStyle, categoryStyle } from '../styles'
 
 const Banner = ({
-	expand, title, filter, content,
+	expand, title, content, filter, classList, classCategories,
 	categoryFilter, amountFilter, toggleExpandFilters, toHome
 }) => {
 	const expansion = expand && content == 'RECORD_LIST'?
@@ -32,14 +33,14 @@ const Banner = ({
 					<div>{filter.amount.max || '--'}</div>
 				</div>
 			</td>
-			<td style={categoryStyle}><div><b>CATEGORY</b>
-					{Object.keys(filter.class).map( k => {
-						let filterClass = filter.class[k]
-						return <div key={k}
-							onClick={ (e) => {
-								categoryFilter(filterClass)
-							}}>
-							{filterClass.name}
+			<td style={categoryStyle}>
+				<div><b>CATEGORY</b>
+					{classList.map( c => {
+						return <div key={c.id}
+							onClick={ (e) =>
+								categoryFilter(c.name, classCategories[c.id])
+							}>
+							{c.name}
 						</div>
 					})}
 				</div>
@@ -61,12 +62,17 @@ const Banner = ({
 }
 
 export default connect(
-	({ ui, filter }) => ({
-		...ui.banner, filter, content: ui.content
+	({ ui, filter, record }) => ({
+		...ui.banner,
+		content: ui.content,
+		classList: classList(record.classes),
+		classCategories: classCategories(record),
+		filter
 	}),
 	dispatch => ({
-		categoryFilter: (c) => dispatch(launchCategoryFilter({
-			class: c.id, title: 'filter '+c.name+' category' 
+		categoryFilter: (className, categoryList) => dispatch(launchCategoryFilter({
+			categoryList: categoryList,
+			title: 'filter '+className+' category' 
 		})),
 		amountFilter: (type) => dispatch(launchAmountFilter({
 			title: type == 0? 'MIN AMOUNT': 'MAX AMOUNT',

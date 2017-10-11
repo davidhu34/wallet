@@ -5,22 +5,20 @@ import moment from 'moment'
 import { toggleCategoryFilter } from '../actions'
 
 const CategoryFilterModal = ({
-    resolve, filterClass, title,
-    filter,
+    resolve, title, categoryList,
+    selecting,
     toggleFilter
 }) => {
 
-    const filters = filter.class[filterClass]
-        .category.map( (c, idx) => {
-            const categoryName = filter.category[c].name
+    const filters = categoryList.map( (c, idx) => {
+            const categoryName = c.name
             return <div style={{
                     display: 'inline-block'
                 }}
-                onClick={(e) => toggleFilter(c)} >
-                { filter.selecting['category']
-                    .indexOf(c) > -1?
-                        <b>{categoryName}</b>
-                        : <span>{categoryName}</span>
+                onClick={(e) => toggleFilter(c.id)} >
+                { selecting.indexOf(c.id) > -1?
+                    <b>{c.name}</b>
+                    : <span>{c.name}</span>
                 }
             </div>
         })
@@ -36,7 +34,9 @@ const CategoryFilterModal = ({
 }
 
 export default connect(
-    state => ({filter: state.filter}),
+    ({ filter }) => ({
+        selecting: filter.selecting.categories
+    }),
     dispatch => ({
         toggleFilter: (category) => dispatch(toggleCategoryFilter(category))
     })

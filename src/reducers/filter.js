@@ -4,10 +4,10 @@ const selecting = ( state, action ) => {
     switch ( action.type ) {
         case 'TOGGLE_CATEGORY_FILTER':
             const { category } = action
-            const prevCats = state.category
+            const prevCats = state.categories
             return {
                 ...state,
-                category: prevCats.indexOf(category) > -1?
+                categories: prevCats.indexOf(category) > -1?
                     prevCats.filter( c => c != category)
                     : [...prevCats, category]
             }
@@ -41,15 +41,21 @@ export const filter = ( state = filterInit, action ) => {
         case 'APPLY_CATEGORY_FILTER':
             return {
                 ...state,
-                selected: state.selecting
+                categories: state.selecting.categories
             }
         case 'APPLY_MIN_FILTER':
         case 'APPLY_MAX_FILTER':
             return {
                 ...state,
-                amount: amount(state.selected, action)
+                amount: amount(state.amount, action)
             }
         default:
             return state
     }
 }
+
+export const recordFilters = ({ time, amount, categories }) => ({
+    from: time.from, to: time.to,
+    max: amount.max, min: amount.min,
+    categories: categories
+})
