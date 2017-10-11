@@ -52,7 +52,7 @@ export default connect(
         newRecord: newRecord,
         modal: ui.modal,
         content: ui.content,
-        records: filterRecords(recordFilters(filter), record.records)
+        records: filterRecords(recordFilters(filter), record)
     }),
     dispatch => ({
         launchSelection: (k) => dispatch( launchSelection(k) ),

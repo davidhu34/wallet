@@ -13,24 +13,26 @@ export const record = (state = recordInit, action) => {
     }
 }
 
-export const filterRecords = (filters, records) => {
+export const filterRecords = (filters, record) => {
     console.log(filters)
     const { min, max, from, to, categories } = filters
+    const { records } = record
     const recordList = Object.keys(records).map( r => records[r] )
 
     const steps = []
-    if ( !isNaN(min) ) steps.push( (r) => r.exchange < min )
-    if ( !isNaN(max) ) steps.push( (r) => r.exchange > max )
+    if (min) steps.push( (r) => r.exchange < min )
+    if (max) steps.push( (r) => r.exchange > max )
     if ( categories.length > 0 )
         steps.push( (r) => categories.indexOf(r.category) == -1 )
     
-    return (!min || !max || !categories)? recordList
-        : recordList.filter( r => {
+    return steps.length > 0?
+        recordList.filter( r => {
             for (let i = 0; i < steps.length; i++)
-                if (steps[i]) return false
+                if (steps[i](r)) return false
             return true
-        })
+        }) : recordList
 }
+
 export const classList = classes => Object.keys(classes).map( c => classes[c] )
 export const categoryList = categories => categories.map( c => categories[c] )
 export const classCategories = record => {
