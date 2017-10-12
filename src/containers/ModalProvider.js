@@ -6,6 +6,7 @@ import RecordList from '../components/RecordList'
 import SelectionModal from '../components/SelectionModal'
 import CategoryFilterModal from '../components/CategoryFilterModal'
 import NumberPadModal from '../components/NumberPadModal'
+import TextInputModal from '../components/TextInputModal'
 import Modal from '../components/Modal'
 import { launchModal } from '../actions'
 
@@ -16,6 +17,11 @@ const ModalProvider = ({
     if (open) {
         switch (util) {
             case 'text':
+                return <Modal>
+                    <TextInputModal resolve={resolve}
+                        title={data.title}
+                        text={data.text}/>
+                </Modal>
             case 'numberPad':
                 return <Modal>
                     <NumberPadModal resolve={resolve} title={data.title} />

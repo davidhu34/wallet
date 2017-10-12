@@ -7,7 +7,7 @@ import {
     launchInputAmount,
     launchClassSelection,
     launchCategorySelection,
-    launchInputDesc,
+    launchInputNote,
     createRecord,
     changeContent
 } from '../actions'
@@ -17,9 +17,9 @@ import { classSelections, categorySelections } from '../reducers/record'
 const NewRecordPage = ({
 	newRecord, classes, categories,
 	selectYear, selectMonth, selectDate, selectClass, selectCategory,
-    inputAmount, inputDesc, createRecord, back
+    inputAmount, inputNote, createRecord, back
 }) => {
-	const { year, month, date, amount, desc, classId, categoryId } = newRecord
+	const { year, month, date, amount, note, classId, categoryId } = newRecord
     const nrClass = classId? classes[classId].name: '--'
     const nrCateory = categoryId? categories[categoryId].name: '--'
     
@@ -31,9 +31,9 @@ const NewRecordPage = ({
             <div onClick={ (e) => selectDate() }>{date}</div>
         </div>
         <br />
-        <div onClick={ (e) => inputDesc() }>
-        	<b>DESCRIPTION</b>
-        	<div>{desc}</div>
+        <div onClick={ (e) => inputNote() }>
+        	<b>NOTE</b>
+        	<div>{note}</div>
         </div>
         <br />
         <div onClick={ (e) => inputAmount() }>
@@ -74,7 +74,7 @@ export default connect(
         selectCategory: (categories, classId) => dispatch(launchCategorySelection({
             categoryList: categorySelections(categories, classId)
         })),
-        inputDesc: () => dispatch(launchInputDesc({ title: 'INPUT DESCRIPTION' })),
+        inputNote: () => dispatch(launchInputNote({ title: 'INPUT NOTE' })),
 		inputAmount: () => dispatch(launchInputAmount({ title: 'INPUT AMOUNT'})),
         createRecord: (record) => dispatch(createRecord(record)),
         back: () => dispatch(changeContent('HOME'))

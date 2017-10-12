@@ -3,10 +3,10 @@ import { TIME_CONSTS, recordInit } from '../consts'
 const classData = recordInit.class
 
 const missionMap = {
-	'NEW_RECORD_DESC': (data) => ({
+	'NEW_RECORD_NOTE': (data) => ({
 		util: 'text',
 		action: (value) => ({
-			type: 'NEW_RECORD_DESC',
+			type: 'NEW_RECORD_NOTE',
 			text: value
 		})
 	}),
@@ -92,7 +92,7 @@ export const launchCategorySelection = data => launchModal('NEW_RECORD_CATEGORY'
 	size: 1
 })
 export const launchInputAmount = data => launchModal('NEW_RECORD_AMOUNT', data)
-export const launchInputDesc = data => launchInputDesc('NEW_RECORD_DESC', data)
+export const launchInputNote = data => launchModal('NEW_RECORD_NOTE', data)
 export const launchAmountFilter = data => launchModal('AMOUNT_FILTER', data)
 export const launchCategoryFilter = data => launchModal('CATEGORY_FILTER', data)
 export const launchTimeFilter = data => launchModal('TIME_FILTER', data)

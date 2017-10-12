@@ -22,3 +22,19 @@ export const numberStyle = {
     display:'inline-block',
     width: String(100/3)+'%'
 }
+
+export const textInputStyle = {
+	width: '80%',
+	fontSize: 80,
+	overflow: 'hidden',
+	height: 'auto',
+	resize: 'none',
+	border: 'none',
+	outline: 'none',
+	textAlignLast: 'justify',
+	verticalAlign: 'bottom',
+	borderBottom: '5px solid black',
+	maxlength: 40,
+	cols: 80,
+	rows: 1
+}
