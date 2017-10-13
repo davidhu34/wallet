@@ -27,6 +27,11 @@ export const newRecord = ( state = newRecordInit, action ) => {
 				...state,
 				amount: action.number
 			} : state
+		case 'NEW_RECORD_NOTE':
+			return action.text? {
+				...state,
+				note: action.text
+			} : state
 		default:
 			return state
 	}

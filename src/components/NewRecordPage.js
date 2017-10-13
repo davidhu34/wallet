@@ -75,7 +75,7 @@ export default connect(
             categoryList: categorySelections(categories, classId)
         })),
         inputNote: () => dispatch(launchInputNote({ title: 'INPUT NOTE' })),
-		inputAmount: () => dispatch(launchInputAmount({ title: 'INPUT AMOUNT'})),
+		inputAmount: () => dispatch(launchInputAmount({ title: 'INPUT AMOUNT' })),
         createRecord: (record) => dispatch(createRecord(record)),
         back: () => dispatch(changeContent('HOME'))
 	})
