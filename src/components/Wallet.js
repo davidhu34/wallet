@@ -10,8 +10,8 @@ import { launchSelection } from '../actions'
 const Wallet = () => {
 
     return <div className="Wallet">
-        <Banner />
         <ModalProvider />
+        <Banner />
         <ContentPage />
     </div>
 }

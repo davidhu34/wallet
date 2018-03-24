@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-import moment from 'moment'
-import { closeModal } from '../actions'
+import { selectionStyle } from '../styles'
 
 const SelectionModal = ({ selections, size, resolve, title }) => {
     let sels = selections
@@ -11,18 +9,13 @@ const SelectionModal = ({ selections, size, resolve, title }) => {
     }
 
     const options = lines.map( line =>
-        
+
         line.map( s =>
             <div style={{
-                    textAlign: 'center',
-                    padding: 'auto',
-                    display:'inline-block',
+                    ...selectionStyle,
                     width: String(100/size)+'%'
                 }}
-                onClick={ (e) => {
-                    console.log(s)
-                    resolve(s)
-                }}>
+                onClick={ (e) => resolve(s) }>
                 {s.data || s}
                 <br />
             </div>

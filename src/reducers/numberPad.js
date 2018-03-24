@@ -12,6 +12,10 @@ export const numberPad = ( state = numberPadInit, action ) => {
 				number: state.number.length == 1?
 					'0': state.number.substr(0, state.number.length-1)
 			}
+		case 'LAUNCH_MODAL':
+			return action.modalType == 'numberPad'? {
+				number: action.data.number || '0'
+			} : state
 		case 'CLEAR_NUMBER_PAD':
 			return numberPadInit
 		case 'CLOSE_MODAL':

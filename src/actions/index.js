@@ -1,76 +1,108 @@
-import { TIME_CONSTS, recordInit } from '../consts' 
+import { TIME_CONSTS, recordInit } from '../consts'
 
 const classData = recordInit.class
 
-const missionMap = {
+const missionDirectivesPrep = {
 	'NEW_RECORD_NOTE': (data) => ({
-		util: 'text',
-		action: (value) => ({
+		modalType: 'text',
+		preClose: (value) => ({
 			type: 'NEW_RECORD_NOTE',
 			text: value
 		})
 	}),
 	'NEW_RECORD_CLASS': (data) => ({
-		util: 'selection',
-		action: (value) => ({
+		modalType: 'selection',
+		preClose: (value) => ({
 			type: 'NEW_RECORD_CLASS',
-			selection: value.id
+			selection: value.id || ''
 		})
 	}),
 	'NEW_RECORD_CATEGORY': (data) => ({
-		util: 'selection',
-		action: (value) => ({
+		modalType: 'selection',
+		preClose: (value) => ({
 			type: 'NEW_RECORD_CATEGORY',
-			selection: value.id
+			selection: value.id || ''
 		})
 	}),
 	'NEW_RECORD_TIME': (data) => ({
-		util: 'selection',
-		action: (value) => ({
+		modalType: 'selection',
+		preClose: (value) => ({
 			type: 'NEW_RECORD_TIME',
 			slot: data.slot,
 			selection: value
 		})
 	}),
 	'NEW_RECORD_AMOUNT': (data) => ({
-		util: 'numberPad',
-		action: (value) => ({
+		modalType: 'numberPad',
+		preClose: (value) => ({
 			type: 'NEW_RECORD_AMOUNT',
 			number: value
 		})
 	}),
 
 	'AMOUNT_FILTER': (data) => ({
-		util: 'numberPad',
-		action: (value) => ({
+		modalType: 'numberPad',
+		preClose: (value) => ({
 			type: 'APPLY'+(data.type == 0? '_MIN': '_MAX')+'_FILTER',
 			number: value
 		})
 	}),
 	'CATEGORY_FILTER': (data) => ({
-		util: 'category_filter',
-		action: (value) => ({ type: 'APPLY_CATEGORY_FILTER' })
+		modalType: 'category_filter',
+		preClose: (value) => ({ type: 'APPLY_CATEGORY_FILTER' })
 	}),
 	'TIME_FILTER': (data) => ({
-		util: 'time_filter',
-		action: (value) => ({ type: 'APPLY_TIME_FILTER' })
+		modalType: 'time_filter',
+		preClose: (value) => ({ type: 'APPLY_TIME_FILTER' })
+	}),
+	'NEW_RECORD_DATEPICKER': (data) => ({
+		modalType: 'datepicker',
+		preClose: (value) => ({ type: 'NEW_RECORD_DATEPICKER', time: value })
 	})
 }
-const launchModal = (mission, data) => (dispatch) => {
+const modalDirectivesPrep = {
+	'datepicker': (data) => ({
+		preLaunch: () => ({
+			type: 'MODAL_INIT_DATEPICKER',
+			viewTime:data.viewTime,
+			focusTimes: data.focusTimes
+		})
+	}),
+	'numberPad': (data) => ({
+		preLaunch: () => ({
+			type: 'MODAL_INIT_NUMBER_PAD',
+			number: data.number
+		})
+	})
+}
+const getDirectives = (mission, data) => {
+	const missionDirectives = missionDirectivesPrep[mission](data)
+	return {
+		...missionDirectives,
+		...modalDirectivesPrep[missionDirectives.modalType](data)
+	}
+
+}
+const launchModal = (mission, inputData) => (dispatch) => {
+	const data = {...inputData};
 	console.log('launch modal', mission, data)
-	//dispatch({ type: 'LAUNCH_MODAL'})
 
-	const modalMission = missionMap[mission](data)
+	const directives = missionDirectivesPrep[mission](data)//getDirectives(mission, data)
 
+	if (directives.preLaunch) {
+		dispatch(directives.preLaunch())
+	}
 	const modalPromise = new Promise(
 		(resolve, reject) => dispatch({
 			 type: 'LAUNCH_MODAL',
-			 util: modalMission.util,
+			 modalType: directives.modalType,
 			 resolve, reject, data
  		})
 	)
 	modalPromise.then( value => {
-		dispatch(modalMission.action(value))
+		if (directives.preClose) {
+			dispatch(directives.preClose(value))
+		}
 		dispatch({ type: 'CLOSE_MODAL' })
 	})
 }
@@ -91,12 +123,22 @@ export const launchCategorySelection = data => launchModal('NEW_RECORD_CATEGORY'
 	list: data.categoryList,
 	size: 1
 })
+export const launchDatepickerSelection = data => launchModal('NEW_RECORD_DATEPICKER', data)
 export const launchInputAmount = data => launchModal('NEW_RECORD_AMOUNT', data)
 export const launchInputNote = data => launchModal('NEW_RECORD_NOTE', data)
-export const launchAmountFilter = data => launchModal('AMOUNT_FILTER', data)
+
+export const launchMaxAmountFilter = data => launchModal('AMOUNT_FILTER', {
+	title:'MAX AMOUNT',
+	type: 1,
+	number: data.number
+})
+export const launchMinAmountFilter = data => launchModal('AMOUNT_FILTER', {
+	title:'MIN AMOUNT',
+	type: 0,
+	number: data.number
+})
 export const launchCategoryFilter = data => launchModal('CATEGORY_FILTER', data)
 export const launchTimeFilter = data => launchModal('TIME_FILTER', data)
-
 
 export const createRecord = record => ({
 	type: 'CREATE_RECORD', record
@@ -126,4 +168,17 @@ export const clearNumberPad = () => ({
 
 export const changeContent = content => ({
 	type: 'CHANGE_CONTENT', content
+})
+
+export const nextMonth = () => ({
+	type: 'NEXT_MONTH'
+})
+
+export const prevMonth = () => ({
+	type: 'PREV_MONTH'
+})
+
+export const selectDate = (time, limit) => ({
+	type: 'SELECT_DATE',
+	time, limit
 })

@@ -5,11 +5,11 @@ import NewRecordPage from '../components/NewRecordPage'
 import RecordList from '../components/RecordList'
 import { filterRecords } from '../reducers/record'
 import { recordFilters } from '../reducers/filter'
-import { launchSelection, changeContent } from '../actions'
+import { launchSelection, changeContent, launchDatepicker } from '../actions'
 
 const ContentPage = ({
     records, modal, content, newRecord,
-    launchSelection, changeContent
+    launchSelection, changeContent, launchDatepicker
 }) => {
     const recordListProps = { records }
     const form = Object.keys(newRecord).map(k => {
@@ -55,6 +55,7 @@ export default connect(
         records: filterRecords(recordFilters(filter), record)
     }),
     dispatch => ({
+        launchDatepicker: (data) => dispatch( launchDatepicker(data) ),
         launchSelection: (k) => dispatch( launchSelection(k) ),
         changeContent: (content) => dispatch( changeContent(content))
     })

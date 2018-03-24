@@ -1,8 +1,23 @@
+export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Auguest', 'September', 'October', 'November', 'December']
+const monthIndex = {
+    'January': 0,
+    'February': 1,
+    'March': 2,
+    'April': 3,
+    'May': 4,
+    'June': 5,
+    'July': 6,
+    'Auguest': 7,
+    'September': 8,
+    'October': 9,
+    'November': 10,
+    'December': 11
+}
 export const TIME_CONSTS = {
     slot: {
         year: ['2016', '2017', '2018'],
-        month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Auguest', 'September', 'October', 'November', 'December'],
-        date: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']     
+        month: monthNames,
+        date: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']
     },
     size: {
         year: 1,
@@ -11,14 +26,18 @@ export const TIME_CONSTS = {
     }
 }
 
-export const newRecordInit = {
-    year: 2017,
-    month: 'November',
-    date: 7,
-    amount: '0',
-    desc: '',
-    classId: '',
-    categoryId: '',
+export const newRecordInit = () => {
+    const now = new Date()
+    return {
+        time: now.getTime(),
+        year: now.getFullYear(),
+        month: now.getMonth(),
+        date: now.getDate(),
+        amount: '0',
+        desc: '',
+        classId: '',
+        categoryId: '',
+    }
 }
 
 export const filterInit = {

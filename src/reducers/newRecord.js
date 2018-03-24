@@ -1,6 +1,6 @@
 import { newRecordInit } from '../consts'
 
-export const newRecord = ( state = newRecordInit, action ) => {
+export const newRecord = ( state = newRecordInit(), action ) => {
 	switch ( action.type ) {
 		case 'MODAL_SELECTION':
 			return {
@@ -31,6 +31,11 @@ export const newRecord = ( state = newRecordInit, action ) => {
 			return action.text? {
 				...state,
 				note: action.text
+			} : state
+		case 'NEW_RECORD_DATEPICKER':
+			return action.time? {
+				...state,
+				time: action.time
 			} : state
 		default:
 			return state

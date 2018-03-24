@@ -7,15 +7,16 @@ import SelectionModal from '../components/SelectionModal'
 import CategoryFilterModal from '../components/CategoryFilterModal'
 import NumberPadModal from '../components/NumberPadModal'
 import TextInputModal from '../components/TextInputModal'
+import DatepickerModal from '../components/DatepickerModal'
 import Modal from '../components/Modal'
 import { launchModal } from '../actions'
 
 const ModalProvider = ({
-    open, util, data, resolve
+    open, modalType, data, resolve
 }) => {
     console.log(open);
     if (open) {
-        switch (util) {
+        switch (modalType) {
             case 'text':
                 return <Modal>
                     <TextInputModal resolve={resolve}
@@ -24,7 +25,8 @@ const ModalProvider = ({
                 </Modal>
             case 'numberPad':
                 return <Modal>
-                    <NumberPadModal resolve={resolve} title={data.title} />
+                    <NumberPadModal resolve={resolve}
+                        title={data.title} />
                 </Modal>
             case 'selection':
                 return <Modal>
@@ -38,6 +40,12 @@ const ModalProvider = ({
                     <CategoryFilterModal resolve={resolve}
                         title={data.title}
                         categoryList={data.categoryList} />
+                </Modal>
+            case 'datepicker':
+                return <Modal>
+                    <DatepickerModal resolve={resolve}
+                        limit={data.limit}
+                        title={data.title} />
                 </Modal>
             default:
                 return <span />

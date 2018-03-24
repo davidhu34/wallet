@@ -38,3 +38,9 @@ export const textInputStyle = {
 	cols: 80,
 	rows: 1
 }
+
+export const selectionStyle = {
+		textAlign: 'center',
+		padding: 'auto',
+		display:'inline-block'
+};
