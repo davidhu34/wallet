@@ -31,8 +31,30 @@ const amount = ( state, action ) => {
             return state
     }
 }
+const time = ( state, action ) => {
+    switch ( action.type ) {
+        case 'APPLY_FROM_TIME_FILTER':
+            return {
+                ...state,
+                from: action.time || null
+            }
+        case 'APPLY_TO_TIME_FILTER':
+            return {
+                ...state,
+                to: action.time || null
+            }
+        default:
+            return state
+    }
+}
 export const filter = ( state = filterInit, action ) => {
     switch ( action.type ) {
+        case 'APPLY_FROM_TIME_FILTER':
+        case 'APPLY_TO_TIME_FILTER':
+            return {
+                ...state,
+                time: time(state.time, action)
+            }
         case 'TOGGLE_CATEGORY_FILTER':
             return {
                 ...state,

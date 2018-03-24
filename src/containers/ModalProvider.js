@@ -21,7 +21,7 @@ const ModalProvider = ({
                 return <Modal>
                     <TextInputModal resolve={resolve}
                         title={data.title}
-                        text={data.text}/>
+                        defaultText={data.text}/>
                 </Modal>
             case 'numberPad':
                 return <Modal>

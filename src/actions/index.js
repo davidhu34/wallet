@@ -51,9 +51,13 @@ const missionDirectivesPrep = {
 		modalType: 'category_filter',
 		preClose: (value) => ({ type: 'APPLY_CATEGORY_FILTER' })
 	}),
-	'TIME_FILTER': (data) => ({
-		modalType: 'time_filter',
-		preClose: (value) => ({ type: 'APPLY_TIME_FILTER' })
+	'FROM_TIME_FILTER': (data) => ({
+		modalType: 'datepicker',
+		preClose: (value) => ({ type: 'APPLY_FROM_TIME_FILTER', time: value })
+	}),
+	'TO_TIME_FILTER': (data) => ({
+		modalType: 'datepicker',
+		preClose: (value) => ({ type: 'APPLY_TO_TIME_FILTER', time: value })
 	}),
 	'NEW_RECORD_DATEPICKER': (data) => ({
 		modalType: 'datepicker',
@@ -138,7 +142,8 @@ export const launchMinAmountFilter = data => launchModal('AMOUNT_FILTER', {
 	number: data.number
 })
 export const launchCategoryFilter = data => launchModal('CATEGORY_FILTER', data)
-export const launchTimeFilter = data => launchModal('TIME_FILTER', data)
+export const launchFromTimeFilter = data => launchModal('FROM_TIME_FILTER', data)
+export const launchToTimeFilter = data => launchModal('TO_TIME_FILTER', data)
 
 export const createRecord = record => ({
 	type: 'CREATE_RECORD', record

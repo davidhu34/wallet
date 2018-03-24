@@ -5,7 +5,7 @@ import moment from 'moment'
 import { textInputStyle } from '../styles'
 
 const TextInputModal = ({
-	resolve, title
+	resolve, title, defaultText
 }) => {
 	let input
 	return <div>
@@ -20,11 +20,12 @@ const TextInputModal = ({
 					console.log(input.value)
 				}
 			}}>
+			{defaultText}
 		</textarea>
 		</div>
 		<br />
 		<div onClick={ (e) => resolve(input.value) }>APPLY</div>
-		<div onClick={ (e) => resolve(-1) }>CANCEL</div>
+		<div onClick={ (e) => resolve('') }>CANCEL</div>
 	</div>
 }
 

@@ -37,7 +37,7 @@ const NewRecordPage = ({
 
         </div>
         <br />
-        <div onClick={ (e) => inputNote() }>
+        <div onClick={ (e) => inputNote(note) }>
         	<b>NOTE</b>
         	<div>{note}</div>
         </div>
@@ -83,7 +83,7 @@ export default connect(
         selectCategory: (categories, classId) => dispatch(launchCategorySelection({
             categoryList: categorySelections(categories, classId)
         })),
-        inputNote: () => dispatch(launchInputNote({ title: 'INPUT NOTE' })),
+        inputNote: (note) => dispatch(launchInputNote({ title: 'INPUT NOTE', text: note })),
 		inputAmount: (amount) => dispatch(launchInputAmount({ title: 'INPUT AMOUNT', number: amount })),
         createRecord: (record) => dispatch(createRecord(record)),
         back: () => dispatch(changeContent('HOME'))

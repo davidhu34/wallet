@@ -11,13 +11,13 @@ const DatepickerModal = ({
     prevMonth, nextMonth, selectDate
 }) => {
 
-    const selectedTime = new Date(viewTime || inputViewTime)
-    const selectedYear = selectedTime.getFullYear();
-    const selectedMonth = selectedTime.getMonth();
-    const selectedDate = selectedTime.getDate();
-    const selectedDay = selectedTime.getDay();
+    const selectedTime = viewTime? new Date(viewTime): new Date()
+    const selectedYear = selectedTime.getFullYear()
+    const selectedMonth = selectedTime.getMonth()
+    const selectedDate = selectedTime.getDate()
+    const selectedDay = selectedTime.getDay()
 
-    console.log('selected', selectedYear, selectedMonth, selectedDate, selectedDay);
+    console.log('selected', selectedYear, selectedMonth, selectedDate, selectedDay)
 
 
     const totalDays = new Date(selectedYear, selectedMonth+1, 0).getDate()
@@ -35,9 +35,9 @@ const DatepickerModal = ({
         ...Array.from(Array(totalDays).keys(), x => x + 1),
         ...Array.from(Array(nextMonthDays).keys(), x => x + 1)
     ]
-    const focusDays = ( focusTimes.length? focusTimes: [inputFocusTime] )
+    const focusDays = ( focusTimes.length? focusTimes: [] )
         .filter(ft => ft > prevMonthLast.getTime() && ft < nextMonthFirst.getTime())
-        .map(ft => new Date(ft).getDate());
+        .map(ft => new Date(ft).getDate())
 
     const options = days.map( (day,i) => {
         const isPrev = i < prevMonthDays

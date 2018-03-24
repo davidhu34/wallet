@@ -7,14 +7,23 @@ import {
 	launchCategoryFilter,
 	launchMaxAmountFilter,
 	launchMinAmountFilter,
+	launchFromTimeFilter,
+	launchToTimeFilter,
 	changeContent
 } from '../actions'
 
 import { bannerStyle, categoryStyle } from '../styles'
 
+const timeStr = ms =>  {
+	if (ms) {
+		const date = new Date(ms)
+		return date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate()
+	} else return '--'
+}
 const Banner = ({
 	classList, classCategories, ui, filter,
-	categoryFilter, maxAmountFilter, minAmountFilter, toggleExpandFilters, toHome
+	toggleExpandFilters, toHome,
+	categoryFilter, maxAmountFilter, minAmountFilter, fromTimeFilter, toTimeFilter
 }) => {
 	const { content, modal, banner } = ui;
 	const { expand, title } = ui.banner;
@@ -23,10 +32,10 @@ const Banner = ({
 		<table style={{width: '100%'}}><tbody><tr>
 			<td style={categoryStyle}>
 				<div><b>TIME</b>
-					<div onClick={(e) => {}}>from</div>
-					<div>{filter.time.from || '--'}</div>
-					<div onClick={(e) => {}}>to</div>
-					<div>{filter.time.to || '--'}</div>
+					<div onClick={(e) => fromTimeFilter(filter.time.from)}>from</div>
+					<div>{timeStr(filter.time.from)}</div>
+					<div onClick={(e) => toTimeFilter(filter.time.to)}>to</div>
+					<div>{timeStr(filter.time.to)}</div>
 				</div>
 			</td>
 			<td style={categoryStyle}>
@@ -54,7 +63,7 @@ const Banner = ({
 
 	return <div style={{
 			...bannerStyle,
-			height: expand? 600:300
+			height: expand? 800:300
 		}}>
 		<h3 onClick={(e) => toHome()}>{title}</h3>
 		<div style={{ filter: modal?'brightness(300%) blur(10px)': '' }}>
@@ -80,6 +89,18 @@ export default connect(
 		})),
 		maxAmountFilter: (amount) => dispatch(launchMaxAmountFilter({number: amount})),
 		minAmountFilter: (amount) => dispatch(launchMinAmountFilter({number: amount})),
+		fromTimeFilter: (time) => dispatch(launchFromTimeFilter({
+            title: 'FILTER FROM DATE',
+            focusTimes: [time],
+            viewTime: time,
+            limit: 1
+        })),
+		toTimeFilter: (time) => dispatch(launchToTimeFilter({
+            title: 'FILTER TO DATE',
+            focusTimes: [time],
+            viewTime: time,
+            limit: 1
+        })),
 		toggleExpandFilters: () => dispatch(toggleExpandFilters()),
 		toHome: () => dispatch( changeContent('HOME'))
 	})
