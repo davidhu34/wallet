@@ -40,9 +40,19 @@ export const datepicker = ( state = datepickerInit, action ) => {
                 ...state,
                 viewTime: new Date(vt.getFullYear(), vt.getMonth()-1, vt.getDate()).getTime()
             }
+        case 'NEXT_YEAR':
+            return {
+                ...state,
+                viewTime: new Date(vt.getFullYear()+1, vt.getMonth(), vt.getDate()).getTime()
+            }
+        case 'PREV_YEAR':
+            return {
+                ...state,
+                viewTime: new Date(vt.getFullYear()-1, vt.getMonth(), vt.getDate()).getTime()
+            }
         case 'LAUNCH_MODAL':
             return action.modalType == 'datepicker'? {
-                viewTime: action.data.viewTime || null,
+                viewTime: action.data.viewTime || new Date().getTime(),
                 focusTimes: action.data.focusTimes || []
             } : state
         case 'LAUNCH_MODAL':

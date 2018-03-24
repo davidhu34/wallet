@@ -2,16 +2,16 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectionStyle } from '../styles'
 import { monthNames } from '../consts'
-import { nextMonth, prevMonth, selectDate } from '../actions'
+import { nextMonth, prevMonth, nextYear, prevYear, selectDate } from '../actions'
 
 
 const DatepickerModal = ({
     resolve, title, limit,
     viewTime, focusTimes,
-    prevMonth, nextMonth, selectDate
+    prevMonth, nextMonth, prevYear, nextYear, selectDate
 }) => {
 
-    const selectedTime = viewTime? new Date(viewTime): new Date()
+    const selectedTime = new Date(viewTime)
     const selectedYear = selectedTime.getFullYear()
     const selectedMonth = selectedTime.getMonth()
     const selectedDate = selectedTime.getDate()
@@ -68,9 +68,29 @@ const DatepickerModal = ({
     return <div className="container">
         <strong>{title}</strong>
 
-        <br />
-        <br />
+        <br /><br />
 
+        <div onClick={ (e) => prevYear() }
+            style={{
+                ...selectionStyle,
+                width:'25%'
+            }}>
+            {'<'}
+        </div>
+        <div style={{
+                ...selectionStyle,
+                width: '50%'
+            }}>
+            { selectedYear }
+        </div>
+        <div onClick={ (e) => nextYear() }
+            style={{
+                ...selectionStyle,
+                width: '25%'
+            }}>
+            {'>'}
+        </div>
+        <br /><br />
         <div onClick={ (e) => prevMonth() }
             style={{
                 ...selectionStyle,
@@ -79,10 +99,12 @@ const DatepickerModal = ({
             {'<'}
         </div>
         <div style={{
-            ...selectionStyle,
-            width: '50%'
-        }}>{ selectedYear +' '+ monthNames[selectedMonth] }</div>
-        <div onClick={ (e) => prevMonth() }
+                ...selectionStyle,
+                width: '50%'
+            }}>
+            { monthNames[selectedMonth] }
+        </div>
+        <div onClick={ (e) => nextMonth() }
             style={{
                 ...selectionStyle,
                 width: '25%'
@@ -90,8 +112,7 @@ const DatepickerModal = ({
             {'>'}
         </div>
 
-        <br />
-        <br />
+        <br /><br />
 
         {options}
 
@@ -103,8 +124,10 @@ const DatepickerModal = ({
 export default connect(
     ({ datepicker }) => ({ ...datepicker }),
     dispatch => ({
-        selectDate: (time, limit) => dispatch(selectDate(time, limit)),
-        nextMonth: () => dispatch(prevMonth()),
-        prevMonth: () => dispatch(nextMonth()),
+        prevMonth: () => dispatch(prevMonth()),
+        nextMonth: () => dispatch(nextMonth()),
+        prevYear: () => dispatch(prevYear()),
+        nextYear: () => dispatch(nextYear()),
+        selectDate: (time, limit) => dispatch(selectDate(time, limit))
     })
 )(DatepickerModal)

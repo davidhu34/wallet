@@ -20,11 +20,13 @@ export const filterRecords = (filters, record) => {
     const recordList = Object.keys(records).map( r => records[r] )
 
     const steps = []
+    if (to) steps.push( (r) => r.time > to )
+    if (from) steps.push( (r) => r.time < from )
     if (min) steps.push( (r) => r.exchange < min )
     if (max) steps.push( (r) => r.exchange > max )
     if ( categories.length > 0 )
         steps.push( (r) => categories.indexOf(r.category) == -1 )
-    
+
     const data = steps.length > 0?
         recordList.filter( r => {
             for (let i = 0; i < steps.length; i++)
@@ -38,7 +40,7 @@ export const filterRecords = (filters, record) => {
         category: record.categories[d.category].name,
         exchange: d.exchange,
         note: d.note
-    }))     
+    }))
 }
 
 export const classList = classes => Object.keys(classes).map( c => classes[c] )

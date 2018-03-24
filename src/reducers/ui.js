@@ -7,6 +7,7 @@ const banner = ( state, action ) => {
                 ...state,
                 expand: !state.expand
             }
+        case 'CHANGE_CONTENT':
         case 'LAUNCH_MODAL':
             return {
                 ...state,
@@ -37,7 +38,8 @@ export const ui = ( state = uiInit, action ) => {
         case 'CHANGE_CONTENT':
             return {
                 ...state,
-                content: action.content
+                content: action.content,
+                banner: banner(state.banner, action)
             }
         default:
             return state
