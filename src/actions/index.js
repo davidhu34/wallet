@@ -1,5 +1,5 @@
 import { TIME_CONSTS, recordInit } from '../consts'
-
+import { push } from 'react-router-redux'
 const classData = recordInit.class
 
 const missionDirectivesPrep = {
@@ -171,9 +171,19 @@ export const clearNumberPad = () => ({
 	type: 'CLEAR_NUMBER_PAD'
 })
 
-export const changeContent = content => ({
-	type: 'CHANGE_CONTENT', content
-})
+
+const contentRoutes = {
+	'HOME': '/',
+	'NEW_RECORD': '/new',
+	'RECORD_LIST': '/list'
+}
+export const changeContent = content => dispatch => {
+	dispatch({
+		type: 'CHANGE_CONTENT', content
+	})
+	const nextRoute = contentRoutes[content] || '/'
+	dispatch(push(nextRoute))
+}
 
 export const nextMonth = () => ({
 	type: 'NEXT_MONTH'

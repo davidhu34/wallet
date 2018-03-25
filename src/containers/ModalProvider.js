@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-//import Filters from './Filters'
-import RecordList from '../components/RecordList'
+import CategoryFilterModal from '../containers/CategoryFilterModal'
+import NumberPadModal from '../containers/NumberPadModal'
+import DatepickerModal from '../containers/DatepickerModal'
+
 import SelectionModal from '../components/SelectionModal'
-import CategoryFilterModal from '../components/CategoryFilterModal'
-import NumberPadModal from '../components/NumberPadModal'
 import TextInputModal from '../components/TextInputModal'
-import DatepickerModal from '../components/DatepickerModal'
 import Modal from '../components/Modal'
+
 import { launchModal } from '../actions'
 
 const ModalProvider = ({

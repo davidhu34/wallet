@@ -1,4 +1,7 @@
 import { combineReducers } from 'redux'
+import { routerReducer } from 'react-router-redux'
+
+
 import { ui } from './ui'
 import { record } from './record'
 import { newRecord } from './newRecord'
@@ -14,7 +17,8 @@ const App = combineReducers({
     newRecord,
     numberPad,
     filter,
-    datepicker
+    datepicker,
+    router: routerReducer
 })
 
 export default App
