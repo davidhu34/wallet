@@ -2,7 +2,9 @@ import { TIME_CONSTS, recordInit } from '../consts'
 import { push } from 'react-router-redux'
 const classData = recordInit.class
 
-const gapiReady = () => ({ type: 'GAPI_READY' })
+export const gapiReady = () => ({ type: 'GAPI_READY' })
+
+export const testGAPI = () => ({ type: 'GAPI_TEST' })
 
 const missionDirectivesPrep = {
 	'NEW_RECORD_NOTE': (data) => ({

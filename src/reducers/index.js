@@ -9,6 +9,7 @@ import { numberPad } from './numberPad'
 import { modal } from './modal'
 import { filter } from './filter'
 import { datepicker } from './datepicker'
+import { driveAPI } from './driveAPI'
 
 const App = combineReducers({
     ui,
@@ -18,6 +19,7 @@ const App = combineReducers({
     numberPad,
     filter,
     datepicker,
+    driveAPI,
     router: routerReducer
 })
 

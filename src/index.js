@@ -9,7 +9,7 @@ import Root from './components/Root'
 
 const history = createHistory()
 const store = freshStore(history)
-//const gapi = new GAPI(store)
+const gapi = new GAPI(store)
 
 render(
     <Root store={store} history={history} />,

@@ -2,33 +2,38 @@ import { gapiReady } from '../actions'
 import { CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES } from '../configs'
 
 class GAPI {
-    constructor (stroe) {
+    constructor (store) {
 
         let loadingGAPI
-        const donePrepare = () => {
+        const donePrepare = (gapi) => {
             clearInterval(loadingGAPI)
+            store.dispatch({ type: 'GAPI_READY', gapi: gapi })
+
+            console.log('window gapi loaded')
+            this.gapi.load('client:auth2', () => {
+                console.log('window gapi.load done')
+                this.gapi.client.init({
+                    apiKey: API_KEY,
+                    clientId: CLIENT_ID,
+                    discoveryDocs: DISCOVERY_DOCS,
+                    scope: SCOPES
+                }).then( () => {
+                    console.log('gapi client inited')
+                    // this.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
+                    this.gapi.auth2.getAuthInstance().signIn()
+                });
+            })
         }
         const getWindowGAPI = () => {
+            console.log('window gapi listen')
             if (window.gapi) {
-                tihs.gapi = window.gapi
-                donePrepare()
+                this.gapi = window.gapi
+                donePrepare(this)
             }
         }
         loadingGAPI = setInterval(getWindowGAPI, 1000)
 
-        store.dispatch(gapiReady)
 
-        this.gapi.load('client:auth2', () => {
-            this.gapi.client.init({
-                apiKey: API_KEY,
-                clientId: CLIENT_ID,
-                discoveryDocs: DISCOVERY_DOCS,
-                scope: SCOPES
-            }).then( () => {
-                // this.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
-                // this.gapi.auth2.getAuthInstance().signIn()
-            });
-        })
     }
 
 
