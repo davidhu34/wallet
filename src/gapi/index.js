@@ -20,7 +20,7 @@ class GAPI {
                 }).then( () => {
                     console.log('gapi client inited')
                     // this.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
-                    this.gapi.auth2.getAuthInstance().signIn()
+
                 });
             })
         }
@@ -36,13 +36,24 @@ class GAPI {
 
     }
 
+    gapiIsSignedIn() {
+        return this.gapi.auth2.getAuthInstance().isSignedIn.get()
+    }
+    gapiSignIn() {
+        return new Promise( (resolve, reject) => {
 
+            this.gapi.auth2.getAuthInstance().signIn()
+                .then( response => resolve(response) )
+                .catch( err => reject(err) )
+
+        })
+    }
     gapiList (name) {
         return new Promise( (resolve, reject) => {
 
             let pageToken = null
             this.gapi.client.drive.files.list({
-                q: 'mimeType=\'text\/csv\' and name=\''+name+'\'',
+                q: 'mimeType=\'text\/csv\' and name=\''+name+'.csv\'',
                 fields: 'nextPageToken, files(id, name)',
                 spaces: 'drive',
                 pageToken: pageToken
@@ -51,7 +62,7 @@ class GAPI {
                 // const { files, pageToken } = response.result
                 const result = response.result
                 resolve(result)
-            })
+            }).catch(err => reject(err))
 
         })
     }
@@ -64,18 +75,18 @@ class GAPI {
                 alt: 'media'
             }).then( response => {
                 console.log(response)
-                const result = response.result
-                resolve(result)
-            })
+                const data = response.body
+                resolve(data)
+            }).catch(err => reject(err))
 
         })
     }
 
-    gapiUpdate () {
-        return gapiUpload(file, true)
+    gapiUpdate (file) {
+        return this.gapiUpload(file, true)
     }
     gapiCreate (file) {
-        return gapiUpload(file, false)
+        return this.gapiUpload(file, false)
     }
     gapiUpload (file, exist) {
         return new Promise( (resolve, reject) => {
@@ -86,13 +97,15 @@ class GAPI {
             const delimiter = "\r\n--" + boundary + "\r\n";
             const close_delim = "\r\n--" + boundary + "--";
 
-            const fileContent = '6,7,8\n1,2,3\n5,6,7';// data
+            const fileContent = data//'1,9,1\n1,2,3\n5,6,7';
 
             const metadata = {
-                'name': 'csvreq.csv',
+                'name': name,
                 'mimeType': 'text/csv\r\n\r\n'
             }
 
+            const path = '/upload/drive/v3/files' + (exist? ('/'+id): '')
+            const method = exist? 'PATCH': 'POST'
             const multipartRequestBody = delimiter
                 + 'Content-Type: application/json\r\n\r\n'
                 + JSON.stringify(metadata)
@@ -102,8 +115,8 @@ class GAPI {
                 + close_delim
 
             const params = {
-                'path': '/upload/drive/v3/files/'+exist? id: '',
-                'method': exist? 'PATCH': 'POST',
+                'path': path,
+                'method': method,
                 'params': {
                     'uploadType': 'multipart'
                 },
@@ -114,11 +127,9 @@ class GAPI {
             }
 
             this.gapi.client.request(params)
-            .then( response => {
-                const result = response.result
-                console.log(result)
-                resolve(response)
-            })
+                .then( response => resolve(response) )
+                .catch( err => reject(err) )
+
         })
     }
 }
