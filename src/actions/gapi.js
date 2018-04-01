@@ -12,11 +12,10 @@ export const syncFromFile = (name) => (dispatch, getState) => {
 	const { GAPI, localFile } = getState().driveAPI
 
 	dispatch(gapiSyncStart(localFile))
-	GAPI.gapiList('csvreq')
+	GAPI.gapiList(name)
 		.then( result => {
-			const files = result.files
 
-			console.log(result)
+			const files = result.files
 			GAPI.gapiGet(files[0].id)
 				.then( data => {
 
@@ -27,6 +26,7 @@ export const syncFromFile = (name) => (dispatch, getState) => {
 						// no match
 						dispatch(gapiSyncEnd('NO_MATCH'))
 					}
+
 				}).catch( err => {
 					dispatch(gapiSyncEnd(err))
 				})
@@ -55,13 +55,14 @@ const gapiUploadCreate = (err, file = null) => ({
 	file: file
 })
 export const uploadToFile = (name) => (dispatch, getState) => {
+
 	const { GAPI, localFile } = getState().driveAPI
 
 	dispatch(gapiUploadStart(name))
 	GAPI.gapiList(name)
 		.then( result => {
-			const files = result.files
 
+			const files = result.files
 			if (files && files.length) {
 				// has file with <name>
 				const file = {
@@ -102,12 +103,15 @@ const gapiSignInEnd = (err, data) => ({
 	data: data
 })
 export const gapiSignIn = () => (dispatch, getState) => {
+
 	const { GAPI, localFile } = getState().driveAPI
 
 	dispatch(gapiSignInStart())
-	if (GAPI.gapiIsSignedIn())
-		dispatch(gapiSignInEnd('already signed in'))
-	else GAPI.gapiSignIn()
-		.then( data => { dispatch(gapiSignInEnd(null, data)) })
-		.catch( err => { dispatch(gapiSignInEnd(err)) })
+	if (GAPI.gapiIsSignedIn()) {
+		dispatch(gapiSignInEnd('ALREADY SIGNED IN'))
+	} else {
+		GAPI.gapiSignIn()
+			.then( data => { dispatch(gapiSignInEnd(null, data)) })
+			.catch( err => { dispatch(gapiSignInEnd(err)) })
+	}
 }

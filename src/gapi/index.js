@@ -127,7 +127,7 @@ class GAPI {
             }
 
             this.gapi.client.request(params)
-                .then( response => resolve(response) )
+                .then( response => resolve(response.result) )
                 .catch( err => reject(err) )
 
         })
