@@ -55,7 +55,6 @@ export const driveAPI = ( state = driveAPIInit, action ) => {
 			}
 
 		case 'GAPI_TEST':
-			GAPI.gapiList().then(data => {console.log(data)})
 			return state
 		case 'GAPI_READY':
 			return {

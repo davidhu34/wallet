@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import WalletIcon from 'react-icons/lib/ti/book'
+
 import { classList, classCategories } from '../reducers/record'
+import { bannerStyle, categoryStyle } from '../styles'
 import {
 	toggleExpandFilters,
 	launchCategoryFilter,
@@ -11,8 +14,6 @@ import {
 	launchToTimeFilter,
 	changeContent
 } from '../actions'
-
-import { bannerStyle, categoryStyle } from '../styles'
 
 const timeStr = ms =>  {
 	if (ms) {
@@ -65,7 +66,10 @@ const Banner = ({
 			...bannerStyle,
 			height: expand? 800:300
 		}}>
-		<h3 onClick={(e) => toHome()}>{title}</h3>
+		<h3 onClick={(e) => toHome()}>
+			<WalletIcon />
+			{content == 'HOME'? title: ''}
+		</h3>
 		<div style={{ filter: modal?'brightness(300%) blur(10px)': '' }}>
 			{content == 'RECORD_LIST'?
 				<h5 onClick={(e) => toggleExpandFilters()}>filters</h5>
