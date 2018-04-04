@@ -8,7 +8,7 @@ const Record = ({ record }) => {
         <td>{moment(record.time).format('HH:mm')}</td>
         <td>{record.note}</td>
         <td>{record.category}</td>
-        <td>{record.exchange}</td>
+        <td>{record.amount}</td>
     </tr>
 
 }

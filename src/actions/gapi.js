@@ -1,3 +1,4 @@
+import { recordsToCSV, recordsFromCSV } from '../reducers/record'
 
 const gapiSyncStart = (file) => ({
 	type: 'GAPI_SYNC_START',
@@ -56,7 +57,11 @@ const gapiUploadCreate = (err, file = null) => ({
 })
 export const uploadToFile = (name) => (dispatch, getState) => {
 
-	const { GAPI, localFile } = getState().driveAPI
+	const state = getState()
+	const { GAPI, localFile } = state.driveAPI
+	const { records } = state.record
+
+	const data = recordsToCSV(records)
 
 	dispatch(gapiUploadStart(name))
 	GAPI.gapiList(name)
@@ -67,7 +72,7 @@ export const uploadToFile = (name) => (dispatch, getState) => {
 				// has file with <name>
 				const file = {
 					...result.files[0],
-					data: '9,9,1\n2,5,2\n3,3,3'
+					data: data
 				}
 				GAPI.gapiUpdate(file)
 					.then( file => {

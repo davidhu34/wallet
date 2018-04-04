@@ -21,6 +21,7 @@
   "dependencies": {
     "history": "^4.7.2",
     "moment": "^2.21.0",
+    "papaparse": "^4.3.7",
     "react": "^0.14.6",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^0.14.6",

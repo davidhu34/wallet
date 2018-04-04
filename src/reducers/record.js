@@ -1,4 +1,4 @@
-import moment from 'moment'
+import ppp from 'papaparse'
 
 import { recordInit } from '../consts'
 
@@ -6,11 +6,47 @@ let tempCount = 3
 
 export const record = (state = recordInit, action) => {
     switch (action.type) {
+
         case 'CREATE_RECORD':
             return state
+
+        case 'GAPI_SYNC_END':
+            return action.error? state
+                : {
+                    ...state,
+                    records: recordsFromCSV(action.data)
+                }
+                
         default:
             return state
     }
+}
+
+export const recordsToCSV = (records) => {
+    return ppp.unparse({
+        fields: ['id','time','amount','class','category','note'],
+        data: Object.keys(records).map( id => {
+            const r = records[id]
+            return [
+                r.id,
+                r.time,
+                r.amount,
+                r.class,
+                r.category,
+                r.note
+            ]
+        })
+    })
+}
+
+export const recordsFromCSV = (csv) => {
+    const parsed = ppp.parse(csv, { header: true })
+    const recordArray = parsed.data || []
+    let newRecords = {}
+    recordArray.map( r => {
+        if (r.id) newRecords[r.id] = r
+    })
+    return newRecords
 }
 
 export const filterRecords = (filters, record) => {
@@ -22,8 +58,8 @@ export const filterRecords = (filters, record) => {
     const steps = []
     if (to) steps.push( (r) => r.time > to )
     if (from) steps.push( (r) => r.time < from )
-    if (min) steps.push( (r) => r.exchange < min )
-    if (max) steps.push( (r) => r.exchange > max )
+    if (min) steps.push( (r) => r.amount < min )
+    if (max) steps.push( (r) => r.amount > max )
     if ( categories.length > 0 )
         steps.push( (r) => categories.indexOf(r.category) == -1 )
 
@@ -38,7 +74,7 @@ export const filterRecords = (filters, record) => {
         time: d.time,
         //class: record.classes[d.class].name,
         category: record.categories[d.category].name,
-        exchange: d.exchange,
+        amount: d.amount,
         note: d.note
     }))
 }
