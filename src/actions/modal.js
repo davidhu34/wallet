@@ -13,14 +13,14 @@ const missionDirectivesPrep = {
 		modalType: 'selection',
 		preClose: (value) => ({
 			type: 'NEW_RECORD_CLASS',
-			selection: value.id || ''
+			selection: value || ''
 		})
 	}),
 	'NEW_RECORD_CATEGORY': (data) => ({
 		modalType: 'selection',
 		preClose: (value) => ({
 			type: 'NEW_RECORD_CATEGORY',
-			selection: value.id || ''
+			selection: value || ''
 		})
 	}),
 	'NEW_RECORD_TIME': (data) => ({

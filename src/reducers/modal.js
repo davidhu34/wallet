@@ -9,10 +9,11 @@ export const modal = ( state = {}, action ) => {
                 modalType, option, resolve,
                 data: data//state[modalType][entry]
             }
-        case 'LAUNCH_':
+        case '@@router/LOCATION_CHANGE':
         case 'CLOSE_MODAL':
             return {
                 ...state,
+                resolve: () => {},
                 modalType: '',
                 data: null
             }

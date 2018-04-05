@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { selectionStyle } from '../styles'
+import { selectionStyle, footerStyle } from '../styles'
 
 const SelectionModal = ({ selections, size, resolve, title }) => {
     let sels = selections
@@ -15,17 +15,27 @@ const SelectionModal = ({ selections, size, resolve, title }) => {
                     ...selectionStyle,
                     width: String(100/size)+'%'
                 }}
-                onClick={ (e) => resolve(s) }>
+                onClick={ (e) => resolve(s.id) }>
                 {s.data || s}
                 <br />
             </div>
         )
     )
     return <div className="container">
-        <strong>{title}</strong>
+        <br />
+        <h5>{title}</h5>
         <br />
         {options}
-        <div onClick={ (e) => resolve(null)}>CANCEL</div>
+        <div className="container"
+            style={footerStyle}>
+
+            <div className="row">
+                <div className="twelve columns" onClick={ (e) => resolve(null) }>
+                    <h5>CANCEL</h5>
+                </div>
+            </div>
+
+        </div>
     </div>
 }
 

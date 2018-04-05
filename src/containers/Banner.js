@@ -36,6 +36,8 @@ const bannerFilter = ({
 }) => {
 
 	const { expand } = ui.banner
+	let filteredClass = []
+	console.log(filter.categories)
 
 	const filterExpansion = expand? <table style={{width: '100%'}}><tbody><tr>
 
@@ -56,14 +58,22 @@ const bannerFilter = ({
 		<td style={categoryStyle}>
 			<div>
 				<h5><TagIcon /></h5>
-				{classList.map( c =>
-					<div key={c.id}
-						onClick={ (e) =>
-							categoryFilter(c.name, classCategories[c.id])
-						}>
-						{c.name}
-					</div>
-				)}
+				{
+					classList.map( cl => {
+						const classCtgs = classCategories[cl.id]
+						let bold = false
+						for (let i = 0; i < classCtgs.length; i++) {
+							if (filter.categories.indexOf(classCtgs[i].id) > -1) {
+								bold = true
+								break
+							}
+						}
+						return <div key={cl.id}
+							onClick={(e) => categoryFilter(cl.name, classCtgs)}>
+							{ bold? <b>{cl.name}</b>: cl.name }
+						</div>
+					})
+				}
 			</div>
 		</td>
 

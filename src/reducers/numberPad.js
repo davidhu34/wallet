@@ -16,8 +16,9 @@ export const numberPad = ( state = numberPadInit, action ) => {
 			return action.modalType == 'numberPad'? {
 				number: action.data.number || '0'
 			} : state
+
+        case '@@router/LOCATION_CHANGE':
 		case 'CLEAR_NUMBER_PAD':
-			return numberPadInit
 		case 'CLOSE_MODAL':
 			return numberPadInit
 		default:

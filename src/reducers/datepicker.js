@@ -55,7 +55,7 @@ export const datepicker = ( state = datepickerInit, action ) => {
                 viewTime: action.data.viewTime || new Date().getTime(),
                 focusTimes: action.data.focusTimes || []
             } : state
-        case 'LAUNCH_MODAL':
+        case '@@router/LOCATION_CHANGE':
         case 'CLOSE_MODAL':
             return datepickerInit
         default:

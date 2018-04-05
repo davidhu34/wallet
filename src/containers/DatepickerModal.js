@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectionStyle } from '../styles'
+import { selectionStyle, footerStyle } from '../styles'
 import { monthNames } from '../consts'
 import { nextMonth, prevMonth, nextYear, prevYear, selectDate } from '../actions'
 
@@ -66,7 +66,8 @@ const DatepickerModal = ({
     })
 
     return <div className="container">
-        <strong>{title}</strong>
+        <br />
+        <h5>{title}</h5>
 
         <br /><br />
 
@@ -116,8 +117,20 @@ const DatepickerModal = ({
 
         {options}
 
-        <div onClick={ (e) => resolve(focusTimes[0]) }>APPLY</div>
-        <div onClick={ (e) => resolve(null) }>CANCEL</div>
+
+        <div className="container"
+            style={footerStyle}>
+
+            <div className="row">
+                <div className="six columns" onClick={ (e) => resolve(null) }>
+                    <h5>CANCEL</h5>
+                </div>
+                <div className="six columns" onClick={ (e) => resolve(focusTimes[0]) }>
+                    <h5>APPLY</h5>
+                </div>
+            </div>
+
+        </div>
     </div>
 }
 

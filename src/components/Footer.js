@@ -12,18 +12,20 @@ import { NewRecordFooter } from '../containers/NewRecordPage'
 import { HomeFooter } from '../containers/HomePage'
 import DefaultFooter from '../containers/DefaultFooter'
 
-const Footer = ({
-    path,
-    toHome
-}) => {
-    return <div className="container"
+const Footer = ({ hide }) => {
+    return hide? <div />
+    : <div className="container"
         style={footerStyle}>
-            <Route exact path="/" component={HomeFooter}/>
-            <Route path="/new" component={NewRecordFooter} />
-            <Route path="/list" component={DefaultFooter} />
-            <Route path="/other" component={DefaultFooter} />
-    </div>
 
+        <Route exact path="/" component={HomeFooter}/>
+        <Route path="/new" component={NewRecordFooter} />
+        <Route path="/list" component={DefaultFooter} />
+        <Route path="/other" component={DefaultFooter} />
+    </div>
 }
 
-export default Footer
+export default withRouter(connect(
+    ({ ui }) => ({
+        hide: ui.modal
+    })
+)(Footer))

@@ -11,6 +11,10 @@ const selecting = ( state, action ) => {
                     prevCats.filter( c => c != category)
                     : [...prevCats, category]
             }
+        case '@@router/LOCATION_CHANGE':
+            return {
+                categories: []
+            }
         default:
             return state
     }
@@ -70,6 +74,12 @@ export const filter = ( state = filterInit, action ) => {
             return {
                 ...state,
                 amount: amount(state.amount, action)
+            }
+
+        case '@@router/LOCATION_CHANGE':
+            return {
+                ...state,
+                selecting: selecting(state.selecting, action)
             }
         default:
             return state
