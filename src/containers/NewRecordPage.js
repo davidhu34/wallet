@@ -2,6 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
+import BackIcon from 'react-icons/lib/md/chevron-left'
+import ResetIcon from 'react-icons/lib/md/refresh'
+import CheckIcon from 'react-icons/lib/ti/input-checked'
+
 import {
     launchInputAmount,
     launchClassSelection,
@@ -63,6 +67,45 @@ const NewRecordPage = ({
     </div>
 
 }
+
+const newRecordFooter = ({
+    newRecord,
+    back, createRecord
+}) => {
+    return <div className="row">
+
+        <div className="one-third column" >
+
+            <h1 onClick={(e) => { back() }}>
+                <BackIcon  />
+            </h1>
+
+        </div>
+        <div className="one-third column">
+
+            <h1 onClick={(e) => { back() }}>
+                <ResetIcon />
+            </h1>
+
+        </div>
+        <div className="one-third column">
+
+            <h1 onClick={ (e) => createRecord(newRecord) }>
+                <CheckIcon />
+            </h1>
+
+        </div>
+    </div>
+}
+export const NewRecordFooter = connect(
+	({ newRecord }) => ({
+        newRecord
+	}),
+	dispatch => ({
+        createRecord: (record) => dispatch(createRecord(record)),
+        back: () => dispatch(changeContent('HOME'))
+	})
+)(newRecordFooter)
 
 export default connect(
 	({ newRecord, record }) => ({

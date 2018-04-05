@@ -1,3 +1,16 @@
+export const contentRoutes = {
+	'HOME': '/',
+	'NEW_RECORD': '/new',
+	'RECORD_LIST': '/list',
+	'OTHER_MENU': '/other'
+}
+export const routeContents = {
+	'/': 'HOME',
+	'/new': 'NEW_RECORD',
+	'/list': 'RECORD_LIST',
+	'/other': 'OTHER_MENU'
+}
+
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Auguest', 'September', 'October', 'November', 'December']
 const monthIndex = {
     'January': 0,

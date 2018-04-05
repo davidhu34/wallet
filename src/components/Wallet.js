@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import ModalProvider from '../containers/ModalProvider'
 import Banner from '../containers/Banner'
 import ContentPage from '../containers/ContentPage'
+import Footer from '../containers/Footer'
 import { launchSelection } from '../actions'
 
 const Wallet = () => {
@@ -13,6 +14,7 @@ const Wallet = () => {
         <ModalProvider />
         <Banner />
         <ContentPage />
+        <Footer />
     </div>
 }
 

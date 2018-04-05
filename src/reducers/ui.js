@@ -1,4 +1,4 @@
-import { uiInit } from '../consts'
+import { uiInit, routeContents } from '../consts'
 
 const banner = ( state, action ) => {
     switch ( action.type ) {
@@ -40,6 +40,12 @@ export const ui = ( state = uiInit, action ) => {
                 ...state,
                 content: action.content,
                 banner: banner(state.banner, action)
+            }
+        case '@@router/LOCATION_CHANGE':
+            const location = action.payload || {}
+            return {
+                ...state,
+                content: routeContents[location.pathname] || 'HOME'
             }
         default:
             return state

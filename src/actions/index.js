@@ -1,9 +1,8 @@
 import { push } from 'react-router-redux'
-
-import { TIME_CONSTS, recordInit } from '../consts'
-const classData = recordInit.class
-
+import { TIME_CONSTS, recordInit, contentRoutes } from '../consts'
 export * from './modal'
+
+const classData = recordInit.class
 
 export const gapiReady = () => ({ type: 'GAPI_READY' })
 
@@ -27,12 +26,6 @@ export const toggleExpandFilters = () => ({
 })
 
 
-
-const contentRoutes = {
-	'HOME': '/',
-	'NEW_RECORD': '/new',
-	'RECORD_LIST': '/list'
-}
 export const changeContent = content => dispatch => {
 	dispatch({
 		type: 'CHANGE_CONTENT', content
