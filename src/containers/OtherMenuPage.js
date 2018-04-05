@@ -21,7 +21,7 @@ const OtherMenuPage = ({
         <div className="row" ><br /> </div>
 
         <div className="row">
-            <h5>Sync with Google Drive</h5>
+            <h5>Google Drive Sync</h5>
         </div>
         <div className="row">
             <div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>

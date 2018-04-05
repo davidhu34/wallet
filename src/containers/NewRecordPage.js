@@ -13,6 +13,7 @@ import {
     launchDatepickerSelection,
     launchInputNote,
     createRecord,
+    resetNewRecord,
     changeContent
 } from '../actions'
 import { classSelections, categorySelections } from '../reducers/record'
@@ -67,7 +68,7 @@ const NewRecordPage = ({
 
 const newRecordFooter = ({
     newRecord,
-    back, createRecord
+    back, resetRecord, createRecord
 }) => {
     return <div className="row">
 
@@ -80,7 +81,7 @@ const newRecordFooter = ({
         </div>
         <div className="one-third column">
 
-            <h1 onClick={(e) => { back() }}>
+            <h1 onClick={(e) => { resetRecord() }}>
                 <ResetIcon />
             </h1>
 
@@ -100,6 +101,7 @@ export const NewRecordFooter = connect(
 	}),
 	dispatch => ({
         createRecord: (record) => dispatch(createRecord(record)),
+        resetRecord: () => dispatch(resetNewRecord()),
         back: () => dispatch(changeContent('HOME'))
 	})
 )(newRecordFooter)
@@ -124,8 +126,6 @@ export default connect(
             categoryList: categorySelections(categories, classId)
         })),
         inputNote: (note) => dispatch(launchInputNote({ title: 'INPUT NOTE', text: note })),
-		inputAmount: (amount) => dispatch(launchInputAmount({ title: 'INPUT AMOUNT', number: amount })),
-        createRecord: (record) => dispatch(createRecord(record)),
-        back: () => dispatch(changeContent('HOME'))
+		inputAmount: (amount) => dispatch(launchInputAmount({ title: 'INPUT AMOUNT', number: amount }))
 	})
 )(NewRecordPage)

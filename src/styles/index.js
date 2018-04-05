@@ -40,7 +40,14 @@ export const textInputStyle = {
 }
 
 export const selectionStyle = {
-		textAlign: 'center',
-		padding: 'auto',
-		display:'inline-block'
-};
+	textAlign: 'center',
+	padding: 'auto',
+	display:'inline-block'
+}
+
+export const footerStyle = {
+	position:'fixed',
+	bottom: 0,
+	textAlign: 'center',
+	verticalAlign: 'center'
+}

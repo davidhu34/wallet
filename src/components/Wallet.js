@@ -5,7 +5,8 @@ import { connect } from 'react-redux'
 import ModalProvider from '../containers/ModalProvider'
 import Banner from '../containers/Banner'
 import ContentPage from '../containers/ContentPage'
-import Footer from '../containers/Footer'
+import Footer from './Footer'
+
 import { launchSelection } from '../actions'
 
 const Wallet = () => {

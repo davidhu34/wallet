@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { Route, IndexRoute, withRouter } from 'react-router'
 
 import WalletIcon from 'react-icons/lib/ti/book'
 import FilterIcon from 'react-icons/lib/ti/filter'
@@ -24,88 +25,73 @@ import {
 const timeStr = ms =>  {
 	if (ms) {
 		const date = new Date(ms)
-		return date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate()
+		return date.getFullYear()+' '+(date.getMonth()+1)+' '+date.getDate()
 	} else return '--'
 }
-const Banner = ({
+
+const bannerFilter = ({
 	classList, classCategories, ui, filter,
-	toggleExpandFilters, toHome,
+	toggleExpandFilters,
 	categoryFilter, maxAmountFilter, minAmountFilter, fromTimeFilter, toTimeFilter
 }) => {
-	const { content, modal, banner } = ui;
-	const { expand, title } = ui.banner;
 
-	const expansion = expand && content == 'RECORD_LIST'?
-		<table style={{width: '100%'}}><tbody><tr>
+	const { expand } = ui.banner
 
-			<td style={categoryStyle}>
-				<div>
+	const filterExpansion = expand? <table style={{width: '100%'}}><tbody><tr>
 
-					<h5><MoneyIcon /></h5>
+		<td style={categoryStyle}>
+			<div>
 
-					<div onClick={(e) => minAmountFilter(filter.amount.min)}>min</div>
-					<div>{filter.amount.min || '--'}</div>
+				<h5><MoneyIcon /></h5>
 
-					<div onClick={(e) => maxAmountFilter(filter.amount.max)}>max</div>
-					<div>{filter.amount.max || '--'}</div>
+				<div onClick={(e) => minAmountFilter(filter.amount.min)}>min</div>
+				<div>{filter.amount.min || '--'}</div>
 
-				</div>
-			</td>
+				<div onClick={(e) => maxAmountFilter(filter.amount.max)}>max</div>
+				<div>{filter.amount.max || '--'}</div>
 
-			<td style={categoryStyle}>
-				<div>
-					<h5><TagIcon /></h5>
-					{classList.map( c =>
-						<div key={c.id}
-							onClick={ (e) =>
-								categoryFilter(c.name, classCategories[c.id])
-							}>
-							{c.name}
-						</div>
-					)}
-				</div>
-			</td>
+			</div>
+		</td>
 
-			<td style={categoryStyle}>
-				<div>
+		<td style={categoryStyle}>
+			<div>
+				<h5><TagIcon /></h5>
+				{classList.map( c =>
+					<div key={c.id}
+						onClick={ (e) =>
+							categoryFilter(c.name, classCategories[c.id])
+						}>
+						{c.name}
+					</div>
+				)}
+			</div>
+		</td>
 
-					<h5><TimeIcon /></h5>
+		<td style={categoryStyle}>
+			<div>
 
-					<div onClick={(e) => fromTimeFilter(filter.time.from)}>from</div>
-					<div>{timeStr(filter.time.from)}</div>
+				<h5><TimeIcon /></h5>
 
-					<div onClick={(e) => toTimeFilter(filter.time.to)}>to</div>
-					<div>{timeStr(filter.time.to)}</div>
+				<div onClick={(e) => fromTimeFilter(filter.time.from)}>from</div>
+				<div>{timeStr(filter.time.from)}</div>
 
-				</div>
-			</td>
+				<div onClick={(e) => toTimeFilter(filter.time.to)}>to</div>
+				<div>{timeStr(filter.time.to)}</div>
 
-		</tr></tbody></table>
-		: <span />
+			</div>
+		</td>
 
-	return <div style={{
-			...bannerStyle,
-			height: expand? 800:300
-		}}>
-		<h3 onClick={(e) => toHome()}>
-			<WalletIcon />
-		</h3>
-		<h3>{content == 'HOME'? title: ''}</h3>
+	</tr></tbody></table> : <div />
 
-		<div className="container"
-			style={{ filter: modal?'brightness(300%) blur(10px)': '' }}>
-			{content == 'RECORD_LIST'?
-				<h5 onClick={(e) => toggleExpandFilters()}>
-					<FilterIcon />
-				</h5>
-				: <span></span>
-			}
-			{expansion}
-		</div>
+	return <div>
+		<h5 onClick={(e) => toggleExpandFilters()}>
+			<FilterIcon />
+		</h5>
+		{filterExpansion}
 	</div>
 }
+const BannerFilter = connect(
 
-export default connect(
 	({ ui, filter, record }) => ({
 		classList: classList(record.classes),
 		classCategories: classCategories(record),
@@ -131,7 +117,77 @@ export default connect(
             viewTime: time,
             limit: 1
         })),
-		toggleExpandFilters: () => dispatch(toggleExpandFilters()),
+		toggleExpandFilters: () => dispatch(toggleExpandFilters())
+	})
+)(bannerFilter)
+
+
+const BannerHead = toHome => (props) => (
+	<h3 onClick={(e) => toHome()}>
+		<WalletIcon />
+	</h3>
+)
+const BannerHeadDefault = toHome => (props) => (
+	<div>{BannerHead(toHome)}</div>
+)
+const BannerHeadHome = (props) => <div>
+	<h3>
+		<WalletIcon />WAllet
+	</h3>
+</div>
+
+const BannerHeadList = toHome => (props) => (
+	<div>
+		{BannerHead(toHome)}
+		<BannerFilter />
+	</div>
+)
+const Banner = ({
+	ui,
+	toHome
+}) => {
+	const { content, modal, banner } = ui
+	const { expand, title } = banner
+
+
+	return <div style={{
+			...bannerStyle,
+			height: expand? 800:300
+		}}>
+		{ content != 'HOME'?
+			<h3 onClick={(e) => toHome()}>
+				<WalletIcon />
+			</h3>
+			:
+			<div className="container">
+				<br />
+				<div className="row">
+					<div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+					<div className="one column">
+						<h2>
+							<WalletIcon />
+						</h2>
+					</div>
+					<div className="one column" style={{ color: 'transparent' }}>{'-'}</div>
+					<div className="three columns"
+						style={{fontSize:'3.6rem'}}>
+						WALLET
+					</div>
+
+					<div className="four columns" style={{ color: 'transparent' }}>{'-'}</div>
+				</div>
+			</div>
+		}
+		<Route path="/list" component={BannerFilter}/>
+
+	</div>
+}
+
+export default withRouter(connect(
+	({ ui }) => ({
+		ui
+	}),
+	dispatch => ({
 		toHome: () => dispatch( changeContent('HOME'))
 	})
-)(Banner)
+)(Banner))

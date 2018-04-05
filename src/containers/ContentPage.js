@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route, withRouter } from 'react-router'
+
 import { syncFromFile as testGAPI } from '../actions'
 
 import NewRecordPage from './NewRecordPage'

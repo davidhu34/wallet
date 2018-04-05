@@ -13,6 +13,10 @@ export const createRecord = record => ({
 	type: 'CREATE_RECORD', record
 })
 
+export const resetNewRecord = () => ({
+	type: 'NEW_RECORD_RESET'
+})
+
 export const toggleCategoryFilter = category => ({
 	type: 'TOGGLE_CATEGORY_FILTER', category
 })
