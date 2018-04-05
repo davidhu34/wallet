@@ -152,7 +152,7 @@ export const recordInit = {
             class: 'food',
             category: '3',
             amount: 100,
-            note: 'dinner mwd'
+            note: 'dinner JSP'
         },
         '5': {
             id: '5',

@@ -1,5 +1,5 @@
 const driveAPIInit = {
-	userInputFileName: '',
+	userInputFileName: 'csv3',
 	localFile: {
 		id: '',
 		name: '',
@@ -26,19 +26,15 @@ export const driveAPI = ( state = driveAPIInit, action ) => {
 	switch ( action.type ) {
 
 		case 'GAPI_SIGNIN_START':
-			return state
 		case 'GAPI_SIGNIN_END':
-
 			return state
 
 		case 'GAPI_UPLOAD_START':
 		case 'GAPI_SYNC_START':
-			return {
-				...state,
-				userInputFileName: action.name
-			}
-		case 'GAPI_UPLOAD_LISTERROR':
-			console.log(action.err);
+			return state
+		case 'GAPI_UPLOAD_ERROR':
+		case 'GAPI_SYNC_ERROR':
+			console.log(action.err)
 			return state
 		case 'GAPI_UPLOAD_UPDATE':
 		case 'GAPI_UPLOAD_CREATE':

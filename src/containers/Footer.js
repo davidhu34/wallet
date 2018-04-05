@@ -13,6 +13,20 @@ import { launchSelection, changeContent, launchDatepicker } from '../actions'
 import { NewRecordFooter } from './NewRecordPage'
 import { HomeFooter } from './HomePage'
 
+const DefaultFooter = ({ toHome }) => (
+    <div className="row">
+
+        <div className="one-third column" >
+            <h1 onClick={(e) => { toHome() }}>
+                <BackIcon />
+            </h1>
+        </div>
+
+        <div className="one-third column" />
+        <div className="one-third column" />
+    </div>
+)
+
 const Footer = ({
     path,
     toHome
@@ -26,17 +40,7 @@ const Footer = ({
             footer = <NewRecordFooter />
             break
         default:
-            footer = <div className="row">
-
-                <div className="one-third column" >
-                    <h1 onClick={(e) => { toHome() }}>
-                        <BackIcon />
-                    </h1>
-                </div>
-
-                <div className="one-third column" />
-                <div className="one-third column" />
-            </div>
+            footer = <DefaultFooter toHome={toHome} />
             break
     }
     return <div className="container"

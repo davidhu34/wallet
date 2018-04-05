@@ -36,33 +36,30 @@ const NewRecordPage = ({
 
     return <div>
         <div >
-        	<b>TIME</b>
-            <div onClick={ (e) => selectTime(nrTime.getTime()) }>{year +' '+ (month+1) +' '+ date}</div>
+        	<h6><b>TIME</b></h6>
+            <div className="row" onClick={ (e) => selectTime(nrTime.getTime()) }>{year +' '+ (month+1) +' '+ date}</div>
 
         </div>
         <br />
-        <div onClick={ (e) => inputNote(note) }>
-        	<b>NOTE</b>
+        <div className="row" onClick={ (e) => inputNote(note) }>
+        	<h6><b>NOTE</b></h6>
         	<div>{note}</div>
         </div>
         <br />
-        <div onClick={ (e) => inputAmount(amount) }>
-        	<b>AMOUNT</b>
+        <div className="row" onClick={ (e) => inputAmount(amount) }>
+        	<h6><b>AMOUNT</b></h6>
         	<div>{amount}</div>
         </div>
         <br />
-        <div onClick={ (e) => selectClass(classes) }>
-            <b>CLASS</b>
+        <div className="row" onClick={ (e) => selectClass(classes) }>
+            <h6><b>CLASS</b></h6>
             <div>{ nrClass }</div>
         </div>
         <br />
-        <div onClick={ (e) => classId? selectCategory(categories, classId): {} }>
-            <b>CATEGORY</b>
+        <div className="row" onClick={ (e) => classId? selectCategory(categories, classId): {} }>
+            <h6><b>CATEGORY</b></h6>
             <div>{ nrCateory }</div>
         </div>
-        <br />
-        <div onClick={ (e) => createRecord(newRecord) }>CREATE</div>
-        <div onClick={ (e) => back() }>CANCEL</div>
 
     </div>
 

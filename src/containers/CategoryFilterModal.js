@@ -13,6 +13,7 @@ const CategoryFilterModal = ({
     const filters = categoryList.map( (c, idx) => {
             const categoryName = c.name
             return <div style={{
+                    padding: '1rem',
                     display: 'inline-block'
                 }}
                 onClick={(e) => toggleFilter(c.id)} >

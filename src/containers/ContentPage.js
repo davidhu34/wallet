@@ -15,9 +15,6 @@ const ContentPage = ({ modal, testGAPI }) => {
         paddingTop: '300px'
     }}>
 
-        <div onClick={ (e) => {
-            testGAPI('csv3')
-        }}>test gapi</div>
         <Route exact path="/" component={HomePage}/>
         <Route path="/new" component={NewRecordPage} />
         <Route path="/list" component={RecordListPage} />
