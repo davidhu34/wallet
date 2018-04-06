@@ -2,9 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route, withRouter } from 'react-router'
 
+// import OtherIcon from 'react-icons/lib/io/ios-more'
+// import ListIcon from 'react-icons/lib/io/ios-paper-outline'
+// import PenIcon from 'react-icons/lib/io/ios-compose-outline'
 import OtherIcon from 'react-icons/lib/io/ios-more'
 import ListIcon from 'react-icons/lib/ti/document-text'
 import PenIcon from 'react-icons/lib/ti/pen'
+
 
 import { filterRecords } from '../reducers/record'
 import { recordFilters } from '../reducers/filter'

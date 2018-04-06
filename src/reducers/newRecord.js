@@ -28,10 +28,10 @@ export const newRecord = ( state = newRecordInit(), action ) => {
 				...state,
 				amount: action.number
 			} : state
-		case 'NEW_RECORD_NOTE':
+		case 'NEW_RECORD_DESC':
 			return action.text? {
 				...state,
-				note: action.text
+				desc: action.text
 			} : state
 		case 'NEW_RECORD_DATEPICKER':
 			return action.time? {

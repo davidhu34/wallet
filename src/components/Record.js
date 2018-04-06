@@ -6,7 +6,7 @@ const Record = ({ record }) => {
 
     return <tr>
         <td>{moment(record.time).format('HH:mm')}</td>
-        <td>{record.note}</td>
+        <td>{record.desc}</td>
         <td>{record.category}</td>
         <td>{record.amount}</td>
     </tr>

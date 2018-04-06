@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
+import { footerStyle } from '../styles'
 import { toggleCategoryFilter } from '../actions'
 
 const CategoryFilterModal = ({
@@ -24,13 +25,27 @@ const CategoryFilterModal = ({
             </div>
         })
 
-    return <div>
-        <strong>{title}</strong>
+    return <div className="container">
+        <br />
+        <h5>{title}</h5>
+
+        <br />
         <br />
         {filters}
-        <br />
-        <div onClick={ (e) => resolve(true) }>APPLY</div>
-        <div onClick={ (e) => resolve(false) }>CANCEL</div>
+
+        <div className="container"
+            style={footerStyle}>
+
+            <div className="row">
+                <div className="six columns" onClick={ (e) => resolve(false) }>
+                    <h5>CANCEL</h5>
+                </div>
+                <div className="six columns" onClick={ (e) => resolve(true) }>
+                    <h5>APPLY</h5>
+                </div>
+            </div>
+
+        </div>
     </div>
 }
 

@@ -125,74 +125,74 @@ export const recordInit = {
         '1': {
             id: '1',
             time: 1318874398806,
-            class: 'food',
+            class: '1',
             category: '2',
             amount: 100,
-            note: 'lunch'
+            desc: 'lunch'
         },
         '2': {
             id: '2',
             time: 1318871398801,
-            class: 'travel',
+            class: '2',
             category: '7',
             amount: 1200,
-            note: 'HSR to Kaohsiung'
+            desc: 'HSR to Kaohsiung'
         },
         '3': {
             id: '3',
             time: 1308874398701,
-            class: 'travel',
+            class: '2',
             category: '7',
             amount: 1200,
-            note: 'HSR to Taipei'
+            desc: 'HSR to Taipei'
         },
         '4': {
             id: '4',
             time: 1318874398806,
-            class: 'food',
+            class: '1',
             category: '3',
             amount: 100,
-            note: 'dinner JSP'
+            desc: 'dinner JSP'
         },
         '5': {
             id: '5',
             time: 1318879398801,
-            class: 'travel',
+            class: '2',
             category: '5',
             amount: 1200,
-            note: 'MRT to work'
+            desc: 'MRT to work'
         },
         '6': {
             id: '6',
             time: 1308884398701,
-            class: 'travel',
+            class: '2',
             category: '5',
             amount: 1200,
-            note: 'MRT to home'
+            desc: 'MRT to home'
         },
         '7': {
             id: '7',
             time: 1318974398806,
-            class: 'food',
+            class: '1',
             category: '4',
             amount: 100,
-            note: 'comebuy'
+            desc: 'comebuy'
         },
         '8': {
             id: '8',
             time: 1319871398801,
-            class: 'travel',
+            class: '2',
             category: '6',
             amount: 1200,
-            note: 'bus to school'
+            desc: 'bus to school'
         },
         '9': {
             id: '9',
             time: 1328874398701,
-            class: 'travel',
+            class: '2',
             category: '6',
             amount: 1200,
-            note: 'bus home'
+            desc: 'bus home'
         }
     },
     visibleRecords: ['1', '2', '3', '4', '5', '6', '7', '8', '9']

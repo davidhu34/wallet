@@ -2,10 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Route, IndexRoute, withRouter } from 'react-router'
 
+
 import WalletIcon from 'react-icons/lib/ti/book'
 import FilterIcon from 'react-icons/lib/ti/filter'
-import TimeIcon from 'react-icons/lib/md/today'
 import MoneyIcon from 'react-icons/lib/md/attach-money'
+// import TimeIcon from 'react-icons/lib/io/ios-calendar'
+// import TagIcon from 'react-icons/lib/io/ios-pricetags'
+import TimeIcon from 'react-icons/lib/md/today'
 import TagIcon from 'react-icons/lib/ti/tags'
 
 
@@ -162,7 +165,7 @@ const Banner = ({
 
 	return <div style={{
 			...bannerStyle,
-			height: expand? 800:300
+			height: expand? '100%':300
 		}}>
 		{ content != 'HOME'?
 			<h3 onClick={(e) => toHome()}>
@@ -188,7 +191,7 @@ const Banner = ({
 				</div>
 			</div>
 		}
-		<Route path="/list" component={BannerFilter}/>
+		{ modal? null : <Route path="/list" component={BannerFilter}/> }
 
 	</div>
 }

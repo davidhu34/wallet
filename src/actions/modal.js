@@ -2,10 +2,10 @@ export * from './datepicker'
 export * from './numberPad'
 
 const missionDirectivesPrep = {
-	'NEW_RECORD_NOTE': (data) => ({
+	'NEW_RECORD_DESC': (data) => ({
 		modalType: 'text',
 		preClose: (value) => ({
-			type: 'NEW_RECORD_NOTE',
+			type: 'NEW_RECORD_DESC',
 			text: value
 		})
 	}),
@@ -134,7 +134,7 @@ export const launchDatepickerSelection = data => launchModal('NEW_RECORD_DATEPIC
 
 export const launchInputAmount = data => launchModal('NEW_RECORD_AMOUNT', data)
 
-export const launchInputNote = data => launchModal('NEW_RECORD_NOTE', data)
+export const launchInputDesc = data => launchModal('NEW_RECORD_DESC', data)
 
 // filter actions
 export const launchMaxAmountFilter = data => launchModal('AMOUNT_FILTER', {

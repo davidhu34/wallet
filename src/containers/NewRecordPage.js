@@ -2,17 +2,20 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-import BackIcon from 'react-icons/lib/md/chevron-left'
+import BackIcon from 'react-icons/lib/io/ios-arrow-left'
+// import ResetIcon from 'react-icons/lib/io/ios-reload'
+import CheckIcon from 'react-icons/lib/io/ios-checkmark-empty'
+// import BackIcon from 'react-icons/lib/md/chevron-left'
 import ResetIcon from 'react-icons/lib/md/refresh'
-import CheckIcon from 'react-icons/lib/ti/input-checked'
+// import CheckIcon from 'react-icons/lib/ti/input-checked'
 
 import {
     launchInputAmount,
     launchClassSelection,
     launchCategorySelection,
     launchDatepickerSelection,
-    launchInputNote,
-    createRecord,
+    launchInputDesc,
+    createNewRecord,
     resetNewRecord,
     changeContent
 } from '../actions'
@@ -23,9 +26,9 @@ import { monthNames } from '../consts'
 const NewRecordPage = ({
 	newRecord, classes, categories,
     selectTime, selectClass, selectCategory,
-    inputAmount, inputNote, createRecord, back
+    inputAmount, inputDesc, createRecord, back
 }) => {
-	const { /*year, month, date,*/ amount, note, time, classId, categoryId } = newRecord
+	const { /*year, month, date,*/ amount, desc, time, classId, categoryId } = newRecord
     const nrClass = classId? classes[classId].name: '--'
     const nrCateory = categoryId? categories[categoryId].name: '--'
 
@@ -42,9 +45,9 @@ const NewRecordPage = ({
 
         </div>
         <br />
-        <div className="row" onClick={ (e) => inputNote(note) }>
-        	<h6><b>NOTE</b></h6>
-        	<div>{note}</div>
+        <div className="row" onClick={ (e) => inputDesc(desc) }>
+        	<h6><b>DESC</b></h6>
+        	<div>{desc}</div>
         </div>
         <br />
         <div className="row" onClick={ (e) => inputAmount(amount) }>
@@ -88,7 +91,7 @@ const newRecordFooter = ({
         </div>
         <div className="one-third column">
 
-            <h1 onClick={ (e) => createRecord(newRecord) }>
+            <h1 onClick={ (e) => createRecord() }>
                 <CheckIcon />
             </h1>
 
@@ -100,7 +103,7 @@ export const NewRecordFooter = connect(
         newRecord
 	}),
 	dispatch => ({
-        createRecord: (record) => dispatch(createRecord(record)),
+        createRecord: () => dispatch(createNewRecord()),
         resetRecord: () => dispatch(resetNewRecord()),
         back: () => dispatch(changeContent('HOME'))
 	})
@@ -125,7 +128,7 @@ export default connect(
         selectCategory: (categories, classId) => dispatch(launchCategorySelection({
             categoryList: categorySelections(categories, classId)
         })),
-        inputNote: (note) => dispatch(launchInputNote({ title: 'INPUT NOTE', text: note })),
+        inputDesc: (desc) => dispatch(launchInputDesc({ title: 'INPUT DESC', text: desc })),
 		inputAmount: (amount) => dispatch(launchInputAmount({ title: 'INPUT AMOUNT', number: amount }))
 	})
 )(NewRecordPage)

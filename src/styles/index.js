@@ -23,6 +23,17 @@ export const numberStyle = {
     width: String(100/3)+'%'
 }
 
+export const modalStyle = {
+	width: '100%',
+	height: '100%',
+	position: 'absolute',
+	top: 0,
+	left:0,
+	zIndex: 4,
+	paddingTop: 100,
+	textAlign: 'center'
+}
+
 export const textInputStyle = {
 	width: '80%',
 	fontSize: 80,
@@ -48,6 +59,7 @@ export const selectionStyle = {
 export const footerStyle = {
 	position:'fixed',
 	bottom: 0,
+	zIndex: 5,
 	textAlign: 'center',
 	verticalAlign: 'center'
 }

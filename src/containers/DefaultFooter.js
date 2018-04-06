@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import BackIcon from 'react-icons/lib/md/chevron-left'
+
+import BackIcon from 'react-icons/lib/io/ios-arrow-left'
+// import BackIcon from 'react-icons/lib/md/chevron-left'
 
 import { changeContent } from '../actions'
 

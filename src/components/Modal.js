@@ -1,17 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+
+import { modalStyle } from '../styles'
 
 const Modal = ({ children, color }) => {
 
 	return <div style={{
-		width: '100%',
-		height: '100%',
-		position: 'absolute',
-		top: 0,
-		left:0,
-		zIndex: 4,
-		paddingTop: 100,
-		backgroundColor: color,
-		textAlign: 'center'
+		...modalStyle,
+		backgroundColor: color
 		//WebkitTextFillColor: 'transparent',
 		//WebkitBackgroundClip: 'text'
 	}}>
