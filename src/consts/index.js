@@ -68,7 +68,11 @@ export const uiInit = {
         expand: false,
         title: 'Wallet'
     },
-    content: 'HOME'
+    content: 'HOME',
+	overview: {
+		totalType: 0,
+		topCategoryType: 0
+	}
 }
 
 export const recordInit = {

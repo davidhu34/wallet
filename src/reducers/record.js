@@ -123,47 +123,57 @@ const thisMonth = () => {
 }
 const recordsFromTime = (record, fromTime) => {
 	const { records } = record
+    console.log(records)
 	return Object.keys(records)
 		.map( r => records[r] )
 		.filter( r => r.time >= fromTime )
 }
-export const weekRecords = (record) => recordsFromTime(record, thisMonday())
-export const monthRecords = (record) => recordsFromTime(record, thisFirstOfMonth())
+const weekRecordList = (record) => recordsFromTime(record, thisMonday())
+const monthRecordList = (record) => recordsFromTime(record, thisFirstOfMonth())
 
-export const mapCategoryRecords = (records) => {
+const mapCategoryRecords = (records, key = 'category') => {
 	let categoryRecords = {}
 	Object.keys(records)
 		.map( r => {
-			const ctg = records[r].category
-			if (categoryRecords[ctg]) {
-				categoryRecords[ctg].push(r)
-			} else {
-				categoryRecords[ctg] = [r]
-			}
+			const ctg = records[r][key]
+            if (ctg) {
+    			if (categoryRecords[ctg]) {
+    				categoryRecords[ctg].push(r)
+    			} else {
+    				categoryRecords[ctg] = [r]
+    			}
+            }
 		})
 	return categoryRecords
 }
-export const mapClassRecords = (records) => {
-	let classRecords = {}
-	Object.keys(records)
-		.map( r => {
-			const cl = records[r].class
-			if (classRecords[cl]) {
-				classRecords[cl].push(r)
+const mapCategoryRecordList = (recordList, key = 'category') => {
+	let categoryRecordList = {}
+	recordList.map( (r, idx) => {
+		const ctg = recordList[idx][key]
+        if (ctg) {
+			if (categoryRecordList[ctg]) {
+				categoryRecordList[ctg].push(idx)
 			} else {
-				classRecords[cl] = [r]
+				categoryRecordList[ctg] = [idx]
 			}
-		})
-	return classRecords
+        }
+	})
+	return categoryRecordList
+}
+const mapClassRecords = (records) => mapCategoryRecords(records, 'class')
+const mapClassRecordList = (records) => mapCategoryRecordList(records, 'class')
+
+const topAmountOfRecordList = (recordList, k) => {
+    return recordList.sort( (a,b) => b.amount - a.amount ).slice(0, k)
+}
+const topAmountOfRecords = (records, k) => {
+	return topAmountOfRecordList(
+        Object.keys(records).map( r => records[r] ),
+        k
+	)
 }
 
-export const topAmountRecords = (records, k) => {
-	return Object.keys(records)
-		.map( r => records[r] )
-		.sort( (a,b) => b.amount - a.amount )
-		.slice(0, k)
-}
-export const topCountClass = (cRecords, k) => {
+export const topCountOfClassRecords = (cRecords, k) => {
 	let classes
 	return Object.keys(cRecords)
 		.map( c => ({
@@ -173,7 +183,8 @@ export const topCountClass = (cRecords, k) => {
 		.sort( (a,b) => a.length - b.length )
 		.slice(0, k)
 }
-export const topCountCategory = (cRecords, k) => {
+
+export const topCountOfCategoryRecords = (cRecords, k) => {
 	let categories
 	return Object.keys(cRecords)
 		.map( c => ({
@@ -183,6 +194,56 @@ export const topCountCategory = (cRecords, k) => {
 		.sort( (a,b) => a.length - b.length )
 		.slice(0, k)
 }
+export const getTotal = (recordList) => {
+    let total = 0
+    recordList.map( r => { total += r.amount })
+    return total
+}
+const arraySum = (array) => {
+    let sum = 0
+    for (let i = 0; i < array.length; i++) {
+        sum += array[i]
+    }
+    return sum
+}
+export const getOverviewRecordList = (overview, record) => {
+    const getRecordList = [weekRecordList, monthRecordList]
+    return getRecordList[overview.totalType](record)
+}
+export const getTopCategory = (overview, recordList) => {
+    const { topCategoryType } = overview
+    console.log(recordList, overview)
+    const categoryRecordList = mapCategoryRecordList(recordList)
+    const getTopCategoryList = [
+        () => {
+            let categorySumList = []
+            Object.keys(categoryRecordList)
+                .map( ctg => {
+                    categorySumList.push({
+                        category: ctg,
+                        sum: arraySum(
+                            categoryRecordList[ctg].map( idx => recordList[idx].amount )
+                        )
+                    })
+                })
+            return categorySumList.sort( (a,b) => b.sum - a.sum ).slice(0,3)
+        },
+        () => {
+            let categoryCountList = []
+            Object.keys(categoryRecordList)
+                .map( ctg => {
+                    categorySList.push({
+                        category: ctg,
+                        count: categoryRecordList[ctg].length
+                    })
+                })
+            return categoryCountList.sort( (a,b) => b.count - a.count ).slice(0,3)
+        }
+    ]
+    return getTopCategoryList[topCategoryType]()
+
+}
+
 
 export const classList = classes => Object.keys(classes).map( c => classes[c] )
 export const categoryList = categories => categories.map( c => categories[c] )

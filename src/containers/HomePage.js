@@ -9,8 +9,10 @@ import OtherIcon from 'react-icons/lib/io/ios-more'
 import ListIcon from 'react-icons/lib/ti/document-text'
 import PenIcon from 'react-icons/lib/ti/pen'
 
+import MoneyIcon from 'react-icons/lib/md/attach-money'
+import TagIcon from 'react-icons/lib/ti/tags'
 
-import { filterRecords } from '../reducers/record'
+import { filterRecords, getOverviewRecordList, getTotal, getTopCategory } from '../reducers/record'
 import { recordFilters } from '../reducers/filter'
 import { launchSelection, changeContent, launchDatepicker } from '../actions'
 
@@ -19,10 +21,49 @@ import RecordList from '../components/RecordList'
 import RecordListPage from './RecordListPage'
 
 const HomePage = ({
+    total, topCategories,
     changeContent
 }) => {
     return <div className="container">
-        <h1>YO</h1>
+        <br />
+
+        <div className="row">
+            <div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+            <div className="three columns">
+                <h6>this week</h6>
+            </div>
+            <div className="three columns">
+                <h6>this month</h6>
+            </div>
+            <div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+        </div>
+        <h1>{total+' $'}</h1>
+
+        <br />
+
+        <div className="row">
+            <div className="one column" style={{ color: 'transparent' }}>{'-'}</div>
+            <div className="six columns">
+                <h5>Top Expenses</h5>
+            </div>
+            <div className="two columns">
+                <h5><TagIcon /></h5>
+            </div>
+            <div className="two columns">
+                <h5><MoneyIcon /></h5>
+            </div>
+            <div className="one column" style={{ color: 'transparent' }}>{'-'}</div>
+        </div>
+        <div className="row">
+            <div className="two columns" style={{ color: 'transparent' }}>{'-'}</div>
+            <div className="four columns">
+                <h6>category</h6>
+            </div>
+            <div className="four columns">
+                <h6>666</h6>
+            </div>
+            <div className="two columns" style={{ color: 'transparent' }}>{'-'}</div>
+        </div>
     </div>
 
 }
@@ -61,7 +102,17 @@ export const HomeFooter = connect(
 )(homeFooter)
 
 export default connect(
-	state => ({}),
+	({ ui, record }) => {
+        const overview = ui.overview
+        const overviewRecordList = getOverviewRecordList(overview, record)
+        console.log(overview, overviewRecordList)
+        return {
+            ...overview,
+            total: getTotal(overviewRecordList),
+            topCategories: getTopCategory(overview, overviewRecordList)
+        }
+
+    },
     dispatch => ({
         changeContent: (content) => dispatch( changeContent(content))
     })
