@@ -114,10 +114,10 @@ export const filterRecords = (filters, record) => {
 const thisMonday = () => {
 	const today = new Date()
 	const weekDay = today.getDay()
-	const diff = weekDay? weekDay: 7
+	const diff = weekDay? weekDay-1: 6
 	return new Date(today.getFullYear(), today.getMonth(), today.getDate()-diff)
 }
-const thisMonth = () => {
+const thisFirstOfMonth = () => {
 	const today = new Date()
 	return new Date(today.getFullYear(), today.getMonth(), 1)
 }
@@ -162,7 +162,7 @@ const mapCategoryRecordList = (recordList, key = 'category') => {
 }
 const mapClassRecords = (records) => mapCategoryRecords(records, 'class')
 const mapClassRecordList = (records) => mapCategoryRecordList(records, 'class')
-
+/*
 const topAmountOfRecordList = (recordList, k) => {
     return recordList.sort( (a,b) => b.amount - a.amount ).slice(0, k)
 }
@@ -193,7 +193,7 @@ export const topCountOfCategoryRecords = (cRecords, k) => {
 		}))
 		.sort( (a,b) => a.length - b.length )
 		.slice(0, k)
-}
+}*/
 export const getTotal = (recordList) => {
     let total = 0
     recordList.map( r => { total += r.amount })
@@ -210,17 +210,24 @@ export const getOverviewRecordList = (overview, record) => {
     const getRecordList = [weekRecordList, monthRecordList]
     return getRecordList[overview.totalType](record)
 }
-export const getTopCategory = (overview, recordList) => {
-    const { topCategoryType } = overview
-    console.log(recordList, overview)
-    const categoryRecordList = mapCategoryRecordList(recordList)
+export const getTopCategory = (overview, record, recordList) => {
+    const { classes, categories } = record
+    const { topCategoryType, topType } = overview
+
+    const categoryData = record[['classes', 'categories'][topCategoryType]]
+    console.log(categoryData)
+
+    const mapRecordList = [mapClassRecordList, mapCategoryRecordList]
+    const categoryRecordList = mapRecordList[topCategoryType](recordList)
     const getTopCategoryList = [
         () => {
             let categorySumList = []
+            console.log('categoryRecordList',categoryRecordList)
             Object.keys(categoryRecordList)
                 .map( ctg => {
+                    console.log('')
                     categorySumList.push({
-                        category: ctg,
+                        category: categoryData[ctg],
                         sum: arraySum(
                             categoryRecordList[ctg].map( idx => recordList[idx].amount )
                         )
@@ -232,15 +239,15 @@ export const getTopCategory = (overview, recordList) => {
             let categoryCountList = []
             Object.keys(categoryRecordList)
                 .map( ctg => {
-                    categorySList.push({
-                        category: ctg,
+                    categoryCountList.push({
+                        category: categoryData[ctg],
                         count: categoryRecordList[ctg].length
                     })
                 })
             return categoryCountList.sort( (a,b) => b.count - a.count ).slice(0,3)
         }
     ]
-    return getTopCategoryList[topCategoryType]()
+    return getTopCategoryList[topType]()
 
 }
 

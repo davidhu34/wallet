@@ -11,6 +11,18 @@ export const gapiReady = () => ({ type: 'GAPI_READY' })
 
 export const testGAPI = () => ({ type: 'GAPI_TEST' })
 
+export const selectTotalType = (totalType) => ({
+	type: 'OVERVIEW_TOTAL_TYPE',
+	totalType: totalType
+})
+export const selectTopType = (topType) => ({
+	type: 'OVERVIEW_TOP_TYPE',
+	topType: topType
+})
+export const selectTopCategoryType = (topCategoryType) => ({
+	type: 'OVERVIEW_TOP_CATEGORY_TYPE',
+	topCategoryType: topCategoryType
+})
 
 const createRecord = newRecord => ({
 	type: 'CREATE_RECORD',

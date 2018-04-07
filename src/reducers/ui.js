@@ -1,5 +1,27 @@
 import { uiInit, routeContents } from '../consts'
 
+
+const overview = ( state, action ) => {
+    switch (action.type) {
+        case 'OVERVIEW_TOTAL_TYPE':
+            return {
+                ...state,
+                totalType: action.totalType
+        }
+        case 'OVERVIEW_TOP_TYPE':
+            return {
+                ...state,
+                topType: action.topType
+            }
+        case 'OVERVIEW_TOP_CATEGORY_TYPE':
+            return {
+                ...state,
+                topCategoryType: action.topCategoryType
+            }
+        default:
+            return state
+    }
+}
 const banner = ( state, action ) => {
     switch ( action.type ) {
         case 'TOGGLE_EXPAND_FILTERS':
@@ -41,6 +63,15 @@ export const ui = ( state = uiInit, action ) => {
                 ...state,
                 content: action.content
             }
+
+        case 'OVERVIEW_TOTAL_TYPE':
+        case 'OVERVIEW_TOP_TYPE':
+        case 'OVERVIEW_TOP_CATEGORY_TYPE':
+            return {
+                ...state,
+                overview: overview(state.overview, action)
+            }
+
         case '@@router/LOCATION_CHANGE':
             const location = action.payload || {}
             return {

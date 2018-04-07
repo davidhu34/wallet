@@ -71,6 +71,7 @@ export const uiInit = {
     content: 'HOME',
 	overview: {
 		totalType: 0,
+		topType: 0,
 		topCategoryType: 0
 	}
 }
@@ -155,7 +156,7 @@ export const recordInit = {
             time: 1318874398806,
             class: '1',
             category: '3',
-            amount: 100,
+            amount: 9100,
             desc: 'dinner JSP'
         },
         '5': {
@@ -163,7 +164,7 @@ export const recordInit = {
             time: 1318879398801,
             class: '2',
             category: '5',
-            amount: 1200,
+            amount: 200,
             desc: 'MRT to work'
         },
         '6': {
@@ -171,7 +172,7 @@ export const recordInit = {
             time: 1308884398701,
             class: '2',
             category: '5',
-            amount: 1200,
+            amount: 200,
             desc: 'MRT to home'
         },
         '7': {
