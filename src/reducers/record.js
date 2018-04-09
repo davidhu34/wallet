@@ -115,7 +115,7 @@ const thisMonday = () => {
 	const today = new Date()
 	const weekDay = today.getDay()
 	const diff = weekDay? weekDay-1: 6
-	return new Date(today.getFullYear(), today.getMonth(), today.getDate()-diff)
+	return new Date(0)//new Date(today.getFullYear(), today.getMonth(), today.getDate()-diff)
 }
 const thisFirstOfMonth = () => {
 	const today = new Date()
@@ -196,13 +196,13 @@ export const topCountOfCategoryRecords = (cRecords, k) => {
 }*/
 export const getTotal = (recordList) => {
     let total = 0
-    recordList.map( r => { total += r.amount })
+    recordList.map( r => { total += Number(r.amount) })
     return total
 }
 const arraySum = (array) => {
     let sum = 0
     for (let i = 0; i < array.length; i++) {
-        sum += array[i]
+        sum += Number(array[i])
     }
     return sum
 }

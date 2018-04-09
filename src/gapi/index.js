@@ -21,7 +21,7 @@ class GAPI {
                     console.log('gapi client inited')
                     // this.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
 
-                });
+                })
             })
         }
         const getWindowGAPI = () => {

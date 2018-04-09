@@ -52,6 +52,19 @@ export const resetNewRecord = () => ({
 export const toggleCategoryFilter = category => ({
 	type: 'TOGGLE_CATEGORY_FILTER', category
 })
+export const toggleAllCategoryFilter = categories => ({
+	type: 'TOGGLE_ALL_CATEGORY_FILTER', categories
+})
+
+export const clearCategoryFilter = category => ({
+	type: 'CLEAR_CATEGORY_FILTER'
+})
+export const clearAmountFilter = category => ({
+	type: 'CLEAR_AMOUNT_FILTER'
+})
+export const clearTimeFilter = category => ({
+	type: 'CLEAR_TIME_FILTER'
+})
 
 export const closeModal = () => ({
 	type: 'CLOSE_MODAL'

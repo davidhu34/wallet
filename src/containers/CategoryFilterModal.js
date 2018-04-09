@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 
 import { footerStyle } from '../styles'
-import { toggleCategoryFilter } from '../actions'
+import { toggleCategoryFilter, toggleAllCategoryFilter } from '../actions'
 
 const CategoryFilterModal = ({
     resolve, title, categoryList,
     selecting,
-    toggleFilter
+    toggleFilter, toggleAllFilter
 }) => {
 
     const filters = categoryList.map( (c, idx) => {
@@ -30,6 +30,21 @@ const CategoryFilterModal = ({
         <h5>{title}</h5>
 
         <br />
+        <div className="container">
+            <div className="row">
+                <div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+
+                <div className="three columns" onClick={ (e) => toggleAllFilter(categoryList.map(c => c.id)) }>
+                    ALL
+                </div>
+                <div className="three columns" onClick={ (e) => toggleAllFilter([]) }>
+                    NONE
+                </div>
+
+                <div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+            </div>
+
+        </div>
         <br />
         {filters}
 
@@ -54,6 +69,7 @@ export default connect(
         selecting: filter.selecting.categories
     }),
     dispatch => ({
-        toggleFilter: (category) => dispatch(toggleCategoryFilter(category))
+        toggleFilter: (category) => dispatch(toggleCategoryFilter(category)),
+        toggleAllFilter: (category) => dispatch(toggleAllCategoryFilter(category))
     })
 )(CategoryFilterModal)

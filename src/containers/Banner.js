@@ -18,10 +18,13 @@ import { bannerStyle, categoryStyle } from '../styles'
 import {
 	toggleExpandFilters,
 	launchCategoryFilter,
+	clearCategoryFilter,
 	launchMaxAmountFilter,
 	launchMinAmountFilter,
+	clearAmountFilter,
 	launchFromTimeFilter,
 	launchToTimeFilter,
+	clearTimeFilter,
 	changeContent
 } from '../actions'
 
@@ -35,7 +38,9 @@ const timeStr = ms =>  {
 const bannerFilter = ({
 	classList, classCategories, ui, filter,
 	toggleExpandFilters,
-	categoryFilter, maxAmountFilter, minAmountFilter, fromTimeFilter, toTimeFilter
+	categoryFilter, clearCategoryFilter,
+	maxAmountFilter, minAmountFilter, clearAmountFilter,
+	fromTimeFilter, toTimeFilter, clearTimeFilter
 }) => {
 
 	const { expand } = ui.banner
@@ -55,6 +60,8 @@ const bannerFilter = ({
 				<div onClick={(e) => maxAmountFilter(filter.amount.max)}>max</div>
 				<div>{filter.amount.max || '--'}</div>
 
+				<br />
+				<div onClick={(e) => clearAmountFilter()}>clear</div>
 			</div>
 		</td>
 
@@ -77,6 +84,9 @@ const bannerFilter = ({
 						</div>
 					})
 				}
+
+				<br />
+				<div onClick={(e) => clearCategoryFilter()}>clear</div>
 			</div>
 		</td>
 
@@ -91,6 +101,8 @@ const bannerFilter = ({
 				<div onClick={(e) => toTimeFilter(filter.time.to)}>to</div>
 				<div>{timeStr(filter.time.to)}</div>
 
+				<br />
+				<div onClick={(e) => clearTimeFilter()}>clear</div>
 			</div>
 		</td>
 
@@ -116,8 +128,10 @@ const BannerFilter = connect(
 			categoryList: categoryList,
 			title: 'filter '+className+' category'
 		})),
+		clearCategoryFilter: () => dispatch(clearCategoryFilter()),
 		maxAmountFilter: (amount) => dispatch(launchMaxAmountFilter({number: amount})),
 		minAmountFilter: (amount) => dispatch(launchMinAmountFilter({number: amount})),
+		clearAmountFilter: () => dispatch(clearAmountFilter()),
 		fromTimeFilter: (time) => dispatch(launchFromTimeFilter({
             title: 'FILTER FROM DATE',
             focusTimes: [time],
@@ -130,6 +144,7 @@ const BannerFilter = connect(
             viewTime: time,
             limit: 1
         })),
+		clearTimeFilter: () => dispatch(clearTimeFilter()),
 		toggleExpandFilters: () => dispatch(toggleExpandFilters())
 	})
 )(bannerFilter)

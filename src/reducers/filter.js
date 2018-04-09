@@ -11,9 +11,15 @@ const selecting = ( state, action ) => {
                     prevCats.filter( c => c != category)
                     : [...prevCats, category]
             }
+        case 'CLEAR_CATEGORY_FILTER':
+            return {
+                ...state,
+                categories: []
+            }
+        case 'TOGGLE_ALL_CATEGORY_FILTER':
         case '@@router/LOCATION_CHANGE':
             return {
-                categories: []
+                categories: action.categories
             }
         default:
             return state
@@ -31,6 +37,11 @@ const amount = ( state, action ) => {
                 ...state,
                 max: action.number > 0? action.number: null
             }
+        case 'CLEAR_AMOUNT_FILTER':
+            return {
+                min: null,
+                max: null
+            }
         default:
             return state
     }
@@ -47,6 +58,11 @@ const time = ( state, action ) => {
                 ...state,
                 to: action.time || null
             }
+        case 'CLEAR_TIME_FILTER':
+            return {
+                from: null,
+                to: null
+            }
         default:
             return state
     }
@@ -55,11 +71,14 @@ export const filter = ( state = filterInit, action ) => {
     switch ( action.type ) {
         case 'APPLY_FROM_TIME_FILTER':
         case 'APPLY_TO_TIME_FILTER':
+        case 'CLEAR_TIME_FILTER':
             return {
                 ...state,
                 time: time(state.time, action)
             }
+
         case 'TOGGLE_CATEGORY_FILTER':
+        case 'TOGGLE_ALL_CATEGORY_FILTER':
             return {
                 ...state,
                 selecting: selecting(state.selecting, action)
@@ -69,8 +88,16 @@ export const filter = ( state = filterInit, action ) => {
                 ...state,
                 categories: state.selecting.categories
             }
+        case 'CLEAR_CATEGORY_FILTER':
+            return {
+                ...state,
+                categories: [],
+                selecting: selecting(state.selecting, action)
+            }
+
         case 'APPLY_MIN_FILTER':
         case 'APPLY_MAX_FILTER':
+        case 'CLEAR_AMOUNT_FILTER':
             return {
                 ...state,
                 amount: amount(state.amount, action)
@@ -79,7 +106,10 @@ export const filter = ( state = filterInit, action ) => {
         case '@@router/LOCATION_CHANGE':
             return {
                 ...state,
-                selecting: selecting(state.selecting, action)
+                selecting: selecting(state.selecting, {
+                    ...action,
+                    categories: state.categories
+                })
             }
         default:
             return state
