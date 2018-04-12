@@ -32,7 +32,7 @@ class GAPI {
             }
         }
         loadingGAPI = setInterval(getWindowGAPI, 1000)
-
+        
 
     }
 

@@ -11,7 +11,7 @@ import { launchSelection } from '../actions'
 
 const Wallet = () => {
 
-    return <div className="Wallet">
+    return <div className="Wallet" style={{ width:'100%', textAlign:'center'}}>
         <ModalProvider />
         <Banner />
         <ContentPage />

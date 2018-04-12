@@ -14,7 +14,6 @@ import { launchModal } from '../actions'
 const ModalProvider = ({
     open, modalType, data, resolve
 }) => {
-    console.log(open);
     if (open) {
         switch (modalType) {
             case 'text':
@@ -55,5 +54,5 @@ const ModalProvider = ({
 }
 
 export default connect(
-    ({ ui, modal }) => ({...modal, open: ui.modal})
+    ({ ui, modal }) => ({ ...modal, open: ui.modal })
 )(ModalProvider)

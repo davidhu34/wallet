@@ -52,14 +52,16 @@ export const textInputStyle = {
 
 export const selectionStyle = {
 	textAlign: 'center',
-	padding: 'auto',
+	verticalAlign: 'center',
 	display:'inline-block'
 }
 
 export const footerStyle = {
 	position:'fixed',
 	bottom: 0,
+	left: 'auto',
 	zIndex: 5,
+	width: '100%',
 	textAlign: 'center',
 	verticalAlign: 'center'
 }

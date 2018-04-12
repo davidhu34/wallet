@@ -7,6 +7,9 @@ export * from './modal'
 
 const classData = recordInit.class
 
+
+export const loadDemoData = () => ({ type: 'LOAD_DEMO_DATA' })
+
 export const gapiReady = () => ({ type: 'GAPI_READY' })
 
 export const testGAPI = () => ({ type: 'GAPI_TEST' })

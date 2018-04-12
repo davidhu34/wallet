@@ -40,6 +40,7 @@ const DatepickerModal = ({
         .map(ft => new Date(ft).getDate())
 
     const options = days.map( (day,i) => {
+        const size = String(100/7)+'%'
         const isPrev = i < prevMonthDays
         const isNext = i >= days.length - nextMonthDays
         const clickedMonth = isPrev? selectedMonth-1
@@ -51,8 +52,8 @@ const DatepickerModal = ({
             }
             style={{
                 ...selectionStyle,
-                width: String(100/7)+'%',
-                height: 120
+                width: size,
+                height: '100'
             }}>
             { isNext || isPrev?
                 <span style={{ color: 'gray' }}>{day}</span>

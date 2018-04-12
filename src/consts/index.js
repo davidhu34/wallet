@@ -75,8 +75,69 @@ export const uiInit = {
 		topCategoryType: 0
 	}
 }
-
 export const recordInit = {
+    classes: {
+        '1': {
+            id: '1',
+            name: 'food',
+            category: ['1' ,'2', '3', '4'],
+            timeline: []
+        },
+        '2': {
+            id: '2',
+            name: 'travel',
+            category: ['5' ,'6', '7'],
+            timeline: []
+        }
+    },
+    categories: {
+        '1': {
+            id: '1',
+            name: 'breakfast',
+            class: '1',
+            timeline: []
+        },
+        '2': {
+            id: '2',
+            name: 'lunch',
+            class: '1',
+            timeline: []
+        },
+        '3': {
+            id: '3',
+            name: 'dinner',
+            class: '1',
+            timeline: []
+        },
+        '4': {
+            id: '4',
+            name: 'drink',
+            class: '1',
+            timeline: []
+        },
+        '5': {
+            id: '5',
+            name: 'mrt',
+            class: '2',
+            timeline: []
+        },
+        '6': {
+            id: '6',
+            name: 'bus',
+            class: '2',
+            timeline: []
+        },
+        '7': {
+            id: '7',
+            name: 'hsr',
+            class: '2',
+            timeline: []
+        }
+    },
+    records: {},
+    timeline: []
+}
+/*export const recordInit = {
     classes: {
         '1': {
             id: '1',
@@ -87,7 +148,8 @@ export const recordInit = {
             id: '2',
             name: 'travel',
             category: ['5' ,'6', '7']
-        }
+        },
+        timeline: []
     },
     categories: {
         '1': {
@@ -124,7 +186,8 @@ export const recordInit = {
             id: '7',
             name: 'hsr',
             class: '2'
-        }
+        },
+        timeline: []
     },
     records: {
         '1': {
@@ -201,4 +264,4 @@ export const recordInit = {
         }
     },
     visibleRecords: ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-}
+}*/

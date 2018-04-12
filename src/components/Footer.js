@@ -13,14 +13,16 @@ import { HomeFooter } from '../containers/HomePage'
 import DefaultFooter from '../containers/DefaultFooter'
 
 const Footer = ({ hide }) => {
-    return hide? <div />
-    : <div className="container"
-        style={footerStyle}>
+    return <div style={footerStyle}>
+    { hide? null
+        : <div className="container">
 
-        <Route exact path="/" component={HomeFooter}/>
-        <Route path="/new" component={NewRecordFooter} />
-        <Route path="/list" component={DefaultFooter} />
-        <Route path="/other" component={DefaultFooter} />
+            <Route exact path="/" component={HomeFooter}/>
+            <Route path="/new" component={NewRecordFooter} />
+            <Route path="/list" component={DefaultFooter} />
+            <Route path="/other" component={DefaultFooter} />
+        </div>
+    }
     </div>
 }
 

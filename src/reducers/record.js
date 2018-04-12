@@ -1,278 +1,245 @@
-import ppp from 'papaparse'
 import md5 from 'md5'
 
 import { recordInit } from '../consts'
+export * from './recordUtils'
 
-let tempCount = 3
 
+
+const classes = (state, action) => {
+	switch (action.type) {
+		case 'CREATE_RECORD':
+			return {
+				...state,
+				[action.record.class]: {
+					...state[action.record.class],
+					timeline: action.timeline[action.record.class]
+				}
+			}
+		default:
+			return state
+	}
+}
+const categories = (state, action) => {
+	switch (action.type) {
+		case 'CREATE_RECORD':
+		console.log('CTGimeline',action.timeline)
+			return {
+				...state,
+				[action.record.category]: {
+					...state[action.record.category],
+					timeline: action.timeline[action.record.category]
+				}
+			}
+		default:
+			return state
+	}
+}
 const records = (state, action) => {
-    switch (action.type) {
+	switch (action.type) {
 
-        case 'CREATE_RECORD':
-            const newRecord = action.record
-            const id = md5(JSON.stringify(newRecord))
-            return {
-                ...state,
-                [id]: {
-                    ...newRecord,
-                    id: id
-                }
-            }
+		case 'CREATE_RECORD':
+			const newRecord = action.record
+			const id = md5(JSON.stringify(newRecord))
+			return {
+				...state,
+				[id]: {
+					...newRecord,
+					id: id
+				}
+			}
 
-        default:
-            return state
-    }
+		default:
+			return state
+	}
 }
 export const record = (state = recordInit, action) => {
-    switch (action.type) {
+	switch (action.type) {
 
-        case 'CREATE_RECORD':
-            return {
-                ...state,
-                records: records(state.records, action)
-            }
-
-        case 'GAPI_SYNC_END':
-            return action.error? state
-                : {
-                    ...state,
-                    records: recordsFromCSV(action.data)
-                }
-
-        default:
-            return state
-    }
-}
-
-export const formatNewRecord = (newRecord) => ({
-    time: newRecord.time,
-    class: newRecord.classId,
-    category: newRecord.categoryId,
-    amount: newRecord.amount,
-    desc: newRecord.desc
-})
-
-
-export const recordsToCSV = (records) => {
-    return ppp.unparse({
-        fields: ['id','time','amount','class','category','desc'],
-        data: Object.keys(records).map( id => {
-            const r = records[id]
-            return [
-                r.id,
-                r.time,
-                r.amount,
-                r.class,
-                r.category,
-                r.desc
-            ]
-        })
-    })
-}
-
-export const recordsFromCSV = (csv) => {
-    const parsed = ppp.parse(csv, { header: true })
-    const recordArray = parsed.data || []
-    let newRecords = {}
-    recordArray.map( r => {
-        if (r.id) newRecords[r.id] = r
-    })
-    return newRecords
-}
-
-export const filterRecords = (filters, record) => {
-    console.log(filters)
-    const { min, max, from, to, categories } = filters
-    const { records } = record
-    const recordList = Object.keys(records).map( r => records[r] )
-
-    const steps = []
-    if (to) steps.push( (r) => r.time > to )
-    if (from) steps.push( (r) => r.time < from )
-    if (min) steps.push( (r) => r.amount < min )
-    if (max) steps.push( (r) => r.amount > max )
-    if ( categories.length > 0 )
-        steps.push( (r) => categories.indexOf(r.category) == -1 )
-
-    const data = steps.length > 0?
-        recordList.filter( r => {
-            for (let i = 0; i < steps.length; i++)
-                if (steps[i](r)) return false
-            return true
-        }) : recordList
-
-    return data.map( d => ({
-        time: d.time,
-        //class: record.classes[d.class].name,
-        category: d.category?
-            record.categories[d.category].name
-            : record.classes[d.class].name,
-        amount: d.amount,
-        desc: d.desc
-    }))
-}
-const thisMonday = () => {
-	const today = new Date()
-	const weekDay = today.getDay()
-	const diff = weekDay? weekDay-1: 6
-	return new Date(0)//new Date(today.getFullYear(), today.getMonth(), today.getDate()-diff)
-}
-const thisFirstOfMonth = () => {
-	const today = new Date()
-	return new Date(today.getFullYear(), today.getMonth(), 1)
-}
-const recordsFromTime = (record, fromTime) => {
-	const { records } = record
-    console.log(records)
-	return Object.keys(records)
-		.map( r => records[r] )
-		.filter( r => r.time >= fromTime )
-}
-const weekRecordList = (record) => recordsFromTime(record, thisMonday())
-const monthRecordList = (record) => recordsFromTime(record, thisFirstOfMonth())
-
-const mapCategoryRecords = (records, key = 'category') => {
-	let categoryRecords = {}
-	Object.keys(records)
-		.map( r => {
-			const ctg = records[r][key]
-            if (ctg) {
-    			if (categoryRecords[ctg]) {
-    				categoryRecords[ctg].push(r)
-    			} else {
-    				categoryRecords[ctg] = [r]
-    			}
-            }
-		})
-	return categoryRecords
-}
-const mapCategoryRecordList = (recordList, key = 'category') => {
-	let categoryRecordList = {}
-	recordList.map( (r, idx) => {
-		const ctg = recordList[idx][key]
-        if (ctg) {
-			if (categoryRecordList[ctg]) {
-				categoryRecordList[ctg].push(idx)
-			} else {
-				categoryRecordList[ctg] = [idx]
+		case 'LOAD_DEMO_DATA':
+			return genDemoData()
+		case 'CREATE_RECORD':
+			let  newState = {
+				...state,
+				records: records(state.records, action)
 			}
-        }
+		 	const { timeline, classTimeline, categoryTimeline } = genTimeline(newState)
+			return {
+				...newState,
+				classes: classes(state.classes, {
+					...action,
+					timeline: classTimeline
+				}),
+				categories: categories(state.categories, {
+					...action,
+					timeline: categoryTimeline
+				}),
+				timeline: timeline
+			}
+
+		case 'GAPI_SYNC_END':
+			return action.error? state
+				: {
+					...state,
+					records: recordsFromCSV(action.data)
+				}
+
+		default:
+			return state
+	}
+}
+
+const genTimeline = (record) => {
+	const { records } = record
+	const timeline = Object.keys(records).sort( (id1,id2) => records[id2].time - records[id1].time )
+	const classTimeline = {}
+	const categoryTimeline = {}
+	Object.keys(record.classes).map( cl => { classTimeline[cl] = [] })
+	Object.keys(record.categories).map( ctg => { categoryTimeline[ctg] = [] })
+
+	timeline.map( id => {
+		const r = records[id]
+		classTimeline[r.class].push(id)
+		if (r.category) categoryTimeline[r.category].push(id)
 	})
-	return categoryRecordList
-}
-const mapClassRecords = (records) => mapCategoryRecords(records, 'class')
-const mapClassRecordList = (records) => mapCategoryRecordList(records, 'class')
-/*
-const topAmountOfRecordList = (recordList, k) => {
-    return recordList.sort( (a,b) => b.amount - a.amount ).slice(0, k)
-}
-const topAmountOfRecords = (records, k) => {
-	return topAmountOfRecordList(
-        Object.keys(records).map( r => records[r] ),
-        k
-	)
+
+	return { timeline, classTimeline, categoryTimeline }
 }
 
-export const topCountOfClassRecords = (cRecords, k) => {
-	let classes
-	return Object.keys(cRecords)
-		.map( c => ({
-			...classes[c],
-			length: cRecords[c].length
-		}))
-		.sort( (a,b) => a.length - b.length )
-		.slice(0, k)
+const genDemoData = () => {
+	const now = (new Date()).getTime()
+	return {
+		classes: {
+			'1': {
+				id: '1',
+				name: 'food',
+				category: ['1' ,'2', '3', '4'],
+				timeline: ['1', '4', '7']
+			},
+			'2': {
+				id: '2',
+				name: 'travel',
+				category: ['5' ,'6', '7'],
+				timeline: ['2', '3', '5', '8', '9']
+			}
+		},
+		categories: {
+			'1': {
+				id: '1',
+				name: 'breakfast',
+				class: '1',
+				timeline: []
+			},
+			'2': {
+				id: '2',
+				name: 'lunch',
+				class: '1',
+				timeline: ['1']
+			},
+			'3': {
+				id: '3',
+				name: 'dinner',
+				class: '1',
+				timeline: ['4']
+			},
+			'4': {
+				id: '4',
+				name: 'drink',
+				class: '1',
+				timeline: ['7']
+			},
+			'5': {
+				id: '5',
+				name: 'mrt',
+				class: '2',
+				timeline: ['5','6']
+			},
+			'6': {
+				id: '6',
+				name: 'bus',
+				class: '2',
+				timeline: ['8','9']
+			},
+			'7': {
+				id: '7',
+				name: 'hsr',
+				class: '2',
+				timeline: ['2','3']
+			}
+		},
+		records: {
+			'1': {
+				id: '1',
+				time: now,
+				class: '1',
+				category: '2',
+				amount: 100,
+				desc: 'lunch'
+			},
+			'2': {
+				id: '2',
+				time: now,
+				class: '2',
+				category: '7',
+				amount: 1200,
+				desc: 'HSR to Kaohsiung'
+			},
+			'3': {
+				id: '3',
+				time: now,
+				class: '2',
+				category: '7',
+				amount: 1200,
+				desc: 'HSR to Taipei'
+			},
+			'4': {
+				id: '4',
+				time: now-86400000,
+				class: '1',
+				category: '3',
+				amount: 9100,
+				desc: 'dinner JSP'
+			},
+			'5': {
+				id: '5',
+				time: now-86400000,
+				class: '2',
+				category: '5',
+				amount: 200,
+				desc: 'MRT to work'
+			},
+			'6': {
+				id: '6',
+				time: now-86400000,
+				class: '2',
+				category: '5',
+				amount: 200,
+				desc: 'MRT to home'
+			},
+			'7': {
+				id: '7',
+				time: now-605000000,
+				class: '1',
+				category: '4',
+				amount: 100,
+				desc: 'comebuy'
+			},
+			'8': {
+				id: '8',
+				time: now-605000000,
+				class: '2',
+				category: '6',
+				amount: 1200,
+				desc: 'bus to school'
+			},
+			'9': {
+				id: '9',
+				time: now-605000000,
+				class: '2',
+				category: '6',
+				amount: 1200,
+				desc: 'bus home'
+			}
+		},
+		timeline: ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+	}
 }
-
-export const topCountOfCategoryRecords = (cRecords, k) => {
-	let categories
-	return Object.keys(cRecords)
-		.map( c => ({
-			...categories[c],
-			length: cRecords[c].length
-		}))
-		.sort( (a,b) => a.length - b.length )
-		.slice(0, k)
-}*/
-export const getTotal = (recordList) => {
-    let total = 0
-    recordList.map( r => { total += Number(r.amount) })
-    return total
-}
-const arraySum = (array) => {
-    let sum = 0
-    for (let i = 0; i < array.length; i++) {
-        sum += Number(array[i])
-    }
-    return sum
-}
-export const getOverviewRecordList = (overview, record) => {
-    const getRecordList = [weekRecordList, monthRecordList]
-    return getRecordList[overview.totalType](record)
-}
-export const getTopCategory = (overview, record, recordList) => {
-    const { classes, categories } = record
-    const { topCategoryType, topType } = overview
-
-    const categoryData = record[['classes', 'categories'][topCategoryType]]
-    console.log(categoryData)
-
-    const mapRecordList = [mapClassRecordList, mapCategoryRecordList]
-    const categoryRecordList = mapRecordList[topCategoryType](recordList)
-    const getTopCategoryList = [
-        () => {
-            let categorySumList = []
-            console.log('categoryRecordList',categoryRecordList)
-            Object.keys(categoryRecordList)
-                .map( ctg => {
-                    console.log('')
-                    categorySumList.push({
-                        category: categoryData[ctg],
-                        sum: arraySum(
-                            categoryRecordList[ctg].map( idx => recordList[idx].amount )
-                        )
-                    })
-                })
-            return categorySumList.sort( (a,b) => b.sum - a.sum ).slice(0,3)
-        },
-        () => {
-            let categoryCountList = []
-            Object.keys(categoryRecordList)
-                .map( ctg => {
-                    categoryCountList.push({
-                        category: categoryData[ctg],
-                        count: categoryRecordList[ctg].length
-                    })
-                })
-            return categoryCountList.sort( (a,b) => b.count - a.count ).slice(0,3)
-        }
-    ]
-    return getTopCategoryList[topType]()
-
-}
-
-
-export const classList = classes => Object.keys(classes).map( c => classes[c] )
-export const categoryList = categories => categories.map( c => categories[c] )
-export const classCategories = record => {
-    const { classes, categories } = record
-    let cc = {}
-    Object.keys(classes).forEach( cl => { console.log(cl);cc[cl] = [] })
-    Object.keys(categories).forEach( ct => {
-        cc[categories[ct].class].push(categories[ct])
-    })
-    return cc
-}
-
-export const classSelections = classes =>
-    Object.keys(classes).map( c => ({
-        id: c,
-        data: classes[c].name
-    }))
-export const categorySelections = (categories, classId) =>
-    Object.keys(categories)
-        .filter( c => categories[c].class == classId )
-        .map( c => ({
-            id: c,
-            data: categories[c].name
-        }))
