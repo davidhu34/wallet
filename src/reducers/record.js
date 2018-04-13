@@ -3,8 +3,6 @@ import md5 from 'md5'
 import { recordInit } from '../consts'
 export * from './recordUtils'
 
-
-
 const classes = (state, action) => {
 	switch (action.type) {
 		case 'CREATE_RECORD':

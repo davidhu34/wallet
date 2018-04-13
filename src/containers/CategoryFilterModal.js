@@ -4,6 +4,7 @@ import moment from 'moment'
 
 import { footerStyle } from '../styles'
 import { toggleCategoryFilter, toggleAllCategoryFilter } from '../actions'
+import BlankColumn from '../components/BlankColumn'
 
 const CategoryFilterModal = ({
     resolve, title, categoryList,
@@ -32,7 +33,7 @@ const CategoryFilterModal = ({
         <br />
         <div className="container">
             <div className="row">
-                <div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+                <BlankColumn size={3} />
 
                 <div className="three columns" onClick={ (e) => toggleAllFilter(categoryList.map(c => c.id)) }>
                     ALL
@@ -41,7 +42,7 @@ const CategoryFilterModal = ({
                     NONE
                 </div>
 
-                <div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+                <BlankColumn size={3} />
             </div>
 
         </div>

@@ -28,6 +28,8 @@ import {
 	changeContent
 } from '../actions'
 
+import BlankColumn from '../components/BlankColumn'
+
 const timeStr = ms =>  {
 	if (ms) {
 		const date = new Date(ms)
@@ -190,19 +192,19 @@ const Banner = ({
 			<div className="container">
 				<br />
 				<div className="row">
-					<div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+					<BlankColumn size={3} />
 					<div className="one column">
 						<h2>
 							<WalletIcon />
 						</h2>
 					</div>
-					<div className="one column" style={{ color: 'transparent' }}>{'-'}</div>
+					<BlankColumn size={1} />
 					<div className="three columns"
 						style={{fontSize:'3.6rem'}}>
 						WALLET
 					</div>
 
-					<div className="four columns" style={{ color: 'transparent' }}>{'-'}</div>
+					<BlankColumn size={4} />
 				</div>
 			</div>
 		}

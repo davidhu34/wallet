@@ -6,6 +6,7 @@ import DownloadIcon from 'react-icons/lib/io/ios-download-outline'
 import UploadIcon from 'react-icons/lib/io/ios-cloud-upload-outline'
 
 import { syncFromFile, uploadToFile, loadDemoData } from '../actions'
+import BlankColumn from '../components/BlankColumn'
 
 const OtherMenuPage = ({
 	driveAPI,
@@ -24,7 +25,7 @@ const OtherMenuPage = ({
 			<h5>Google Drive Sync</h5>
 		</div>
 		<div className="row">
-			<div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+			<BlankColumn size={3} />
 
 			<div className="three columns"
 				onClick={(e) => uploadToFile()}>
@@ -46,7 +47,7 @@ const OtherMenuPage = ({
 		</div>
 		<div className="row" ><br /> </div>
 		<div className="row" >
-			<div className="two columns" style={{ color: 'transparent' }}>{'-'}</div>
+			<BlankColumn size={2} />
 			<div className="three columns" ><h6>{'File Name: '}</h6></div>
 			<div className="seven columns"
 				style={{ textAlign:'left' }}

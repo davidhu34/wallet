@@ -20,6 +20,7 @@ import { selectTotalType, selectTopType, selectTopCategoryType, changeContent } 
 import NewRecordPage from './NewRecordPage'
 import RecordList from '../components/RecordList'
 import RecordListPage from './RecordListPage'
+import BlankColumn from '../components/BlankColumn'
 
 const HomePage = ({
 	totalType, total, topType, topCategoryType, topCategoryList,
@@ -29,7 +30,7 @@ const HomePage = ({
 		<br />
 
 		<div className="row">
-			<div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+			<BlankColumn size={3} />
 
 			<div className="three columns">
 				<h6 onClick={(e) => selectTotalType(0)}>
@@ -46,14 +47,14 @@ const HomePage = ({
 				</h6>
 			</div>
 
-			<div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+			<BlankColumn size={3} />
 		</div>
 		<h1>{total+' $'}</h1>
 
 		<br />
 
 		<div className="row">
-			<div className="one column" style={{ color: 'transparent' }}>{'-'}</div>
+			<BlankColumn size={1} />
 
 			<div className="six columns">
 				<h5>Top Expenses</h5>
@@ -73,10 +74,10 @@ const HomePage = ({
 				</h5>
 			</div>
 
-			<div className="one column" style={{ color: 'transparent' }}>{'-'}</div>
+			<BlankColumn size={1} />
 		</div>
 		<div className="row">
-			<div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+			<BlankColumn size={3} />
 
 			<div className="three columns">
 				<h6 onClick={(e) => selectTopType(0)}>
@@ -93,20 +94,20 @@ const HomePage = ({
 				</h6>
 			</div>
 
-			<div className="three columns" style={{ color: 'transparent' }}>{'-'}</div>
+			<BlankColumn size={3} />
 		</div>
 		{
 			topCategoryList.map( (ctg, i) => {
 				console.log('topCategoryList',i, ctg)
 				return <div className="row" key={i}>
-					<div className="two columns" style={{ color: 'transparent' }}>{'-'}</div>
+					<BlankColumn size={2} />
 					<div className="four columns">
 						<h6>{ ctg.category.name }</h6>
 					</div>
 					<div className="four columns">
 						<h6>{ ctg[['sum','count'][topType]] }</h6>
 					</div>
-					<div className="two columns" style={{ color: 'transparent' }}>{'-'}</div>
+					<BlankColumn size={2} />
 				</div>
 			})
 		}
