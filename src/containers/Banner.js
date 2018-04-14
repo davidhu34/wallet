@@ -45,9 +45,9 @@ const bannerFilter = ({
 	fromTimeFilter, toTimeFilter, clearTimeFilter
 }) => {
 
-	const { expand } = ui.banner
+	const { banner, modal } = ui
+	const { expand } = banner
 	let filteredClass = []
-	console.log(filter.categories)
 
 	const filterExpansion = expand? <table style={{width: '100%'}}><tbody><tr>
 
@@ -114,7 +114,9 @@ const bannerFilter = ({
 		<h5 onClick={(e) => toggleExpandFilters()}>
 			<FilterIcon />
 		</h5>
-		{filterExpansion}
+		<div visible={modal} >
+			{filterExpansion}
+		</div>
 	</div>
 }
 const BannerFilter = connect(
@@ -208,7 +210,7 @@ const Banner = ({
 				</div>
 			</div>
 		}
-		{ modal? null : <Route path="/list" component={BannerFilter}/> }
+		<Route path="/list" component={BannerFilter}/>
 
 	</div>
 }

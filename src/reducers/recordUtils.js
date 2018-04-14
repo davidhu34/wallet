@@ -1,5 +1,3 @@
-import ppp from 'papaparse'
-
 export const formatNewRecord = (newRecord) => ({
 	time: newRecord.time,
 	class: newRecord.classId,
@@ -7,33 +5,6 @@ export const formatNewRecord = (newRecord) => ({
 	amount: newRecord.amount,
 	desc: newRecord.desc
 })
-
-export const recordsToCSV = (records) => {
-	return ppp.unparse({
-		fields: ['id','time','amount','class','category','desc'],
-		data: Object.keys(records).map( id => {
-			const r = records[id]
-			return [
-				r.id,
-				r.time,
-				r.amount,
-				r.class,
-				r.category,
-				r.desc
-			]
-		})
-	})
-}
-
-export const recordsFromCSV = (csv) => {
-	const parsed = ppp.parse(csv, { header: true })
-	const recordArray = parsed.data || []
-	let newRecords = {}
-	recordArray.map( r => {
-		if (r.id) newRecords[r.id] = r
-	})
-	return newRecords
-}
 
 export const filterRecords = (filters, record) => {
 	console.log(filters)
@@ -54,7 +25,6 @@ export const filterRecords = (filters, record) => {
 	const data = steps.length > 0?
 		recordIdList.filter( id => {
 			const r = records[id]
-			console.log('iddata', r)
 			for (let i = 0; i < steps.length; i++)
 				if (steps[i](r))
 					return false
@@ -92,7 +62,7 @@ const recordIdListFromTimeSpan = (record, fromTime, toTime) => {
 	let order = 0
 	let start = null
 	let end = timeline.length-1
-	
+
 	while (timeline.length > order) {
 		const id = timeline[order]
 		const time = records[id].time
@@ -194,13 +164,13 @@ export const getOverview = (overview, record) => {
 	const recordIdList = [weekRecordIdList, monthRecordIdList][totalType](record)
 	let recordSet = new Set()
 	recordIdList.forEach( id => recordSet.add(id))
-	
+
 	let total = 0
 	recordIdList.map( id => { total += Number(records[id].amount) })
-	
+
 
 	const categoryData = record[['classes', 'categories'][topCategoryType]]
-	
+
 	let categoryRecordIds = {}
 	Object.keys(categoryData).map( ctg => {
 		categoryRecordIds[ctg] = categoryData[ctg].timeline.filter( id => recordSet.has(id))
@@ -236,7 +206,7 @@ export const categoryList = categories => categories.map( c => categories[c] )
 export const classCategories = record => {
 	const { classes, categories } = record
 	let cc = {}
-	Object.keys(classes).forEach( cl => { console.log(cl);cc[cl] = [] })
+	Object.keys(classes).forEach( cl => { cc[cl] = [] })
 	Object.keys(categories).forEach( ct => {
 		cc[categories[ct].class].push(categories[ct])
 	})

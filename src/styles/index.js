@@ -6,7 +6,8 @@ export const bannerStyle = {
 	left:0,
 	zIndex: 3,
 	textAlign: 'center',
-	backgroundImage: 'linear-gradient(0deg, transparent, white 80%)'
+	// backgroundImage: 'linear-gradient(0deg, transparent, white 80%)'
+	background: '-webkit-linear-gradient(top, white 20%, rgba(255,255,255,0) 100%)',
 	//WebkitTextFillColor: 'transparent',
 	//WebkitBackgroundClip: 'text'
 }
@@ -57,6 +58,10 @@ export const selectionStyle = {
 }
 
 export const footerStyle = {
+
+    backgroundColor: 'rgba(0,0,0,0)',
+	// backgroundImage: '-webkit-linear-gradient(90deg, white, rgba(0,0,0,0))',
+	background: '-webkit-linear-gradient(top, rgba(255,255,255,0) 0%, white 100%)',
 	position:'fixed',
 	bottom: 0,
 	left: 'auto',

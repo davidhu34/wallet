@@ -1,19 +1,36 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route, withRouter } from 'react-router'
-import NewRecordPage from './NewRecordPage'
+import { Scrollbars } from 'react-custom-scrollbars'
+
 import RecordList from '../components/RecordList'
 import { filterRecords } from '../reducers/record'
 import { recordFilters } from '../reducers/filter'
 import { launchSelection, changeContent, launchDatepicker } from '../actions'
 
-const RecordListPage = ({
-    records
-}) => {
-    const recordListProps = { records }
+class RecordListPage extends Component {
+	scrollToBottom () {
+		const node = this.refs.scroll
+		node.scrollTop = node.scrollHeight
+	}
+	componentDidMount () {
+		this.scrollToBottom();
+	}
+	componentDidUpdate () {
+		this.scrollToBottom();
 
-    return <RecordList {...recordListProps} />
-
+		console.log(this.props, findDOMNode(this).clientHeight)
+	}
+	render () {
+		const { records } = this.props
+		return <div style={{ width: '100%', height: 800 }}>
+            <Scrollbars>
+    			<span ref="scroll">
+    				<RecordList records={records} />
+    			</span>
+    		</Scrollbars>
+        </div>
+	}
 }
 
 export default connect(

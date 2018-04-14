@@ -12,8 +12,11 @@ import OtherMenuPage from './OtherMenuPage'
 const ContentPage = ({ modal, testGAPI }) => {
     return <div style={{
     	filter: modal?'brightness(300%) blur(10px)': '',
-        textAlign: 'center',
-        paddingTop: '300px'
+    	WebkitFilter: modal?'brightness(300%) blur(10px)': '',
+        height: '100%',
+        paddingTop: '300px',
+        paddingBottom: '100px',
+        textAlign: 'center'
     }}>
 
         <Route exact path="/" component={HomePage}/>

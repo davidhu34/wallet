@@ -5,7 +5,7 @@ import moment from 'moment'
 const Record = ({ record }) => {
 
     return <tr>
-        <td>{moment(record.time).format('MM/DD')}</td>
+        <td>{moment(Number(record.time)).format('MM/DD')}</td>
         <td>{record.desc}</td>
         <td>{record.category}</td>
         <td>{record.amount}</td>

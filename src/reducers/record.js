@@ -1,4 +1,5 @@
 import md5 from 'md5'
+import ppp from 'papaparse'
 
 import { recordInit } from '../consts'
 export * from './recordUtils'
@@ -13,6 +14,12 @@ const classes = (state, action) => {
 					timeline: action.timeline[action.record.class]
 				}
 			}
+		case 'GAPI_SYNC_END':
+			let newState = { ...state }
+			Object.keys(action.timeline).map( cl => {
+				newState[cl].timeline = action.timeline[cl]
+			})
+			return newState
 		default:
 			return state
 	}
@@ -20,7 +27,6 @@ const classes = (state, action) => {
 const categories = (state, action) => {
 	switch (action.type) {
 		case 'CREATE_RECORD':
-		console.log('CTGimeline',action.timeline)
 			return {
 				...state,
 				[action.record.category]: {
@@ -28,6 +34,12 @@ const categories = (state, action) => {
 					timeline: action.timeline[action.record.category]
 				}
 			}
+		case 'GAPI_SYNC_END':
+			let newState = { ...state }
+			Object.keys(action.timeline).map( ctg => {
+				newState[ctg].timeline = action.timeline[ctg]
+			})
+			return newState
 		default:
 			return state
 	}
@@ -45,7 +57,8 @@ const records = (state, action) => {
 					id: id
 				}
 			}
-
+		case 'GAPI_SYNC_END':
+			return recordsFromCSV(action.data)
 		default:
 			return state
 	}
@@ -55,35 +68,61 @@ export const record = (state = recordInit, action) => {
 
 		case 'LOAD_DEMO_DATA':
 			return genDemoData()
-		case 'CREATE_RECORD':
-			let  newState = {
-				...state,
-				records: records(state.records, action)
-			}
-		 	const { timeline, classTimeline, categoryTimeline } = genTimeline(newState)
-			return {
-				...newState,
-				classes: classes(state.classes, {
-					...action,
-					timeline: classTimeline
-				}),
-				categories: categories(state.categories, {
-					...action,
-					timeline: categoryTimeline
-				}),
-				timeline: timeline
-			}
 
+		case 'CREATE_RECORD':
 		case 'GAPI_SYNC_END':
-			return action.error? state
-				: {
+			if (action.error) {
+				return state
+			} else {
+				let newState = {
 					...state,
-					records: recordsFromCSV(action.data)
+					records: records(state.records, action)
 				}
+				const { timeline, classTimeline, categoryTimeline } = genTimeline(newState)
+				return {
+					...newState,
+					classes: classes(state.classes, {
+						...action,
+						timeline: classTimeline
+					}),
+					categories: categories(state.categories, {
+						...action,
+						timeline: categoryTimeline
+					}),
+					timeline: timeline
+				}
+			}
 
 		default:
 			return state
 	}
+}
+
+export const recordsToCSV = (records) => {
+	return ppp.unparse({
+		fields: ['id','time','amount','class','category','desc'],
+		data: Object.keys(records).map( id => {
+			const r = records[id]
+			return [
+				r.id,
+				r.time,
+				r.amount,
+				r.class,
+				r.category,
+				r.desc
+			]
+		})
+	})
+}
+
+export const recordsFromCSV = (csv) => {
+	const parsed = ppp.parse(csv, { header: true })
+	const recordArray = parsed.data || []
+	let newRecords = {}
+	recordArray.map( r => {
+		if (r.id) newRecords[r.id] = r
+	})
+	return newRecords
 }
 
 const genTimeline = (record) => {
