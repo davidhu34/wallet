@@ -3,13 +3,17 @@ import { push } from 'react-router-redux'
 import { TIME_CONSTS, recordInit, contentRoutes } from '../consts'
 
 import { formatNewRecord } from '../reducers/record'
+import { toggleLoader } from './modal'
 export * from './modal'
 
 const classData = recordInit.class
 
 
-export const loadDemoData = () => ({ type: 'LOAD_DEMO_DATA' })
-
+export const loadDemoData = () => (dispatch, getState) => {
+	dispatch(toggleLoader(true))
+	dispatch({ type: 'LOAD_DEMO_DATA' })
+	dispatch(toggleLoader(false))
+}
 export const gapiReady = () => ({ type: 'GAPI_READY' })
 
 export const testGAPI = () => ({ type: 'GAPI_TEST' })

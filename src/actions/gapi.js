@@ -1,4 +1,5 @@
 import { recordsToCSV, recordsFromCSV } from '../reducers/record'
+import { toggleLoader } from './modal'
 
 const gapiSyncStart = (name) => ({
 	type: 'GAPI_SYNC_START',
@@ -16,6 +17,11 @@ const gapiSyncError = (err) => ({
 export const syncFromFile = () => (dispatch, getState) => {
 	const { GAPI, userInputFileName } = getState().driveAPI
 
+	const wrap = (action) => {
+		dispatch(action)
+		dispatch(toggleLoader(false)) //close loader
+	}
+	dispatch(toggleLoader(true))
 	signInFirst(GAPI)
 	.then( signInSuccess => {
 
@@ -29,22 +35,22 @@ export const syncFromFile = () => (dispatch, getState) => {
 
 						if (data) {
 							// has file with <name>
-							dispatch(gapiSyncEnd(null, data))
+							wrap(gapiSyncEnd(null, data))
 						} else {
 							// no match
-							dispatch(gapiSyncEnd('NO_MATCH'))
+							wrap(gapiSyncEnd('NO_MATCH'))
 						}
 
 					}).catch( err => {
-						dispatch(gapiSyncEnd(err))
+						wrap(gapiSyncEnd(err))
 					})
 
 			}).catch( listError => {
-				dispatch(gapiSyncError(listError))
+				wrap(gapiSyncError(listError))
 			})
 
 	}).catch( signInError => {
-		dispatch(gapiSyncError(signInError))
+		wrap(gapiSyncError(signInError))
 	})
 }
 
@@ -89,6 +95,11 @@ export const uploadToFile = () => (dispatch, getState) => {
 
 	const data = recordsToCSV(records)
 
+	const wrap = (action) => {
+		dispatch(action)
+		dispatch(toggleLoader(false)) //close loader
+	}
+	dispatch(toggleLoader(true))
 	signInFirst(GAPI)
 	.then( signInSuccess => {
 
@@ -106,9 +117,9 @@ export const uploadToFile = () => (dispatch, getState) => {
 					GAPI.gapiUpdate(file)
 						.then( file => {
 							// update success
-							dispatch(gapiUploadUpdate(null,file))
+							wrap(gapiUploadUpdate(null,file))
 						}).catch( err => {
-							dispatch(gapiUploadUpdate(err))
+							wrap(gapiUploadUpdate(err))
 						})
 				} else {
 					// <name> is new
@@ -117,18 +128,18 @@ export const uploadToFile = () => (dispatch, getState) => {
 						data: '1,1,1\n2,2,2\n3,3,3'
 					}).then( file => {
 						// create success
-						dispatch(gapiUploadCreate(null,file))
+						wrap(gapiUploadCreate(null,file))
 					}).catch( err => {
-						dispatch(gapiUploadCreate(err))
+						wrap(gapiUploadCreate(err))
 					})
 				}
 
 			}).catch( listError => {
-				dispatch(gapiUploadError(listError))
+				wrap(gapiUploadError(listError))
 			})
 
 	}).catch( signInError => {
-		dispatch(gapiUploadError(signInError))
+		wrap(gapiUploadError(signInError))
 	})
 }
 
@@ -143,19 +154,23 @@ const gapiSignInEnd = (err, data) => ({
 export const gapiSignIn = () => (dispatch, getState) => {
 
 	const { GAPI, localFile } = getState().driveAPI
-
+	const wrap = (action) => {
+		dispatch(action)
+		dispatch(toggleLoader(false)) //close loader
+	}
+	dispatch(toggleLoader(true))
 	dispatch(gapiSignInStart())
 	if (GAPI.gapiIsSignedIn()) {
-		dispatch(gapiSignInEnd('ALREADY SIGNED IN'))
+		wrap(gapiSignInEnd('ALREADY SIGNED IN'))
 		resolve()
 	} else {
 		GAPI.gapiSignIn()
 			.then( data => {
-				dispatch(gapiSignInEnd(null, data))
+				wrap(gapiSignInEnd(null, data))
 				resolve()
 			})
 			.catch( err => {
-				dispatch(gapiSignInEnd(err))
+				wrap(gapiSignInEnd(err))
 			 	reject()
 			})
 	}

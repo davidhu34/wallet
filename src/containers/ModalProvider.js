@@ -6,6 +6,7 @@ import NumberPadModal from '../containers/NumberPadModal'
 import DatepickerModal from '../containers/DatepickerModal'
 
 import SelectionModal from '../components/SelectionModal'
+import LoaderModal from '../components/LoaderModal'
 import TextInputModal from '../components/TextInputModal'
 import Modal from '../components/Modal'
 
@@ -45,6 +46,10 @@ const ModalProvider = ({
                     <DatepickerModal resolve={resolve}
                         limit={data.limit}
                         title={data.title} />
+                </Modal>
+            case 'loader':
+                return <Modal>
+                    <LoaderModal />
                 </Modal>
             default:
                 return <span />

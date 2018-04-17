@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { Route, withRouter } from 'react-router'
 import { Scrollbars } from 'react-custom-scrollbars'

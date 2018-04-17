@@ -112,9 +112,9 @@ const bannerFilter = ({
 
 	return <div>
 		<h5 onClick={(e) => toggleExpandFilters()}>
-			<FilterIcon />
+			{modal? null: <FilterIcon />}
 		</h5>
-		<div visible={modal} >
+		<div>
 			{filterExpansion}
 		</div>
 	</div>

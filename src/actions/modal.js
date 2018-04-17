@@ -61,7 +61,20 @@ const missionDirectivesPrep = {
 	'NEW_RECORD_DATEPICKER': (data) => ({
 		modalType: 'datepicker',
 		preClose: (value) => ({ type: 'NEW_RECORD_DATEPICKER', time: value })
-	})
+	}),
+	'TOGGLE_LOADER': (data) => {
+		const toggleAction = () => ({
+			type: 'TOGGLE_LOADER',
+			open: data.open
+		})
+		return data.open? {
+			modalType: 'loader',
+			preLaunch: toggleAction
+		} : {
+			modalType: 'loader',
+			forceClose: toggleAction
+		}
+	}
 }
 const modalDirectivesPrep = {
 	'datepicker': (data) => ({
@@ -81,34 +94,43 @@ const modalDirectivesPrep = {
 const getDirectives = (mission, data) => {
 	const missionDirectives = missionDirectivesPrep[mission](data)
 	return {
-		...missionDirectives,
-		...modalDirectivesPrep[missionDirectives.modalType](data)
+		// ...modalDirectivesPrep[missionDirectives.modalType](data),
+		...missionDirectives
 	}
 
 }
 const launchModal = (mission, inputData) => (dispatch) => {
 	const data = {...inputData};
-	console.log('launch modal', mission, data)
 
-	const directives = missionDirectivesPrep[mission](data)//getDirectives(mission, data)
+	const directives = getDirectives(mission, data)
+	console.log('launch modal', mission, data, 'directives',directives)
+
+	
+	const launch = (resolve, reject) => dispatch({
+		 type: 'LAUNCH_MODAL',
+		 modalType: directives.modalType,
+		 resolve, reject, data
+	})
+	const close = (value) => dispatch({ type: 'CLOSE_MODAL' })
 
 	if (directives.preLaunch) {
 		dispatch(directives.preLaunch())
 	}
-	const modalPromise = new Promise(
-		(resolve, reject) => dispatch({
-			 type: 'LAUNCH_MODAL',
-			 modalType: directives.modalType,
-			 resolve, reject, data
- 		})
-	)
-	modalPromise.then( value => {
-		if (directives.preClose) {
-			dispatch(directives.preClose(value))
-		}
+	if (!directives.forceClose) {
+		const modalPromise = new Promise(launch)
+		modalPromise.then( value => {
+			if (directives.preClose) {
+				dispatch(directives.preClose(value))
+			}
+			dispatch({ type: 'CLOSE_MODAL' })
+		})
+	} else {
+		dispatch(directives.forceClose())
 		dispatch({ type: 'CLOSE_MODAL' })
-	})
+	}
 }
+
+export const toggleLoader = (open) => launchModal('TOGGLE_LOADER', { open })
 
 // new record actions
 export const launchTimeSelection = slot => launchModal('NEW_RECORD_TIME', {
