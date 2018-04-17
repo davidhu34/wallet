@@ -1,7 +1,7 @@
 export const bannerStyle = {
 	width: '100%',
 	height: 300,
-	position: 'absolute',
+	position: 'fixed',
 	top: 0,
 	left:0,
 	zIndex: 3,
@@ -27,7 +27,7 @@ export const numberStyle = {
 export const modalStyle = {
 	width: '100%',
 	height: '100%',
-	position: 'absolute',
+	position: 'fixed',
 	top: 0,
 	left:0,
 	zIndex: 4,
