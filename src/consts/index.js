@@ -1,14 +1,16 @@
 export const contentRoutes = {
-	'HOME': '/',
-	'NEW_RECORD': '/new',
-	'RECORD_LIST': '/list',
-	'OTHER_MENU': '/other'
+    'NEW_RECORD': '/new',
+    'EDIT_RECORD': '/edit',
+    'RECORD_LIST': '/list',
+    'OTHER_MENU': '/other',
+	'HOME': '/'
 }
 export const routeContents = {
 	'/': 'HOME',
 	'/new': 'NEW_RECORD',
 	'/list': 'RECORD_LIST',
-	'/other': 'OTHER_MENU'
+	'/other': 'OTHER_MENU',
+    '/edit': 'EDIT_RECORD',
 }
 
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Auguest', 'September', 'October', 'November', 'December']
@@ -39,17 +41,19 @@ export const TIME_CONSTS = {
     }
 }
 
-export const newRecordInit = () => {
-    const now = new Date()
+export const newRecordInit = (record) => {
+    const time = record? (new Date(Number(record.time))): (new Date())
+    console.log('newrecord', record)
     return {
-        time: now.getTime(),
-        year: now.getFullYear(),
-        month: now.getMonth(),
-        date: now.getDate(),
-        amount: '0',
-        desc: '',
-        classId: '',
-        categoryId: '',
+        id: record? record.id: '',
+        time: time.getTime(),
+        year: time.getFullYear(),
+        month: time.getMonth(),
+        date: time.getDate(),
+        amount: record? record.amount.toString(): '0',
+        desc: record? record.desc: '',
+        classId: record? record.class: '',
+        categoryId: record? record.category: '',
     }
 }
 

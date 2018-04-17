@@ -19,6 +19,7 @@ const Footer = ({ hide }) => {
 
             <Route exact path="/" component={HomeFooter}/>
             <Route path="/new" component={NewRecordFooter} />
+            <Route path="/edit" component={NewRecordFooter} />
             <Route path="/list" component={DefaultFooter} />
             <Route path="/other" component={DefaultFooter} />
         </div>

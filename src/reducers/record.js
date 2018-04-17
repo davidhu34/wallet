@@ -6,40 +6,50 @@ export * from './recordUtils'
 
 const classes = (state, action) => {
 	switch (action.type) {
+
 		case 'CREATE_RECORD':
+			const cl = action.record.class
 			return {
 				...state,
-				[action.record.class]: {
-					...state[action.record.class],
-					timeline: action.timeline[action.record.class]
+				[cl]: {
+					...state[cl],
+					timeline: action.timeline[cl]
 				}
 			}
+
+		case 'UPDATE_RECORD':
 		case 'GAPI_SYNC_END':
 			let newState = { ...state }
 			Object.keys(action.timeline).map( cl => {
 				newState[cl].timeline = action.timeline[cl]
 			})
 			return newState
+
 		default:
 			return state
 	}
 }
 const categories = (state, action) => {
 	switch (action.type) {
+
 		case 'CREATE_RECORD':
+			const ctg = action.record.category
 			return {
 				...state,
-				[action.record.category]: {
-					...state[action.record.category],
+				[ctg]: {
+					...state[ctg],
 					timeline: action.timeline[action.record.category]
 				}
 			}
+
+		case 'UPDATE_RECORD':
 		case 'GAPI_SYNC_END':
 			let newState = { ...state }
 			Object.keys(action.timeline).map( ctg => {
 				newState[ctg].timeline = action.timeline[ctg]
 			})
 			return newState
+
 		default:
 			return state
 	}
@@ -47,6 +57,13 @@ const categories = (state, action) => {
 const records = (state, action) => {
 	switch (action.type) {
 
+		case'UPDATE_RECORD':
+			const record = action.record
+		console.log(record)
+			return {
+				...state,
+				[record.id]: record
+			}
 		case 'CREATE_RECORD':
 			const newRecord = action.record
 			const id = md5(JSON.stringify(newRecord))
@@ -57,8 +74,10 @@ const records = (state, action) => {
 					id: id
 				}
 			}
+
 		case 'GAPI_SYNC_END':
 			return recordsFromCSV(action.data)
+
 		default:
 			return state
 	}
@@ -69,6 +88,25 @@ export const record = (state = recordInit, action) => {
 		case 'LOAD_DEMO_DATA':
 			return genDemoData()
 
+		case 'UPDATE_RECORD':
+			const newTimeline = resortTimeline(state, action.record)
+			let newState = {
+				...state,
+				timeline: newTimeline,
+				records: records(state.records, action)
+			}
+			const { classTimeline, categoryTimeline } = genCCTimeline(newState, newTimeline)
+			return {
+				...newState,
+				classes: classes(state.classes, {
+					...action,
+					timeline: classTimeline
+				}),
+				categories: categories(state.categories, {
+					...action,
+					timeline: categoryTimeline
+				})
+			}
 		case 'CREATE_RECORD':
 		case 'GAPI_SYNC_END':
 			if (action.error) {
@@ -125,9 +163,8 @@ export const recordsFromCSV = (csv) => {
 	return newRecords
 }
 
-const genTimeline = (record) => {
+const genCCTimeline = (record, timeline) => {
 	const { records } = record
-	const timeline = Object.keys(records).sort( (id1,id2) => records[id2].time - records[id1].time )
 	const classTimeline = {}
 	const categoryTimeline = {}
 	Object.keys(record.classes).map( cl => { classTimeline[cl] = [] })
@@ -138,10 +175,58 @@ const genTimeline = (record) => {
 		classTimeline[r.class].push(id)
 		if (r.category) categoryTimeline[r.category].push(id)
 	})
-
-	return { timeline, classTimeline, categoryTimeline }
+	return { classTimeline, categoryTimeline }
+}
+const genTimeline = (record) => {
+	const { records } = record
+	const timeline = Object.keys(records).sort( (id1,id2) => records[id2].time - records[id1].time )
+	
+	return { timeline, ...genCCTimeline(record, timeline) }
 }
 
+const resortTimeline = (state, record) => {
+	const { records, timeline } = state
+	const { id, time } = record
+	const order = timeline.indexOf(id)
+	if (order < 0) return timeline
+	else {
+		if (records[id].time < time) {
+
+			let appending = order+1
+			let descend = appending
+			while (descend < timeline.length) {
+				if (records[descend].time <= time) break
+				else descend++
+			}
+
+			return [
+				...timeline.slice(0,appending),
+				...timeline.slice(appending, descend),
+				id,
+				...timeline.slice(descend),
+			]
+
+		} else if (records[id].time > time) {
+
+			let ascend = order
+			while (ascend > 0) {
+				if (records[ascend-1].time >= time) break
+				else ascend--
+			}
+			return ascend? [
+				...timeline.slice(0,ascend),
+				id,
+				...timeline.slice(ascend, order),
+				...timeline.slice(order+1)
+			] : [
+				id,
+				...timeline.slice(0,order),
+				...timeline.slice(order+1)
+			]
+
+		} else return timeline
+	}
+}
 const genDemoData = () => {
 	const now = (new Date()).getTime()
 	return {

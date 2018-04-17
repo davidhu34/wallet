@@ -10,12 +10,12 @@ class RecordList extends Component {
 		return records
 	}
 	render () {
-		const { records } = this.props
+		const { records, onRecordClick } = this.props
 		return <div>
 			<table style={{ width: '100%' }}><tbody>
 			{
 				this.displayList(records).map( r => {
-					return <Record key={r.id} record={r} />
+					return <Record key={r.id} record={r} onRecordClick={onRecordClick}/>
 				})
 			}
 			</tbody></table>

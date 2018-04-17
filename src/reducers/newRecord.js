@@ -39,8 +39,13 @@ export const newRecord = ( state = newRecordInit(), action ) => {
 				time: action.time
 			} : state
 		case 'CREATE_RECORD':
+		case 'UPDATE_RECORD':
 		case 'NEW_RECORD_RESET':
 			return newRecordInit()
+
+		case 'EDIT_RECORD':
+			return newRecordInit(action.record)
+
 		default:
 			return state
 	}

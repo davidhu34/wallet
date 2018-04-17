@@ -15,9 +15,9 @@ import {
     launchCategorySelection,
     launchDatepickerSelection,
     launchInputDesc,
-    createNewRecord,
+    saveRecord,
     resetNewRecord,
-    changeContent
+    recordBack
 } from '../actions'
 import { classSelections, categorySelections } from '../reducers/record'
 import { monthNames } from '../consts'
@@ -25,8 +25,11 @@ import { monthNames } from '../consts'
 
 const NewRecordPage = ({
 	newRecord, classes, categories,
-    selectTime, selectClass, selectCategory,
-    inputAmount, inputDesc, createRecord, back
+    selectTime,
+    inputDesc,
+    inputAmount,
+    selectClass,
+    selectCategory
 }) => {
 	const { /*year, month, date,*/ amount, desc, time, classId, categoryId } = newRecord
     const nrClass = classId? classes[classId].name: '--'
@@ -71,7 +74,7 @@ const NewRecordPage = ({
 
 const newRecordFooter = ({
     newRecord,
-    back, resetRecord, createRecord
+    back, reset, save
 }) => {
     return <div className="row">
 
@@ -84,14 +87,14 @@ const newRecordFooter = ({
         </div>
         <div className="one-third column">
 
-            <h1 onClick={(e) => { resetRecord() }}>
+            <h1 onClick={(e) => { reset() }}>
                 <ResetIcon />
             </h1>
 
         </div>
         <div className="one-third column">
 
-            <h1 onClick={ (e) => createRecord() }>
+            <h1 onClick={ (e) => save() }>
                 <CheckIcon />
             </h1>
 
@@ -103,9 +106,9 @@ export const NewRecordFooter = connect(
         newRecord
 	}),
 	dispatch => ({
-        createRecord: () => dispatch(createNewRecord()),
-        resetRecord: () => dispatch(resetNewRecord()),
-        back: () => dispatch(changeContent('HOME'))
+        save: () => dispatch(saveRecord()),
+        reset: () => dispatch(resetNewRecord()),
+        back: () => dispatch(recordBack())
 	})
 )(newRecordFooter)
 

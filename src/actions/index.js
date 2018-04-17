@@ -9,6 +9,14 @@ export * from './modal'
 const classData = recordInit.class
 
 
+export const editRecord = (record) => (dispatch, getState) => {
+	console.log('editRecord', record)
+	dispatch({
+		type: 'EDIT_RECORD',
+		record: record
+	})
+	changeContent('EDIT_RECORD')(dispatch)
+}
 export const loadDemoData = () => (dispatch, getState) => {
 	dispatch(toggleLoader(true))
 	dispatch({ type: 'LOAD_DEMO_DATA' })
@@ -35,20 +43,30 @@ const createRecord = newRecord => ({
 	type: 'CREATE_RECORD',
 	record: formatNewRecord(newRecord)
 })
+const updateRecord = newRecord => ({
+	type: 'UPDATE_RECORD',
+	record: formatNewRecord(newRecord)
+})
+
 const promptClassSelection = () => ({
 	type: 'PROMPT_CLASS_SELECTION'
 })
 const promptAmountInput = () => ({
 	type: 'PROMPT_AMOUNT_INPUT'
 })
-export const createNewRecord = () => (dispatch, getState) => {
+export const saveRecord = () => (dispatch, getState) => {
 	const newRecord = getState().newRecord
+	console.log('saveRecord', newRecord)
 	if (!newRecord.classId) {
 		dispatch(promptClassSelection())
 	} else if (newRecord.amount == 0 ) {
 		dispatch(promptAmountInput())
 	} else {
-		dispatch(createRecord(newRecord))
+		if (newRecord.id)
+			dispatch(updateRecord(newRecord))
+		else 
+			dispatch(createRecord(newRecord))
+		dispatch(changeContent('RECORD_LIST'))
 	}
 }
 
@@ -81,6 +99,20 @@ export const toggleExpandFilters = () => ({
 	type: 'TOGGLE_EXPAND_FILTERS'
 })
 
+
+export const recordBack = () => (dispatch, getState) => {
+	const { ui } = getState()
+	let to = ''
+	switch (ui.content) {
+		case 'EDIT_RECORD':
+			to = 'RECORD_LIST'
+			break
+		default:
+			to = 'HOME'
+			break
+	}
+	dispatch(changeContent(to))
+}
 
 export const changeContent = content => dispatch => {
 	dispatch({

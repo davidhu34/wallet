@@ -21,6 +21,7 @@ const ContentPage = ({ modal, testGAPI }) => {
 
         <Route exact path="/" component={HomePage}/>
         <Route path="/new" component={NewRecordPage} />
+        <Route path="/edit" component={NewRecordPage} />
         <Route path="/list" component={RecordListPage} />
         <Route path="/other" component={OtherMenuPage} />
     </div>

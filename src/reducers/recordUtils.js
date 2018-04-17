@@ -1,4 +1,5 @@
 export const formatNewRecord = (newRecord) => ({
+	id: newRecord.id,
 	time: newRecord.time,
 	class: newRecord.classId,
 	category: newRecord.categoryId,
@@ -34,13 +35,11 @@ export const filterRecords = (filters, record) => {
 	return data.map( id => {
 		const r = records[id]
 		return {
-			time: r.time,
-			class: record.classes[r.class].name,
-			category: r.category?
+			...r,
+			category: r.category? r.category: r.class,
+			categoryName: r.category?
 				record.categories[r.category].name
-				: record.classes[r.class].name,
-			amount: r.amount,
-			desc: r.desc
+				: record.classes[r.class].name
 		}
 	})
 }
