@@ -3,7 +3,8 @@ import { push } from 'react-router-redux'
 import { TIME_CONSTS, recordInit, contentRoutes } from '../consts'
 
 import { formatNewRecord } from '../reducers/record'
-import { toggleLoader } from './modal'
+import { recordModified } from '../reducers/newRecord'
+import { toggleLoader, launchConfirm } from './modal'
 export * from './modal'
 
 const classData = recordInit.class
@@ -20,6 +21,7 @@ export const editRecord = (record) => (dispatch, getState) => {
 export const loadDemoData = () => (dispatch, getState) => {
 	dispatch(toggleLoader(true))
 	dispatch({ type: 'LOAD_DEMO_DATA' })
+ 	dispatch(changeContent('HOME'))
 	dispatch(toggleLoader(false))
 }
 export const gapiReady = () => ({ type: 'GAPI_READY' })
@@ -64,7 +66,7 @@ export const saveRecord = () => (dispatch, getState) => {
 	} else {
 		if (newRecord.id)
 			dispatch(updateRecord(newRecord))
-		else 
+		else
 			dispatch(createRecord(newRecord))
 		dispatch(changeContent('RECORD_LIST'))
 	}
@@ -101,7 +103,7 @@ export const toggleExpandFilters = () => ({
 
 
 export const recordBack = () => (dispatch, getState) => {
-	const { ui } = getState()
+	const { ui, newRecord } = getState()
 	let to = ''
 	switch (ui.content) {
 		case 'EDIT_RECORD':
@@ -111,7 +113,18 @@ export const recordBack = () => (dispatch, getState) => {
 			to = 'HOME'
 			break
 	}
-	dispatch(changeContent(to))
+	console.log(newRecord)
+	if (recordModified(newRecord)) {
+		console.log('newRecord modified')
+		dispatch(
+			launchConfirm({
+				message: 'Discard editing?',
+				proceed: (confirm) => {
+					return confirm? changeContent(to): null
+				}
+			})
+		)
+	} else dispatch(changeContent(to))
 }
 
 export const changeContent = content => dispatch => {

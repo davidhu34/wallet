@@ -1,5 +1,3 @@
-import { newRecordInit } from '../consts'
-
 export const newRecord = ( state = newRecordInit(), action ) => {
 	switch ( action.type ) {
 		case 'MODAL_SELECTION':
@@ -40,8 +38,12 @@ export const newRecord = ( state = newRecordInit(), action ) => {
 			} : state
 		case 'CREATE_RECORD':
 		case 'UPDATE_RECORD':
-		case 'NEW_RECORD_RESET':
 			return newRecordInit()
+		case 'NEW_RECORD_RESET':
+			return {
+				...newRecordInit(),
+				original: state.original
+			}
 
 		case 'EDIT_RECORD':
 			return newRecordInit(action.record)
@@ -49,4 +51,37 @@ export const newRecord = ( state = newRecordInit(), action ) => {
 		default:
 			return state
 	}
+}
+
+const newRecordInit = (record) => {
+    const time = record? (new Date(Number(record.time))): (new Date())
+    const nr = {
+        id: record? record.id: '',
+        time: time.getTime(),
+        year: time.getFullYear(),
+        month: time.getMonth(),
+        date: time.getDate(),
+        amount: record? record.amount.toString(): '0',
+        desc: record? record.desc: '',
+        classId: record? record.class: '',
+        categoryId: record? record.category: '',
+    }
+    return {
+        ...nr, original: nr
+    }
+}
+
+export const recordModified = (newRecord) => {
+	console.log(newRecord)
+	const { original } = newRecord
+	let modified = false
+	let attrs = Object.keys(original)
+
+	for (let i = 0; i < attrs.length; i++) {
+		console.log(attrs[i], newRecord[attrs[i]] != original[attrs[i]])
+		if (newRecord[attrs[i]] != original[attrs[i]])
+			return true
+	}
+
+	return false
 }

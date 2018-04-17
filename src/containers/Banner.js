@@ -56,11 +56,15 @@ const bannerFilter = ({
 
 				<h5><MoneyIcon /></h5>
 
-				<div onClick={(e) => minAmountFilter(filter.amount.min)}>min</div>
-				<div>{filter.amount.min || '--'}</div>
+				<div onClick={(e) => minAmountFilter(filter.amount.min)}>
+					<div>min</div>
+					<div>{filter.amount.min || '--'}</div>
+				</div>
 
-				<div onClick={(e) => maxAmountFilter(filter.amount.max)}>max</div>
-				<div>{filter.amount.max || '--'}</div>
+				<div onClick={(e) => maxAmountFilter(filter.amount.max)}>
+					<div>max</div>
+					<div>{filter.amount.max || '--'}</div>
+				</div>
 
 				<br />
 				<div onClick={(e) => clearAmountFilter()}>clear</div>
@@ -97,11 +101,15 @@ const bannerFilter = ({
 
 				<h5><TimeIcon /></h5>
 
-				<div onClick={(e) => fromTimeFilter(filter.time.from)}>from</div>
-				<div>{timeStr(filter.time.from)}</div>
+				<div onClick={(e) => fromTimeFilter(filter.time.from)}>
+					<div>from</div>
+					<div>{timeStr(filter.time.from)}</div>
+				</div>
 
-				<div onClick={(e) => toTimeFilter(filter.time.to)}>to</div>
-				<div>{timeStr(filter.time.to)}</div>
+				<div onClick={(e) => toTimeFilter(filter.time.to)}>
+					<div>to</div>
+					<div>{timeStr(filter.time.to)}</div>
+				</div>
 
 				<br />
 				<div onClick={(e) => clearTimeFilter()}>clear</div>

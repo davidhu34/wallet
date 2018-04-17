@@ -1,5 +1,5 @@
 import { recordsToCSV, recordsFromCSV } from '../reducers/record'
-import { toggleLoader } from './modal'
+import { toggleLoader, launchAlert } from './modal'
 
 const gapiSyncStart = (name) => ({
 	type: 'GAPI_SYNC_START',
@@ -97,7 +97,8 @@ export const uploadToFile = () => (dispatch, getState) => {
 
 	const wrap = (action) => {
 		dispatch(action)
-		dispatch(toggleLoader(false)) //close loader
+		if (action.error) dispacth(launchAlert({ title: 'upload error', message: error }))
+		else dispatch(toggleLoader(false)) //close loader
 	}
 	dispatch(toggleLoader(true))
 	signInFirst(GAPI)
@@ -125,7 +126,7 @@ export const uploadToFile = () => (dispatch, getState) => {
 					// <name> is new
 					GAPI.gapiCreate({
 						name: userInputFileName+'.csv',
-						data: '1,1,1\n2,2,2\n3,3,3'
+						data: data
 					}).then( file => {
 						// create success
 						wrap(gapiUploadCreate(null,file))
@@ -162,16 +163,13 @@ export const gapiSignIn = () => (dispatch, getState) => {
 	dispatch(gapiSignInStart())
 	if (GAPI.gapiIsSignedIn()) {
 		wrap(gapiSignInEnd('ALREADY SIGNED IN'))
-		resolve()
 	} else {
 		GAPI.gapiSignIn()
 			.then( data => {
 				wrap(gapiSignInEnd(null, data))
-				resolve()
 			})
 			.catch( err => {
 				wrap(gapiSignInEnd(err))
-			 	reject()
 			})
 	}
 }

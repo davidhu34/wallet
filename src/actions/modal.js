@@ -74,7 +74,14 @@ const missionDirectivesPrep = {
 			modalType: 'loader',
 			forceClose: toggleAction
 		}
-	}
+	},
+	'ALERT': (data) => ({
+		modalType: 'alert'
+	}),
+	'CONFIRM': (data) => ({
+		modalType: 'confirm',
+		preClose: (value) => data.proceed(value) // Boolean => some action
+	}),
 }
 const modalDirectivesPrep = {
 	'datepicker': (data) => ({
@@ -101,18 +108,18 @@ const getDirectives = (mission, data) => {
 }
 const launchModal = (mission, inputData) => (dispatch) => {
 	const data = {...inputData};
+	console.log(mission, inputData)
 
 	const directives = getDirectives(mission, data)
 	console.log('launch modal', mission, data, 'directives',directives)
 
-	
+
 	const launch = (resolve, reject) => dispatch({
 		 type: 'LAUNCH_MODAL',
 		 modalType: directives.modalType,
 		 resolve, reject, data
 	})
 	const close = (value) => dispatch({ type: 'CLOSE_MODAL' })
-
 	if (directives.preLaunch) {
 		dispatch(directives.preLaunch())
 	}
@@ -120,7 +127,7 @@ const launchModal = (mission, inputData) => (dispatch) => {
 		const modalPromise = new Promise(launch)
 		modalPromise.then( value => {
 			if (directives.preClose) {
-				dispatch(directives.preClose(value))
+				dispatch(directives.preClose(value) || ((dispatch) => {}) )
 			}
 			dispatch({ type: 'CLOSE_MODAL' })
 		})
@@ -131,6 +138,9 @@ const launchModal = (mission, inputData) => (dispatch) => {
 }
 
 export const toggleLoader = (open) => launchModal('TOGGLE_LOADER', { open })
+
+export const launchAlert = ({ message, title }) => launchModal('ALERT', { message, title  })
+export const launchConfirm = ({ title, message, proceed }) => launchModal('CONFIRM', { message, proceed, title })
 
 // new record actions
 export const launchTimeSelection = slot => launchModal('NEW_RECORD_TIME', {

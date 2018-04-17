@@ -41,22 +41,6 @@ export const TIME_CONSTS = {
     }
 }
 
-export const newRecordInit = (record) => {
-    const time = record? (new Date(Number(record.time))): (new Date())
-    console.log('newrecord', record)
-    return {
-        id: record? record.id: '',
-        time: time.getTime(),
-        year: time.getFullYear(),
-        month: time.getMonth(),
-        date: time.getDate(),
-        amount: record? record.amount.toString(): '0',
-        desc: record? record.desc: '',
-        classId: record? record.class: '',
-        categoryId: record? record.category: '',
-    }
-}
-
 export const filterInit = {
     amount: { min: null, max: null},
     time: { from: null, to: null },
