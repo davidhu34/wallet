@@ -218,7 +218,7 @@ const Banner = ({
 				</div>
 			</div>
 		}
-		<Route path="/list" component={BannerFilter}/>
+		<Route path="/wallet/list" component={BannerFilter}/>
 
 	</div>
 }

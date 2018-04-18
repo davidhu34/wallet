@@ -9,10 +9,10 @@ import RecordListPage from './RecordListPage'
 import HomePage from './HomePage'
 import OtherMenuPage from './OtherMenuPage'
 
-
 const ContentPage = ({ modal, testGAPI }) => {
-    const base = process.env.PUBLIC_URL || ''
-    console.log(process.env, base)
+    
+    const base = process.env.PUBLIC_URL
+    console.log(base)
     return <div style={{
     	filter: modal?'brightness(300%) blur(10px)': '',
     	WebkitFilter: modal?'brightness(300%) blur(10px)': '',
@@ -22,11 +22,11 @@ const ContentPage = ({ modal, testGAPI }) => {
         textAlign: 'center'
     }}>
 
-        <Route exact path={base+'/'} component={HomePage}/>
-        <Route path={base+'/new'} component={NewRecordPage} />
-        <Route path={base+'/edit'} component={NewRecordPage} />
-        <Route path={base+'/list'} component={RecordListPage} />
-        <Route path={base+'/other'} component={OtherMenuPage} />
+        <Route exact path="/wallet/" component={HomePage}/>
+        <Route path="/wallet/new" component={NewRecordPage} />
+        <Route path="/wallet/edit" component={NewRecordPage} />
+        <Route path="/wallet/list" component={RecordListPage} />
+        <Route path="/wallet/other" component={OtherMenuPage} />
     </div>
 }
 

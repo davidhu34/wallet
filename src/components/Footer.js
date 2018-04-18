@@ -17,11 +17,11 @@ const Footer = ({ hide }) => {
     { hide? null
         : <div className="container">
 
-            <Route exact path="/" component={HomeFooter}/>
-            <Route path="/new" component={NewRecordFooter} />
-            <Route path="/edit" component={NewRecordFooter} />
-            <Route path="/list" component={DefaultFooter} />
-            <Route path="/other" component={DefaultFooter} />
+            <Route exact path="/wallet/" component={HomeFooter}/>
+            <Route path="/wallet/new" component={NewRecordFooter} />
+            <Route path="/wallet/edit" component={NewRecordFooter} />
+            <Route path="/wallet/list" component={DefaultFooter} />
+            <Route path="/wallet/other" component={DefaultFooter} />
         </div>
     }
     </div>
