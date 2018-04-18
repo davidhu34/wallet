@@ -17,10 +17,14 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ],
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loaders: ['react-hot', 'babel'],
-      include: path.join(__dirname, 'src')
+    rules: [{
+      test: /\.(js|jsx)$/,
+      include: path.resolve(__dirname, 'src'),
+      loader: require.resolve('babel-loader'),
+      options: {
+        cacheDirectory: true,
+        plugins: ['react-hot-loader/babel'],
+      },
     }]
   }
 };
