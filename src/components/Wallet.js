@@ -9,8 +9,8 @@ import Footer from './Footer'
 
 import { launchSelection } from '../actions'
 
-const Wallet = () => {
-
+const Wallet = (props) => {
+	console.log(props)
     return <div className="Wallet" style={{ width:'100%', textAlign:'center'}}>
         <ModalProvider />
         <Banner />
