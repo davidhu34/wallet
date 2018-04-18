@@ -1,9 +1,9 @@
 export const contentRoutes = {
-    'NEW_RECORD': '/new',
-    'EDIT_RECORD': '/edit',
-    'RECORD_LIST': '/list',
-    'OTHER_MENU': '/other',
-	'HOME': '/'
+    'NEW_RECORD': '/wallet/new',
+    'EDIT_RECORD': '/wallet/edit',
+    'RECORD_LIST': '/wallet/list',
+    'OTHER_MENU': '/wallet/other',
+	'HOME': '/wallet/'
 }
 export const routeContents = {
 	'/': 'HOME',
@@ -11,6 +11,11 @@ export const routeContents = {
 	'/list': 'RECORD_LIST',
 	'/other': 'OTHER_MENU',
     '/edit': 'EDIT_RECORD',
+    '/wallet/': 'HOME',
+    '/wallet/new': 'NEW_RECORD',
+    '/wallet/list': 'RECORD_LIST',
+    '/wallet/other': 'OTHER_MENU',
+    '/wallet/edit': 'EDIT_RECORD',
 }
 
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Auguest', 'September', 'October', 'November', 'December']
