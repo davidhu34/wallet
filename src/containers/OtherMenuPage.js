@@ -5,12 +5,13 @@ import { Route, withRouter } from 'react-router'
 import DownloadIcon from 'react-icons/lib/io/ios-download-outline'
 import UploadIcon from 'react-icons/lib/io/ios-cloud-upload-outline'
 
-import { syncFromFile, uploadToFile, loadDemoData, launchAlert } from '../actions'
+import { syncFromFile, uploadToFile, launchGAPIFileName, loadDemoData, launchAlert } from '../actions'
 import BlankColumn from '../components/BlankColumn'
 
 const OtherMenuPage = ({
 	driveAPI,
-	loadDemoData, uploadToFile, syncFromFile, launchAbout, changeContent
+	loadDemoData, uploadToFile, syncFromFile, changeFileName,
+	launchAbout, changeContent
 }) => {
 	const { userInputFileName } = driveAPI
 
@@ -51,7 +52,7 @@ const OtherMenuPage = ({
 			<div className="three columns" ><h6>{'File Name: '}</h6></div>
 			<div className="seven columns"
 				style={{ textAlign:'left' }}
-				onClick={(e) => {}}>
+				onClick={(e) => changeFileName(userInputFileName)}>
 				<u>{userInputFileName}</u>{'.csv'}
 			</div>
 		</div>
@@ -73,7 +74,14 @@ export default connect(
 		loadDemoData: () => dispatch( loadDemoData() ),
 		uploadToFile: (name) => dispatch( uploadToFile(name) ),
 		syncFromFile: (name) => dispatch( syncFromFile(name) ),
-		launchAbout: () =>  dispatch( launchAlert({ title:'ABOUT', message:'APP by Ming-Wei Hu' }) ),
+		changeFileName: (name) => dispatch( launchGAPIFileName({
+			title: 'Google Drive .csv file name',
+			text: name
+		}) ),
+		launchAbout: () =>  dispatch( launchAlert({
+			title:'ABOUT',
+			message:'APP by Ming-Wei Hu'
+		}) ),
 		changeContent: (content) => dispatch( changeContent(content) )
 	})
 )(OtherMenuPage)

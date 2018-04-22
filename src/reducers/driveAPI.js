@@ -29,6 +29,12 @@ export const driveAPI = ( state = driveAPIInit, action ) => {
 		case 'GAPI_SIGNIN_END':
 			return state
 
+		case 'GAPI_FILE_NAME':
+			return {
+				...state,
+				userInputFileName: action.text
+			}
+
 		case 'GAPI_UPLOAD_START':
 		case 'GAPI_SYNC_START':
 			return state

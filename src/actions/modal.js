@@ -2,6 +2,13 @@ export * from './datepicker'
 export * from './numberPad'
 
 const missionDirectivesPrep = {
+	'GAPI_FILE_NAME': (data) => ({
+		modalType: 'text',
+		preClose: (value) => ({
+			type: 'GAPI_FILE_NAME',
+			text: value
+		})
+	}),
 	'NEW_RECORD_DESC': (data) => ({
 		modalType: 'text',
 		preClose: (value) => ({
@@ -167,6 +174,8 @@ export const launchDatepickerSelection = data => launchModal('NEW_RECORD_DATEPIC
 export const launchInputAmount = data => launchModal('NEW_RECORD_AMOUNT', data)
 
 export const launchInputDesc = data => launchModal('NEW_RECORD_DESC', data)
+
+export const launchGAPIFileName = data => launchModal('GAPI_FILE_NAME', data)
 
 // filter actions
 export const launchMaxAmountFilter = data => launchModal('AMOUNT_FILTER', {
