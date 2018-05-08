@@ -7,42 +7,6 @@ export const formatNewRecord = (newRecord) => ({
 	desc: newRecord.desc
 })
 
-export const filterRecords = (filters, record) => {
-	console.log(filters)
-	const { min, max, from, to, categories } = filters
-	const { records } = record
-	const recordIdList = recordIdListFromTimeSpan(record, from, to)
-	console.log(recordIdList, from , to)
-	const steps = []
-	// if (to) steps.push( (r) => r.time > to )
-	// if (from) steps.push( (r) => r.time < from )
-	if (min || max) steps.push( (r) => min && r.amount < min || max && r.amount > max )
-	const ctgSet = new Set()
-	if ( categories.length > 0 ) {
-		categories.forEach( ctg => ctgSet.add(ctg) )
-		steps.push( (r) => ctgSet.has(r.category) == -1 )
-	}
-
-	const data = steps.length > 0?
-		recordIdList.filter( id => {
-			const r = records[id]
-			for (let i = 0; i < steps.length; i++)
-				if (steps[i](r))
-					return false
-			return true
-		}) : recordIdList
-
-	return data.map( id => {
-		const r = records[id]
-		return {
-			...r,
-			category: r.category? r.category: r.class,
-			categoryName: r.category?
-				record.categories[r.category].name
-				: record.classes[r.class].name
-		}
-	})
-}
 const thisMonday = () => {
 	const today = new Date()
 	const weekDay = today.getDay()
@@ -53,7 +17,7 @@ const thisFirstOfMonth = () => {
 	const today = new Date()
 	return new Date(today.getFullYear(), today.getMonth(), 1)
 }
-const recordIdListFromTimeSpan = (record, fromTime, toTime) => {
+export const recordIdListFromTimeSpan = (record, fromTime, toTime) => {
 	if (!toTime) toTime = (new Date()).getTime()
 
 	const { records, timeline } = record

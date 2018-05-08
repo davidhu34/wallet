@@ -17,7 +17,6 @@ const App = combineReducers({
     modal,
     newRecord,
     numberPad,
-    filter,
     datepicker,
     driveAPI,
     router: routerReducer

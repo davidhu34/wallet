@@ -35,8 +35,8 @@ class RecordListPage extends Component {
 }
 
 export default connect(
-	({ record, filter }) => ({
-        records: filterRecords(recordFilters(filter), record)
+	({ record }) => ({
+        records: record.filteredList
     }),
     dispatch => ({
     	editRecord: (record) => dispatch(editRecord(record))

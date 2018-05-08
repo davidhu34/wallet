@@ -2,6 +2,8 @@ import md5 from 'md5'
 import ppp from 'papaparse'
 
 import { recordInit } from '../consts'
+import filter, { recordFilters } from './filter'
+import { recordIdListFromTimeSpan } from './recordUtils'
 export * from './recordUtils'
 
 const classes = (state, action) => {
@@ -59,7 +61,6 @@ const records = (state, action) => {
 
 		case'UPDATE_RECORD':
 			const record = action.record
-		console.log(record)
 			return {
 				...state,
 				[record.id]: record
@@ -83,11 +84,31 @@ const records = (state, action) => {
 	}
 }
 export const record = (state = recordInit, action) => {
+	const newFilter = filter(state.filter, action)
 	switch (action.type) {
-
+		case 'APPLY_FROM_TIME_FILTER':
+        case 'APPLY_TO_TIME_FILTER':
+        case 'CLEAR_TIME_FILTER':
+        case 'TOGGLE_CATEGORY_FILTER':
+        case 'TOGGLE_ALL_CATEGORY_FILTER':
+        case 'APPLY_CATEGORY_FILTER':
+        case 'CLEAR_CATEGORY_FILTER':
+        case 'APPLY_MIN_FILTER':
+        case 'APPLY_MAX_FILTER':
+        case 'CLEAR_AMOUNT_FILTER':
+        case '@@router/LOCATION_CHANGE':
+			return {
+				...state,
+				filter: newFilter,
+				filteredList: filterRecords(newFilter, state)
+			}
 		case 'LOAD_DEMO_DATA':
-			return genDemoData()
-
+			let demoState = genDemoData()
+			return {
+				...demoState,
+				filter: newFilter,
+				filteredList: filterRecords(newFilter, demoState)
+			}
 		case 'UPDATE_RECORD':
 			const newTimeline = resortTimeline(state, action.record)
 			let newState = {
@@ -96,39 +117,43 @@ export const record = (state = recordInit, action) => {
 				records: records(state.records, action)
 			}
 			const { classTimeline, categoryTimeline } = genCCTimeline(newState, newTimeline)
-			return {
-				...newState,
-				classes: classes(state.classes, {
-					...action,
-					timeline: classTimeline
-				}),
-				categories: categories(state.categories, {
-					...action,
-					timeline: categoryTimeline
-				})
-			}
+			newState.classes = classes(state.classes, {
+				...action,
+				timeline: classTimeline
+			})
+			newState.categories = categories(state.categories, {
+				...action,
+				timeline: categoryTimeline
+			})
+
+			newState.filteredList = filterRecords(newFilter, newState)
+			return newState
+
 		case 'CREATE_RECORD':
 		case 'GAPI_SYNC_END':
 			if (action.error) {
-				return state
+				return {
+					...state,
+					filter: newFilter
+				}
 			} else {
 				let newState = {
 					...state,
 					records: records(state.records, action)
 				}
 				const { timeline, classTimeline, categoryTimeline } = genTimeline(newState)
-				return {
-					...newState,
-					classes: classes(state.classes, {
-						...action,
-						timeline: classTimeline
-					}),
-					categories: categories(state.categories, {
-						...action,
-						timeline: categoryTimeline
-					}),
-					timeline: timeline
-				}
+				newState.classes = classes(state.classes, {
+				...action,
+				timeline: classTimeline
+				})
+				newState.categories = categories(state.categories, {
+					...action,
+					timeline: categoryTimeline
+				})
+				newState.timeline = timeline
+
+				newState.filteredList = filterRecords(newFilter, newState)
+				return newState
 			}
 
 		default:
@@ -136,32 +161,43 @@ export const record = (state = recordInit, action) => {
 	}
 }
 
-export const recordsToCSV = (records) => {
-	return ppp.unparse({
-		fields: ['id','time','amount','class','category','desc'],
-		data: Object.keys(records).map( id => {
+const filterRecords = (filter, record) => {
+	const filters = recordFilters(filter)
+	const { min, max, from, to, categories } = filters
+	const { records, filteredList } = record
+
+	const recordIdList = recordIdListFromTimeSpan(record, from, to)
+	const steps = []
+	// if (to) steps.push( (r) => r.time > to )
+	// if (from) steps.push( (r) => r.time < from )
+	if (min || max) steps.push( (r) => min && r.amount < min || max && r.amount > max )
+	const ctgSet = new Set()
+	if ( categories.length > 0 ) {
+		categories.forEach( ctg => ctgSet.add(ctg) )
+		steps.push( (r) => !ctgSet.has(r.category) )
+	}
+
+	const newFilteredList = steps.length > 0?
+		recordIdList.filter( id => {
 			const r = records[id]
-			return [
-				r.id,
-				r.time,
-				r.amount,
-				r.class,
-				r.category,
-				r.desc
-			]
-		})
+			for (let i = 0; i < steps.length; i++)
+				if (steps[i](r))
+					return false
+			return true
+		}) : recordIdList
+
+	return newFilteredList.map( id => {
+		const r = records[id]
+		return {
+			...r,
+			category: r.category? r.category: r.class,
+			categoryName: r.category?
+				record.categories[r.category].name
+				: record.classes[r.class].name
+		}
 	})
 }
 
-export const recordsFromCSV = (csv) => {
-	const parsed = ppp.parse(csv, { header: true })
-	const recordArray = parsed.data || []
-	let newRecords = {}
-	recordArray.map( r => {
-		if (r.id) newRecords[r.id] = r
-	})
-	return newRecords
-}
 
 const genCCTimeline = (record, timeline) => {
 	const { records } = record
@@ -364,4 +400,29 @@ const genDemoData = () => {
 		},
 		timeline: ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 	}
+}
+export const recordsToCSV = (records) => {
+	return ppp.unparse({
+		fields: ['id','time','amount','class','category','desc'],
+		data: Object.keys(records).map( id => {
+			const r = records[id]
+			return [
+				r.id,
+				r.time,
+				r.amount,
+				r.class,
+				r.category,
+				r.desc
+			]
+		})
+	})
+}
+export const recordsFromCSV = (csv) => {
+	const parsed = ppp.parse(csv, { header: true })
+	const recordArray = parsed.data || []
+	let newRecords = {}
+	recordArray.map( r => {
+		if (r.id) newRecords[r.id] = r
+	})
+	return newRecords
 }

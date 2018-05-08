@@ -129,11 +129,11 @@ const bannerFilter = ({
 }
 const BannerFilter = connect(
 
-	({ ui, filter, record }) => ({
+	({ ui, record }) => ({
 		classList: classList(record.classes),
 		classCategories: classCategories(record),
-		ui,
-		filter
+		ui: ui,
+		filter: record.filter
 	}),
 	dispatch => ({
 		categoryFilter: (className, categoryList) => dispatch(launchCategoryFilter({
